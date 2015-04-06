@@ -1,0 +1,381 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="AsettoCorsaTrackingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Car">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Class" Type="nvarchar(max)" />
+          <Property Name="parent" Type="nvarchar(max)" />
+          <Property Name="brand" Type="nvarchar(max)" />
+          <Property Name="name" Type="nvarchar(max)" />
+          <Property Name="description" Type="nvarchar(max)" />
+          <Property Name="bhp" Type="nvarchar(max)" />
+          <Property Name="torque" Type="nvarchar(max)" />
+          <Property Name="weight" Type="nvarchar(max)" />
+          <Property Name="topspeed" Type="nvarchar(max)" />
+          <Property Name="acceleration" Type="nvarchar(max)" />
+          <Property Name="pwratio" Type="nvarchar(max)" />
+          <Property Name="BadgePng" Type="varbinary(max)" />
+          <Property Name="PreviewPng" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Lap">
+          <Key>
+            <PropertyRef Name="SessionId" />
+            <PropertyRef Name="LapNumber" />
+          </Key>
+          <Property Name="SessionId" Type="int" Nullable="false" />
+          <Property Name="LapNumber" Type="int" Nullable="false" />
+          <Property Name="Timings" Type="ntext" />
+          <Property Name="LapTime" Type="time" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Player">
+          <Key>
+            <PropertyRef Name="PlayerId" />
+          </Key>
+          <Property Name="PlayerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PlayerName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Session">
+          <Key>
+            <PropertyRef Name="SessionId" />
+          </Key>
+          <Property Name="SessionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="SessionLength" Type="time" Precision="3" />
+          <Property Name="PlayerId" Type="int" />
+          <Property Name="Car" Type="nvarchar" MaxLength="200" />
+          <Property Name="Track" Type="nvarchar" MaxLength="200" />
+          <Property Name="BestLap" Type="time" Precision="3" />
+        </EntityType>
+        <EntityType Name="Track">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Country" Type="nvarchar(max)" />
+          <Property Name="City" Type="nvarchar(max)" />
+          <Property Name="Length" Type="nvarchar(max)" />
+          <Property Name="Width" Type="nvarchar(max)" />
+          <Property Name="PreviewPng" Type="varbinary(max)" />
+          <Property Name="OutlinePng" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_Lap_Session">
+          <End Role="Session" Type="Self.Session" Multiplicity="1" />
+          <End Role="Lap" Type="Self.Lap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Session">
+              <PropertyRef Name="SessionId" />
+            </Principal>
+            <Dependent Role="Lap">
+              <PropertyRef Name="SessionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Session_Car">
+          <End Role="Car" Type="Self.Car" Multiplicity="0..1" />
+          <End Role="Session" Type="Self.Session" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Car">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="Session">
+              <PropertyRef Name="Car" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Session_Player">
+          <End Role="Player" Type="Self.Player" Multiplicity="0..1" />
+          <End Role="Session" Type="Self.Session" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="PlayerId" />
+            </Principal>
+            <Dependent Role="Session">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Session_Track">
+          <End Role="Track" Type="Self.Track" Multiplicity="0..1" />
+          <End Role="Session" Type="Self.Session" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Track">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="Session">
+              <PropertyRef Name="Track" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AsettoCorsaTrackingModelStoreContainer">
+          <EntitySet Name="Car" EntityType="Self.Car" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Lap" EntityType="Self.Lap" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Player" EntityType="Self.Player" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Session" EntityType="Self.Session" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Track" EntityType="Self.Track" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Lap_Session" Association="Self.FK_Lap_Session">
+            <End Role="Session" EntitySet="Session" />
+            <End Role="Lap" EntitySet="Lap" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Session_Car" Association="Self.FK_Session_Car">
+            <End Role="Car" EntitySet="Car" />
+            <End Role="Session" EntitySet="Session" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Session_Player" Association="Self.FK_Session_Player">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="Session" EntitySet="Session" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Session_Track" Association="Self.FK_Session_Track">
+            <End Role="Track" EntitySet="Track" />
+            <End Role="Session" EntitySet="Session" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AsettoCorsaTrackingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="AsettoCorsaTrackingEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Car" EntityType="AsettoCorsaTrackingModel.Car" />
+          <EntitySet Name="Player" EntityType="AsettoCorsaTrackingModel.Player" />
+          <EntitySet Name="Session" EntityType="AsettoCorsaTrackingModel.Session" />
+          <EntitySet Name="Track" EntityType="AsettoCorsaTrackingModel.Track" />
+          <AssociationSet Name="FK_Session_Car" Association="AsettoCorsaTrackingModel.FK_Session_Car">
+            <End Role="Car" EntitySet="Car" />
+            <End Role="Session" EntitySet="Session" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Session_Player" Association="AsettoCorsaTrackingModel.FK_Session_Player">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="Session" EntitySet="Session" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Session_Track" Association="AsettoCorsaTrackingModel.FK_Session_Track">
+            <End Role="Track" EntitySet="Track" />
+            <End Role="Session" EntitySet="Session" />
+          </AssociationSet>
+          <EntitySet Name="Lap" EntityType="AsettoCorsaTrackingModel.Lap" />
+          <AssociationSet Name="FK_Lap_Session" Association="AsettoCorsaTrackingModel.FK_Lap_Session">
+            <End Role="Session" EntitySet="Session" />
+            <End Role="Lap" EntitySet="Lap" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Car">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Class" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="parent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="brand" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="bhp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="torque" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="weight" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="topspeed" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="acceleration" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="pwratio" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BadgePng" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="PreviewPng" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Session" Relationship="AsettoCorsaTrackingModel.FK_Session_Car" FromRole="Car" ToRole="Session" />
+        </EntityType>
+        <EntityType Name="Player">
+          <Key>
+            <PropertyRef Name="PlayerId" />
+          </Key>
+          <Property Name="PlayerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PlayerName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Session" Relationship="AsettoCorsaTrackingModel.FK_Session_Player" FromRole="Player" ToRole="Session" />
+        </EntityType>
+        <EntityType Name="Session">
+          <Key>
+            <PropertyRef Name="SessionId" />
+          </Key>
+          <Property Name="SessionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="SessionLength" Type="Time" Precision="3" />
+          <Property Name="PlayerId" Type="Int32" />
+          <Property Name="Car" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Track" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="BestLap" Type="Time" Precision="3" />
+          <NavigationProperty Name="Car1" Relationship="AsettoCorsaTrackingModel.FK_Session_Car" FromRole="Session" ToRole="Car" />
+          <NavigationProperty Name="Player" Relationship="AsettoCorsaTrackingModel.FK_Session_Player" FromRole="Session" ToRole="Player" />
+          <NavigationProperty Name="Track1" Relationship="AsettoCorsaTrackingModel.FK_Session_Track" FromRole="Session" ToRole="Track" />
+          <NavigationProperty Name="Lap" Relationship="AsettoCorsaTrackingModel.FK_Lap_Session" FromRole="Session" ToRole="Lap" />
+        </EntityType>
+        <EntityType Name="Track">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Length" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Width" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PreviewPng" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="OutlinePng" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Session" Relationship="AsettoCorsaTrackingModel.FK_Session_Track" FromRole="Track" ToRole="Session" />
+        </EntityType>
+        <Association Name="FK_Session_Car">
+          <End Type="AsettoCorsaTrackingModel.Car" Role="Car" Multiplicity="0..1" />
+          <End Type="AsettoCorsaTrackingModel.Session" Role="Session" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Car">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="Session">
+              <PropertyRef Name="Car" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Session_Player">
+          <End Type="AsettoCorsaTrackingModel.Player" Role="Player" Multiplicity="0..1" />
+          <End Type="AsettoCorsaTrackingModel.Session" Role="Session" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="PlayerId" />
+            </Principal>
+            <Dependent Role="Session">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Session_Track">
+          <End Type="AsettoCorsaTrackingModel.Track" Role="Track" Multiplicity="0..1" />
+          <End Type="AsettoCorsaTrackingModel.Session" Role="Session" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Track">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="Session">
+              <PropertyRef Name="Track" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Lap">
+          <Key>
+            <PropertyRef Name="SessionId" />
+            <PropertyRef Name="LapNumber" />
+          </Key>
+          <Property Name="SessionId" Type="Int32" Nullable="false" />
+          <Property Name="LapNumber" Type="Int32" Nullable="false" />
+          <Property Name="LapTime" Type="Time" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Session" Relationship="AsettoCorsaTrackingModel.FK_Lap_Session" FromRole="Lap" ToRole="Session" />
+          <Property Name="Timings" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_Lap_Session">
+          <End Type="AsettoCorsaTrackingModel.Session" Role="Session" Multiplicity="1" />
+          <End Type="AsettoCorsaTrackingModel.Lap" Role="Lap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Session">
+              <PropertyRef Name="SessionId" />
+            </Principal>
+            <Dependent Role="Lap">
+              <PropertyRef Name="SessionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AsettoCorsaTrackingModelStoreContainer" CdmEntityContainer="AsettoCorsaTrackingEntities">
+          <EntitySetMapping Name="Car">
+            <EntityTypeMapping TypeName="AsettoCorsaTrackingModel.Car">
+              <MappingFragment StoreEntitySet="Car">
+                <ScalarProperty Name="PreviewPng" ColumnName="PreviewPng" />
+                <ScalarProperty Name="BadgePng" ColumnName="BadgePng" />
+                <ScalarProperty Name="pwratio" ColumnName="pwratio" />
+                <ScalarProperty Name="acceleration" ColumnName="acceleration" />
+                <ScalarProperty Name="topspeed" ColumnName="topspeed" />
+                <ScalarProperty Name="weight" ColumnName="weight" />
+                <ScalarProperty Name="torque" ColumnName="torque" />
+                <ScalarProperty Name="bhp" ColumnName="bhp" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="brand" ColumnName="brand" />
+                <ScalarProperty Name="parent" ColumnName="parent" />
+                <ScalarProperty Name="Class" ColumnName="Class" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Player">
+            <EntityTypeMapping TypeName="AsettoCorsaTrackingModel.Player">
+              <MappingFragment StoreEntitySet="Player">
+                <ScalarProperty Name="PlayerName" ColumnName="PlayerName" />
+                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Session">
+            <EntityTypeMapping TypeName="AsettoCorsaTrackingModel.Session">
+              <MappingFragment StoreEntitySet="Session">
+                <ScalarProperty Name="BestLap" ColumnName="BestLap" />
+                <ScalarProperty Name="Track" ColumnName="Track" />
+                <ScalarProperty Name="Car" ColumnName="Car" />
+                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+                <ScalarProperty Name="SessionLength" ColumnName="SessionLength" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="SessionId" ColumnName="SessionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Track">
+            <EntityTypeMapping TypeName="AsettoCorsaTrackingModel.Track">
+              <MappingFragment StoreEntitySet="Track">
+                <ScalarProperty Name="OutlinePng" ColumnName="OutlinePng" />
+                <ScalarProperty Name="PreviewPng" ColumnName="PreviewPng" />
+                <ScalarProperty Name="Width" ColumnName="Width" />
+                <ScalarProperty Name="Length" ColumnName="Length" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Lap">
+            <EntityTypeMapping TypeName="AsettoCorsaTrackingModel.Lap">
+              <MappingFragment StoreEntitySet="Lap">
+                <ScalarProperty Name="Timings" ColumnName="Timings" />
+                <ScalarProperty Name="LapTime" ColumnName="LapTime" />
+                <ScalarProperty Name="LapNumber" ColumnName="LapNumber" />
+                <ScalarProperty Name="SessionId" ColumnName="SessionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

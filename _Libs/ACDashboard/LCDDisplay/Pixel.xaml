@@ -1,0 +1,12 @@
+﻿<UserControl x:Class="ACDashboard.LCDDisplay.Pixel" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d" d:DesignHeight="10" d:DesignWidth="10"
+        Background="#FF383838">
+    <Grid Margin="0,0,1,1" x:Name="PixelGrid">
+        <Grid.Background>
+            <RadialGradientBrush>
+                <GradientStop Color="#FFFF0202" Offset="0" />
+                <GradientStop Color="#FFFF1A1A" Offset="1" />
+            </RadialGradientBrush>
+        </Grid.Background>
+    </Grid>
+</UserControl>

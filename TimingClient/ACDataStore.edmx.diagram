@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="609f2cbc1bf6464d8b9c92ffc9d8de14" Name="Diagram1">
+        <EntityTypeShape EntityType="AsettoCorsaTrackingModel.Car" Width="1.5" PointX="0.75" PointY="1" />
+        <EntityTypeShape EntityType="AsettoCorsaTrackingModel.Player" Width="1.5" PointX="7.75" PointY="6" />
+        <EntityTypeShape EntityType="AsettoCorsaTrackingModel.Session" Width="1.5" PointX="3" PointY="1.375" />
+        <EntityTypeShape EntityType="AsettoCorsaTrackingModel.Track" Width="1.5" PointX="0.75" PointY="8.625" />
+        <AssociationConnector Association="AsettoCorsaTrackingModel.FK_Session_Car" />
+        <AssociationConnector Association="AsettoCorsaTrackingModel.FK_Session_Player" />
+        <AssociationConnector Association="AsettoCorsaTrackingModel.FK_Session_Track" />
+        <EntityTypeShape EntityType="AsettoCorsaTrackingModel.Lap" Width="1.5" PointX="5.25" PointY="2" />
+        <AssociationConnector Association="AsettoCorsaTrackingModel.FK_Lap_Session" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

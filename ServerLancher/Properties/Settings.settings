@@ -1,0 +1,9 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ServerLancher.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="LastPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">D:\Program Files (x86)\Assetto Corsa</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
