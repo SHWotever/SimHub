@@ -6,7 +6,7 @@ Tools, MapGenerator, Arduino Dash
 ### How to use ACManager 
 
 ```csharp
-  ACManager = new ACSharedMemory.ACManager();
+  var acManager = new ACSharedMemory.ACManager();
   ACManager.SynchronizingObject = this;
   ACManager.Start();
 ```
@@ -15,26 +15,26 @@ Tools, MapGenerator, Arduino Dash
 
 ```csharp
 // Event when game is started or stopped
-GameRunningChanged(bool running, ACManager manager);
+acManager.GameRunningChanged(bool running, ACManager manager);
 
 // Event when session status is changed (ie, LIVE/PAUSE ...)
-GameStatusChanged(AC_STATUS status, ACManager manager);
+acManager.GameStatusChanged(AC_STATUS status, ACManager manager);
 
 // Event when a new lap start, testlap notifies if previous lap has been taken by the game
-NewLap(int completedLapNumber, bool testLap, ACManager manager);
+acManager.NewLap(int completedLapNumber, bool testLap, ACManager manager);
 
 // Event when session type change (ie PRACTIVE/HOTLAP ...)
-SessionTypeChanged(AC_SESSION_TYPE sessionType, ACManager manager);
+acManager.SessionTypeChanged(AC_SESSION_TYPE sessionType, ACManager manager);
 
 // Event when a session restart is detected
-SessionRestart(ACManager manager);
+acManager.SessionRestart(ACManager manager);
 
 // Event when car change
-CarChanged(CarDesc newCar, ACManager manager);
+acManager.CarChanged(CarDesc newCar, ACManager manager);
 
 // Event when track change
-TrackChanged(TrackDesc newTrack, ACManager manager);
+acManager.TrackChanged(TrackDesc newTrack, ACManager manager);
 
 // Event when data is updated
-DataUpdated(GameData data, ACManager manager);
+acManager.DataUpdated(GameData data, ACManager manager);
 ```
