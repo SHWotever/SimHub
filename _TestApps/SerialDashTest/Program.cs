@@ -8,7 +8,7 @@ namespace ConsoleApplication1
         private static void Main(string[] args)
         {
             var ports = SerialPort.GetPortNames();
-            var dash = new SerialDash.SerialDash("auto");
+            var dash = new SerialDash.SerialDashController("auto");
 
             dash.SetIntensity(0);
             dash.SetIntensity(1, 7);
@@ -21,7 +21,6 @@ namespace ConsoleApplication1
             dash.SetText(0, "  DASH  ");
             dash.SetText(1, "- - - - ");
 
-            int led = 0;
             while (1 == 1)
             {
                 dash.SetLedsColor(0, SerialDash.LedColor.Green);
@@ -48,7 +47,6 @@ namespace ConsoleApplication1
                 }
             }
 
-            Console.ReadKey();
         }
     }
 }

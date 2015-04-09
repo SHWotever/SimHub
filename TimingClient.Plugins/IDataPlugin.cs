@@ -1,5 +1,4 @@
 ﻿using ACSharedMemory;
-using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace TimingClient.Plugins
@@ -19,6 +18,7 @@ namespace TimingClient.Plugins
 
     public interface IOutputPlugin : IPlugin
     {
+        void DataUpdate(PluginManager pluginManager, GameData data);
     }
 
     public interface IInputPlugin : IPlugin
@@ -28,12 +28,13 @@ namespace TimingClient.Plugins
     public interface IEventPlugin : IPlugin
     {
         void EventTriggered(string eventName);
+
+        void InputTriggered(string inputName);
     }
 
     public interface IDataPlugin : IPlugin
     {
         void DataUpdate(PluginManager pluginManager, GameData data);
 
-        void DoAction(PluginManager pluginManager, string command);
     }
 }

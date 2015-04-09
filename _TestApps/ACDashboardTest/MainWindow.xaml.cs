@@ -14,8 +14,6 @@ namespace ACDashboardTest
 
             var Dash = new Dashboard();
             Dash.Show();
-
-
         }
     }
 }

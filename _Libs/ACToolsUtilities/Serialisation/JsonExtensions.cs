@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace ACToolsUtilities.Serialisation
 {
@@ -15,13 +10,16 @@ namespace ACToolsUtilities.Serialisation
             {
                 System.IO.Directory.CreateDirectory(Path.GetDirectoryName(path));
             }
-            System.IO.File.WriteAllText(path, Newtonsoft.Json.JsonConvert.SerializeObject(item));
+            System.IO.File.WriteAllText(path, Newtonsoft.Json.JsonConvert.SerializeObject(item, Newtonsoft.Json.Formatting.Indented));
         }
 
         public static T FromJsonFile<T>(string path)
         {
+            if (!File.Exists(path))
+            {
+                return default(T);
+            }
             return (T)Newtonsoft.Json.JsonConvert.DeserializeObject<T>(System.IO.File.ReadAllText(path));
         }
-
     }
 }

@@ -1,16 +1,11 @@
 ﻿using ACToolsUtilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
 
 namespace TimingClient.Plugins.InputPlugins
 {
     public class JoystickPlugin : IInputPlugin
     {
-        Timer timer;
+        private Timer timer;
 
         private PluginManager pluginManager;
         private JoystickManager joystickManager = new JoystickManager();
@@ -32,7 +27,7 @@ namespace TimingClient.Plugins.InputPlugins
             this.timer.SynchronizingObject = pluginManager.ACManager.SynchronizingObject;
             this.timer.Interval = 10;
             this.timer.Elapsed += timer_Elapsed;
-
+            this.timer.Enabled = true;
             var inputs = this.joystickManager.GetInputs();
             foreach (var input in inputs)
             {
@@ -40,7 +35,7 @@ namespace TimingClient.Plugins.InputPlugins
             }
         }
 
-        void timer_Elapsed(object sender, ElapsedEventArgs e)
+        private void timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             joystickManager.ReadState();
             var inputs = joystickManager.ButtonPressed();
@@ -48,16 +43,26 @@ namespace TimingClient.Plugins.InputPlugins
             {
                 this.pluginManager.TriggerInput(input, typeof(JoystickPlugin));
             }
+            if (settingsControl != null)
+            {
+                settingsControl.Refresh(inputs);
+            }
         }
 
         public void End(PluginManager pluginManager)
         {
         }
 
+        private JoystickPluginSettingsControl settingsControl = null;
 
         public System.Windows.Forms.Control GetSettingsControl(PluginManager pluginManager)
         {
-            return null;
+            if (settingsControl == null)
+            {
+                settingsControl = new JoystickPluginSettingsControl();
+            }
+            return settingsControl;
         }
+
     }
 }

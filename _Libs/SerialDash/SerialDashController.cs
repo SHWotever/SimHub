@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO.Ports;
 using System.Linq;
 using System.Threading;
@@ -28,12 +29,12 @@ namespace SerialDash
         None
     }
 
-    public class SerialDash
+    public class SerialDashController
     {
         private const byte PROTOCOL_COMMAND_HELLO = (byte)'1';
         private const byte PROTOCOL_COMMAND_MODULECOUNT = (byte)'2';
         private const byte PROTOCOL_COMMAND_SENDDISPLAY = (byte)'3';
-        private const int MAXSUPPORTED_SCREENS = 4;
+        public const int MAXSUPPORTED_SCREENS = 4;
 
         private List<int> ButtonsState;
         private SerialPort ComPort;
@@ -46,6 +47,10 @@ namespace SerialDash
         private string SelectedComPort;
         private int baudRate;
 
+        public delegate void ButtonEventDelegate(int screen, Buttons buttons);
+        public event ButtonEventDelegate ButtonPressed;
+        public event ButtonEventDelegate ButtonReleased;
+
         public int GetModuleCount()
         {
             return ModuleCount;
@@ -56,7 +61,7 @@ namespace SerialDash
             return value.Length <= maxLength ? value : value.Substring(0, maxLength);
         }
 
-        public SerialDash(string comPort, int baudRate = 19200)
+        public SerialDashController(string comPort, int baudRate = 19200)
         {
             this.baudRate = baudRate;
             SelectedComPort = comPort;
@@ -120,14 +125,31 @@ namespace SerialDash
                 this.Intensity[i] = Math.Max(0, this.Intensity[i] - 1);
             }
         }
+        public string FormatText(int lenght, object data, bool rightToLeft, string overflowText = null)
+        {
+            return SerialDashController.Format(lenght, data.ToString(), rightToLeft, overflowText);
+        }
 
-        public string Format(int lenght, object data, bool rightToLeft, string overflowText = null)
+        public static string Format(int lenght, object data, bool rightToLeft, string overflowText = null)
         {
             return Format(lenght, data.ToString(), rightToLeft, overflowText);
         }
-
-        public string Format(int lenght, string text, bool rightToLeft, string overflowText = null)
+        public string FormatText(int lenght, string text, bool rightToLeft, string overflowText = null)
         {
+            return SerialDashController.Format(lenght, text, rightToLeft, overflowText);
+        }
+
+        public static string ReplaceChars(string text)
+        {
+            text = text ?? "";
+            text = text.Replace(",", ".");
+            text = text.Replace(":", ".");
+            return text;
+        }
+
+        public static string Format(int lenght, string text, bool rightToLeft, string overflowText = null)
+        {
+            text = ReplaceChars(text);
             int realLength = text.Count(i => i != '.');
             if (realLength > lenght)
             {
@@ -137,7 +159,22 @@ namespace SerialDash
                 }
                 else
                 {
-                    return text.Substring(0, lenght);
+                    if (!rightToLeft)
+                    {
+                        while (text.Count(i => i != '.') > lenght)
+                        {
+                            text = text.Substring(text.Length - 1);
+                        }
+
+                    }
+                    else
+                    {
+                        while (text.Count(i => i != '.') > lenght)
+                        {
+                            text = text.Substring(1);
+                        }
+                    }
+                    return text;
                 }
             }
             else
@@ -172,7 +209,7 @@ namespace SerialDash
             return GetLedColor(this.DashLeds[screenIndex][ledNumber], this.GetInvertedLedColors(screenIndex));
         }
 
-        public byte[] getDataFromDefaultFont(string text, bool invert)
+        public static byte[] getDataFromDefaultFont(string text, bool invert)
         {
             byte[] data = new byte[8];
 
@@ -186,8 +223,11 @@ namespace SerialDash
             {
                 if (text[textpos] == '.')
                 {
-                    data[i - 1] = (byte)(data[i - 1] | 0x80);
-                    i = i - 1;
+                    if (i > 0)
+                    {
+                        data[i - 1] = (byte)(data[i - 1] | 0x80);
+                        i = i - 1;
+                    }
                 }
                 else
                 {
@@ -452,13 +492,13 @@ namespace SerialDash
             return (byte)value;
         }
 
-        private byte InvertDataByte(byte data)
+        private static byte InvertDataByte(byte data)
         {
             // Bit shifting Game !
             return (byte)(data & 0xC0 | (data & 0x07) << 3 | (data & 0x38) >> 3);
         }
 
-        private byte[] InvertTextData(byte[] data)
+        private static byte[] InvertTextData(byte[] data)
         {
             byte[] result = new byte[data.Length];
             for (int i = 0; i < data.Length; i++)
@@ -493,14 +533,53 @@ namespace SerialDash
 
         private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            while (ComPort.BytesToRead >= ModuleCount)
+            while (ComPort.BytesToRead < ModuleCount)
             {
                 Thread.Sleep(1);
             }
 
             for (int i = 0; i < ModuleCount; i++)
             {
-                this.ButtonsState[i] = ComPort.ReadByte();
+
+                var oldvalue = this.ButtonsState[i];
+                var newvalue = ComPort.ReadByte();
+
+
+                this.ButtonsState[i] = newvalue;
+
+                if (GetInvertedScreen(i))
+                {
+                    oldvalue = ReverseBits(oldvalue, 8);
+                    newvalue = ReverseBits(newvalue, 8);
+                }
+
+                Debug.WriteLine((Buttons)newvalue);
+
+                if (newvalue != oldvalue)
+                {
+                    if (ButtonPressed != null)
+                    {
+                        foreach (var item in Enum.GetValues(typeof(Buttons)))
+                        {
+
+                            if (!((Buttons)oldvalue).HasFlag((Buttons)item) && ((Buttons)newvalue).HasFlag((Buttons)item))
+                            {
+                                ButtonPressed(i, (Buttons)item);
+                            }
+                        }
+                    }
+
+                    if (ButtonReleased != null)
+                    {
+                        foreach (var item in Enum.GetValues(typeof(Buttons)))
+                        {
+                            if (((Buttons)oldvalue).HasFlag((Buttons)item) && !((Buttons)newvalue).HasFlag((Buttons)item))
+                            {
+                                ButtonReleased(i, (Buttons)item);
+                            }
+                        }
+                    }
+                }
             }
         }
     }

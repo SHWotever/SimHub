@@ -2,16 +2,14 @@
 using ACToolsUtilities;
 using ACToolsUtilities.UI;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 
 namespace TimingClient
 {
     public class DashDisplay
     {
-        private SerialDash.SerialDash dash;
+        private SerialDash.SerialDashController dash;
         private JoystickManager JoystickManager = new JoystickManager();
 
         private Blinker RPMBlink = new Blinker();
@@ -22,8 +20,6 @@ namespace TimingClient
 
         public DashDisplay()
         {
-
-
             if (System.IO.File.Exists("DashDisplay.json"))
             {
                 settings = Settings.FromFile("DashDisplay.json");
@@ -37,7 +33,7 @@ namespace TimingClient
                 settings = new Settings();
             }
 
-            dash = new SerialDash.SerialDash("auto");
+            dash = new SerialDash.SerialDashController("auto");
             dash.SetIntensity(0);
             dash.SetInvertedLedColors(0, true);
             dash.SetInvertedLedColors(1, true);
@@ -79,6 +75,7 @@ namespace TimingClient
 
         public void Refresh(DataContainer data)
         {
+
             lock (this)
             {
                 var dashButtons = dash.GetButtonState(0);
@@ -103,7 +100,6 @@ namespace TimingClient
                 {
                     SwitchRpmMode();
                 }
-
 
                 //if (TestKeyMapping(settings.RestartMacroInput))
                 //{
@@ -270,15 +266,13 @@ namespace TimingClient
             return DateTime.Now <= StaticDisplayEnd && (string.IsNullOrEmpty(initiator) || initiator == StaticDisplayInitiator);
         }
 
-
-
         private void SetLapGearSpd(DataContainer data)
         {
             // LAP / GEAR / SPD
             dash.SetText(0,
-                dash.Format(2, data.Graphics.CompletedLaps + 1, false) +
-                dash.Format(2, ACHelper.GetGear(data.Physics.Gear), true) +
-                dash.Format(4, (int)Math.Round(data.Physics.SpeedKmh), true)
+                dash.FormatText(2, data.Graphics.CompletedLaps + 1, false) +
+                dash.FormatText(2, ACHelper.GetGear(data.Physics.Gear), true) +
+                dash.FormatText(4, (int)Math.Round(data.Physics.SpeedKmh), true)
                 );
 
             // CURRENT TIME - BL DELTA
@@ -296,14 +290,14 @@ namespace TimingClient
                 TimeDelta = data.AllTimeDelta;
             }
 
-            var text = dash.Format(4, TimeSpan.FromMilliseconds(data.Graphics.iCurrentTime).ToString(@"mm\.ss"), true);
+            var text = dash.FormatText(4, TimeSpan.FromMilliseconds(data.Graphics.iCurrentTime).ToString(@"mm\.ss"), true);
             if (Math.Abs(TimeDelta.TotalSeconds) <= 99)
             {
-                text += dash.Format(4, (int)TimeDelta.TotalSeconds + "." + (int)(Math.Abs(TimeDelta.Milliseconds) / 100), true);
+                text += dash.FormatText(4, (int)TimeDelta.TotalSeconds + "." + (int)(Math.Abs(TimeDelta.Milliseconds) / 100), true);
             }
             else
             {
-                text += dash.Format(4, (int)TimeDelta.TotalSeconds >= 0 ? "P" : "N", true);
+                text += dash.FormatText(4, (int)TimeDelta.TotalSeconds >= 0 ? "P" : "N", true);
             }
             dash.SetText(1, text);
         }
@@ -399,8 +393,6 @@ namespace TimingClient
         }
     }
 
-
-
     public class Settings
     {
         public Settings()
@@ -442,6 +434,7 @@ namespace TimingClient
         public int TimeDeltaMode { get; set; }
 
         public string TimeDeltaModeSwithInput { get; set; }
+
         public static Settings FromFile(string path)
         {
             var json = System.IO.File.ReadAllText(path);

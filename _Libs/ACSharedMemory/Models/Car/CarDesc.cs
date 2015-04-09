@@ -1,11 +1,7 @@
-﻿using ACSharedMemory.Models;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 
 namespace ACSharedMemory.Models.Car
 {
- 
-
     public class CarDesc
     {
         public CarInfo CarInfo { get; set; }
@@ -66,6 +62,4 @@ namespace ACSharedMemory.Models.Car
             return null;
         }
     }
-
-  
 }

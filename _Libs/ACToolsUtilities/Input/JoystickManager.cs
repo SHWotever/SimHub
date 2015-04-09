@@ -12,9 +12,12 @@ namespace ACToolsUtilities
 
         public List<string> ButtonPressed()
         {
-            var result = PressedButtons.Where(i => !OldPressedButtons.Contains(i)).ToList();
-            result.ForEach(i => Console.WriteLine(i));
-            return result;
+            lock (this)
+            {
+                var result = PressedButtons.Where(i => !OldPressedButtons.Contains(i)).ToList();
+                result.ForEach(i => Console.WriteLine(i));
+                return result;
+            }
         }
 
         public void ReadState()
@@ -31,7 +34,9 @@ namespace ACToolsUtilities
                     {
                         if (state.GetButton((JoystickButton)button) == ButtonState.Pressed)
                         {
-                            PressedButtons.Add("J" + i.ToString() + "B" + button.ToString());
+                            PressedButtons.Add("J" + i.ToString() + "B" + button.ToString("00"));
+                            // TODO Remove this, exists only fortiming client BackCompat
+                            PressedButtons.Add("J" + i.ToString() + "B" + button.ToString("0"));
                         }
                     }
 
@@ -53,7 +58,7 @@ namespace ACToolsUtilities
             {
                 for (int button = 1; button < 32; button++)
                 {
-                    yield return "J" + i.ToString() + "B" + button.ToString();
+                    yield return "J" + i.ToString() + "B" + button.ToString("00");
                 }
 
                 yield return "J" + i.ToString() + "HAT" + HatPosition.Down.ToString();

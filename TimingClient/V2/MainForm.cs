@@ -26,14 +26,14 @@ namespace TimingClient.V2
         private TimeSpan SessionBestLapTime;
         private int sessionId = 0;
         private ACDashboard.Dashboard wpfDash;
-      
+
 
         private ACManager manager = new ACManager();
 
         public MainForm()
         {
             InitializeComponent();
-
+            ResetSession();
             this.listBox1.SelectedIndex = 0;
 
             this.Show();
@@ -75,100 +75,115 @@ namespace TimingClient.V2
 
         private void manager_DataUpdated(GameData data, ACManager manager)
         {
-            var outputdata = new DataContainer();
-            if (data.GameRunning)
+            try
             {
-                outputdata.GameRunning = true;
-                var p = data.NewData.Physics;
-                var g = data.NewData.Graphics;
-                var s = data.NewData.StaticInfo;
-
-                if (g.Status == AC_STATUS.AC_OFF)
+                var outputdata = new DataContainer();
+                if (data.GameRunning)
                 {
-                    ResetSession();
-                    return;
-                }
+                    outputdata.GameRunning = true;
+                    var p = data.NewData.Physics;
+                    var g = data.NewData.Graphics;
+                    var s = data.NewData.StaticInfo;
 
-                if (data.Events.GameStarted || data.Events.SessionRestarted)
-                {
-                    ResetSession();
-
-                    // Session start !
-                    using (AsettoCorsaTrackingEntities acdb = new AsettoCorsaTrackingEntities())
+                    if (g.Status == AC_STATUS.AC_OFF)
                     {
-                        Track track = GetTrack(data.Track, acdb);
-                        Car car = GetCar(s, acdb);
-
-                        // Open session
-                        Session sess = new Session
-                        {
-                            StartDate = DateTime.Now,
-                            Track = track.Code,
-                            Car = car.Code,
-                        };
-
-                        this.Invoke((MethodInvoker)delegate
-                        {
-                            sess.PlayerId = (this.listBox1.SelectedItem as Player).PlayerId;
-                        });
-                        acdb.Session.Add(sess);
-                        acdb.SaveChanges();
-
-                        this.sessionId = sess.SessionId;
-
-                        FindBestLap(acdb, data.Track, car.Code);
+                        ResetSession();
+                        return;
                     }
-                }
 
-                SetCurrentPlayer();
-
-                if (data.Events.IsNewLap)
-                {
-                    using (AsettoCorsaTrackingEntities acdb = new AsettoCorsaTrackingEntities())
+                    if (data.Events.GameStarted || data.Events.SessionRestarted)
                     {
-                        if (!data.Events.IsPreviousLapTest)
+                        ResetSession();
+
+                        // Session start !
+                        using (AsettoCorsaTrackingEntities acdb = new AsettoCorsaTrackingEntities())
                         {
-                            CarPosition.Add(new KeyValuePair<TimeSpan, float>(ACHelper.ToTimeSpan(g.iLastTime), 1));
-                            var lap = new Lap
+                            Track track = GetTrack(data.Track, acdb);
+                            Car car = GetCar(s, acdb);
+
+                            // Open session
+                            Session sess = new Session
                             {
-                                LapNumber = data.NewData.Graphics.CompletedLaps,
-                                LapTime = ACHelper.ToTimeSpan(g.iLastTime),
-                                SessionId = this.sessionId,
-                                Timings = Newtonsoft.Json.JsonConvert.SerializeObject(CarPosition)
+                                StartDate = DateTime.Now,
+                                Track = track.Code,
+                                Car = car.Code,
                             };
 
-                            acdb.Lap.Add(lap);
+                            this.Invoke((MethodInvoker)delegate
+                            {
+                                sess.PlayerId = (this.listBox1.SelectedItem as Player).PlayerId;
+                            });
+                            acdb.Session.Add(sess);
                             acdb.SaveChanges();
-                        }
-                        ResetCarPosition();
-                        FindBestLap(acdb, data.Track, s.CarModel);
-                    }
-                }
 
-                if (g.Status == AC_STATUS.AC_LIVE)
-                {
-                    // Track timings all 100ms
-                    if (CarPosition.Count == 0 || CarPosition.Last().Key.TotalMilliseconds + 50 < ACHelper.ToTimeSpan(g.iCurrentTime).TotalMilliseconds)
+                            this.sessionId = sess.SessionId;
+
+                            FindBestLap(acdb, data.Track, car.Code);
+                        }
+                    }
+
+                    SetCurrentPlayer();
+                    if (g.Status == AC_STATUS.AC_LIVE)
                     {
-                        if (CarPosition.Count == 0 || CarPosition.Last().Value < g.NormalizedCarPosition)
+                        if (data.Events.IsNewLap)
                         {
-                            CarPosition.Add(new KeyValuePair<TimeSpan, float>(ACHelper.ToTimeSpan(g.iCurrentTime), g.NormalizedCarPosition));
+                            using (AsettoCorsaTrackingEntities acdb = new AsettoCorsaTrackingEntities())
+                            {
+                                if (!data.Events.IsPreviousLapTest)
+                                {
+                                    CarPosition.Add(new KeyValuePair<TimeSpan, float>(ACHelper.ToTimeSpan(g.iLastTime), 1));
+                                    var lap = new Lap
+                                    {
+                                        LapNumber = data.NewData.Graphics.CompletedLaps,
+                                        LapTime = ACHelper.ToTimeSpan(g.iLastTime),
+                                        SessionId = this.sessionId,
+                                        Timings = Newtonsoft.Json.JsonConvert.SerializeObject(CarPosition)
+                                    };
+
+                                    acdb.Lap.Add(lap);
+                                    acdb.SaveChanges();
+                                }
+
+                                ResetCarPosition();
+                                FindBestLap(acdb, data.Track, s.CarModel);
+                            }
+                        }
+
+                        // Track timings all 100ms
+                        if (CarPosition.Count == 0 || CarPosition.Last().Key.TotalMilliseconds + 50 < ACHelper.ToTimeSpan(g.iCurrentTime).TotalMilliseconds)
+                        {
+                            if (CarPosition.Count == 0 || CarPosition.Last().Value < g.NormalizedCarPosition)
+                            {
+                                CarPosition.Add(new KeyValuePair<TimeSpan, float>(ACHelper.ToTimeSpan(g.iCurrentTime), g.NormalizedCarPosition));
+                            }
                         }
                     }
+
+                    outputdata.AllTimeDelta = ACHelper.GetLapDelta(g, BestLapData);
+                    outputdata.MyTimeDelta = ACHelper.GetLapDelta(g, MyBestLapData);
+                    outputdata.SessionTimeDelta = ACHelper.GetLapDelta(g, SessionBestLapData);
+                    outputdata.AllTimeBest = BestLapTime;
+                    outputdata.MyTimeBest = MyBestLapTime;
+                    outputdata.SessionTimeBest = SessionBestLapTime;
+                    outputdata.TrackDesc = data.Track;
+                    outputdata.Physics = p;
+                    outputdata.Graphics = g;
+                    outputdata.StaticInfo = s;
                 }
+                else
+                {
+                    ResetSession();
+                }
+                try
+                {
+                    dash.Refresh(outputdata);
+                    wpfDash.SetData(outputdata);
+                }
+                catch { }
 
-                outputdata.AllTimeDelta = ACHelper.GetLapDeltaReverse(g, BestLapData);
-                outputdata.MyTimeDelta = ACHelper.GetLapDeltaReverse(g, MyBestLapData);
-                outputdata.SessionTimeDelta = ACHelper.GetLapDeltaReverse(g, SessionBestLapData);
-                outputdata.AllTimeBest = BestLapTime;
-                outputdata.MyTimeBest = MyBestLapTime;
-                outputdata.SessionTimeBest = SessionBestLapTime;
-                outputdata.TrackDesc = data.Track;
+
             }
-
-            dash.Refresh(outputdata);
-            wpfDash.SetData(outputdata);
-
+            catch { }
         }
 
         private void FindBestLap(AsettoCorsaTrackingEntities acdb, TrackDesc track, string carCode)
@@ -188,7 +203,7 @@ namespace TimingClient.V2
             {
                 this.BestLapData = Newtonsoft.Json.JsonConvert.DeserializeObject<List<KeyValuePair<TimeSpan, float>>>(bestLap.Timings);
                 this.BestLapTime = bestLap.LapTime;
-                BestLapData.Reverse();
+                //BestLapData.Reverse();
             }
 
             bestLap = acdb.Lap.Where(i => i.Session.Track == track.TrackCode && i.Session.Car == carCode && i.Timings != null && i.Session.Player.PlayerId == this.currentPlayer)
@@ -197,7 +212,7 @@ namespace TimingClient.V2
             {
                 this.MyBestLapData = Newtonsoft.Json.JsonConvert.DeserializeObject<List<KeyValuePair<TimeSpan, float>>>(bestLap.Timings);
                 this.MyBestLapTime = bestLap.LapTime;
-                this.MyBestLapData.Reverse();
+                //this.MyBestLapData.Reverse();
             }
 
             bestLap = acdb.Lap.Where(i => i.Session.Track == track.TrackCode && i.Session.Car == carCode && i.Timings != null && i.Session.SessionId == this.sessionId)
@@ -206,7 +221,7 @@ namespace TimingClient.V2
             {
                 this.SessionBestLapData = Newtonsoft.Json.JsonConvert.DeserializeObject<List<KeyValuePair<TimeSpan, float>>>(bestLap.Timings);
                 this.SessionBestLapTime = bestLap.LapTime;
-                this.SessionBestLapData.Reverse();
+                // this.SessionBestLapData.Reverse();
             }
         }
 

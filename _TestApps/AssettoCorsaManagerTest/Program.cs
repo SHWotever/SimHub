@@ -22,12 +22,12 @@ namespace AssettoCorsaManagerTest
             Console.ReadLine();
         }
 
-        static void manager_DataUpdated(GameData data, ACManager manager)
+        private static void manager_DataUpdated(GameData data, ACManager manager)
         {
             Console.WriteLine("DataUpdated()");
         }
 
-        static void manager_TrackChanged(TrackDesc newTrack, ACManager manager)
+        private static void manager_TrackChanged(TrackDesc newTrack, ACManager manager)
         {
             Console.WriteLine("TrackChanged(newTrack=" + (newTrack == null ? "null" : newTrack.TrackCode) + ")");
         }

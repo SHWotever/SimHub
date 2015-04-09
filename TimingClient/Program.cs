@@ -6,7 +6,6 @@ namespace TimingClient
 {
     internal static class Program
     {
-
         public static AHKMacroRunner MacroEngine = new AHKMacroRunner();
 
         /// <summary>
@@ -20,8 +19,6 @@ namespace TimingClient
             AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
 
             Application.Run(new V2.MainForm());
-            
-
         }
 
         private static void CurrentDomain_FirstChanceException(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)

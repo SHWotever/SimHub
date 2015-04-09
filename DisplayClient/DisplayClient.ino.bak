@@ -1,0 +1,917 @@
+#include <avr/pgmspace.h>
+#include <EEPROM.h>
+#include <TM1638.h>
+#include <InvertedTM1638.h>
+#include <SPI.h>
+
+#include "Arduino.h"
+#include <avr/pgmspace.h>
+
+//#include "PCD8544_GRAPH.h"
+// This is the port where the LCD is connected.
+#define PCD8544_PORT		PORTB
+#define PCD8544_DDR			DDRB	// Should be DDRx, x = port name (B, C, D, etc.)
+
+#define PIN_DC				0x01	// D8
+#define PIN_RESET			0x02	// D9
+#define PIN_CE				0x04	// D10
+#define PINS_CE_DC			(PIN_DC | PIN_CE)
+
+// When DC is '1' the LCD expects data, when it is '0' it expects a command.
+#define PCD8544_COMMAND		0
+#define PCD8544_DATA		PIN_DC
+
+// You may find a different size screen, but this one is 84 by 48 pixels
+#define PCD8544_X_PIXELS	84
+#define PCD8544_Y_PIXELS	48
+
+#define LCD_X     84
+#define LCD_Y     6
+
+#define PCD8544_ROWS		6
+
+#define BUF_LEN				504 // 84 * 6 (6 rows of 8 bits)
+
+// Functions gotoXY, writeBitmap, renderString, writeLine and writeRect
+// will return PCD8544_SUCCESS if they succeed and PCD8544_ERROR if they fail.
+#define PCD8544_SUCCESS		1
+#define PCD8544_ERROR		0
+
+static const PROGMEM uint8_t  ASCII5x3 [] = { //3
+	0, 0, 0,//
+	0, 23, 0,// !
+	3, 0, 3,// "
+	31, 10, 31,// #
+	31, 17, 31,// $
+	9, 4, 18,// %
+	10, 21, 2,// &
+	0, 3, 0,// '
+	14, 17, 0,// (
+	17, 14, 0,// )
+	8, 4, 2,// *
+	4, 14, 4,// +
+	32, 16, 0,// ,
+	4, 4, 4,// -
+	0, 16, 0,// .
+	8, 4, 2,// /
+	14, 17, 14,// 0
+	0, 31, 0,// 1
+	25, 21, 18,// 2
+	17, 21, 10,// 3
+	7, 4, 31,// 4
+	19, 21, 9,// 5
+	14, 21, 8,// 6
+	1, 29, 3,// 7
+	10, 21, 10,// 8
+	2, 21, 14,// 9
+	0, 20, 0,// :
+	32, 20, 0,// ;
+	4, 10, 17,// <
+	10, 10, 10,// =
+	17, 10, 4,// >
+	1, 21, 2,// ?
+	14, 19, 23,// @
+	30, 5, 30,// A
+	31, 21, 10,// B
+	14, 17, 17,// C
+	31, 17, 14,// D
+	31, 21, 17,// E
+	31, 5, 1,// F
+	14, 17, 13,// G
+	31, 4, 31,// H
+	0, 31, 0,// I
+	8, 16, 15,// J
+	31, 4, 27,// K
+	31, 16, 16,// L
+	31, 2, 31,// M
+	31, 1, 31,// N
+	31, 17, 31,// O
+	31, 5, 2,// P
+	14, 17, 30,// Q
+	31, 5, 26,// R
+	18, 21, 9,// S
+	1, 31, 1,// T
+	31, 16, 31,// U
+	15, 16, 15,// V
+	31, 8, 31,// W
+	27, 4, 27,// X
+	7, 24, 7,// Y
+	25, 21, 19,// Z
+	31, 17, 0,// [
+	2, 4, 8,// \
+									17,31,0,// ]
+									2, 1, 2,// ^
+									32, 32, 32,// _
+									1, 2, 0,// `
+									0b00111000, 0b00101000, 0b00111000,// `
+};
+
+static const PROGMEM uint8_t ASCII8x5 [] = { //5
+	0x00, 0x00, 0x00, 0x00, 0x00 // 20
+	, 0x00, 0x00, 0x5f, 0x00, 0x00 // 21 !
+	, 0x00, 0x07, 0x00, 0x07, 0x00 // 22 "
+	, 0x14, 0x7f, 0x14, 0x7f, 0x14 // 23 #
+	, 0x24, 0x2a, 0x7f, 0x2a, 0x12 // 24 $
+	, 0x23, 0x13, 0x08, 0x64, 0x62 // 25 %
+	, 0x36, 0x49, 0x55, 0x22, 0x50 // 26 &
+	, 0x00, 0x05, 0x03, 0x00, 0x00 // 27 '
+	, 0x00, 0x1c, 0x22, 0x41, 0x00 // 28 (
+	, 0x00, 0x41, 0x22, 0x1c, 0x00 // 29 )
+	, 0x14, 0x08, 0x3e, 0x08, 0x14 // 2a *
+	, 0x08, 0x08, 0x3e, 0x08, 0x08 // 2b +
+	, 0x00, 0x50, 0x30, 0x00, 0x00 // 2c ,
+	, 0x08, 0x08, 0x08, 0x08, 0x08 // 2d -
+	, 0x00, 0x60, 0x60, 0x00, 0x00 // 2e .
+	, 0x20, 0x10, 0x08, 0x04, 0x02 // 2f /
+	, 0x3e, 0x51, 0x49, 0x45, 0x3e // 30 0
+	, 0x00, 0x42, 0x7f, 0x40, 0x00 // 31 1
+	, 0x42, 0x61, 0x51, 0x49, 0x46 // 32 2
+	, 0x21, 0x41, 0x45, 0x4b, 0x31 // 33 3
+	, 0x18, 0x14, 0x12, 0x7f, 0x10 // 34 4
+	, 0x27, 0x45, 0x45, 0x45, 0x39 // 35 5
+	, 0x3c, 0x4a, 0x49, 0x49, 0x30 // 36 6
+	, 0x01, 0x71, 0x09, 0x05, 0x03 // 37 7
+	, 0x36, 0x49, 0x49, 0x49, 0x36 // 38 8
+	, 0x06, 0x49, 0x49, 0x29, 0x1e // 39 9
+	, 0x00, 0x36, 0x36, 0x00, 0x00 // 3a :
+	, 0x00, 0x56, 0x36, 0x00, 0x00 // 3b ;
+	, 0x08, 0x14, 0x22, 0x41, 0x00 // 3c <
+	, 0x14, 0x14, 0x14, 0x14, 0x14 // 3d =
+	, 0x00, 0x41, 0x22, 0x14, 0x08 // 3e >
+	, 0x02, 0x01, 0x51, 0x09, 0x06 // 3f ?
+	, 0x32, 0x49, 0x79, 0x41, 0x3e // 40 @
+	, 0x7e, 0x11, 0x11, 0x11, 0x7e // 41 A
+	, 0x7f, 0x49, 0x49, 0x49, 0x36 // 42 B
+	, 0x3e, 0x41, 0x41, 0x41, 0x22 // 43 C
+	, 0x7f, 0x41, 0x41, 0x22, 0x1c // 44 D
+	, 0x7f, 0x49, 0x49, 0x49, 0x41 // 45 E
+	, 0x7f, 0x09, 0x09, 0x09, 0x01 // 46 F
+	, 0x3e, 0x41, 0x49, 0x49, 0x7a // 47 G
+	, 0x7f, 0x08, 0x08, 0x08, 0x7f // 48 H
+	, 0x00, 0x41, 0x7f, 0x41, 0x00 // 49 I
+	, 0x20, 0x40, 0x41, 0x3f, 0x01 // 4a J
+	, 0x7f, 0x08, 0x14, 0x22, 0x41 // 4b K
+	, 0x7f, 0x40, 0x40, 0x40, 0x40 // 4c L
+	, 0x7f, 0x02, 0x0c, 0x02, 0x7f // 4d M
+	, 0x7f, 0x04, 0x08, 0x10, 0x7f // 4e N
+	, 0x3e, 0x41, 0x41, 0x41, 0x3e // 4f O
+	, 0x7f, 0x09, 0x09, 0x09, 0x06 // 50 P
+	, 0x3e, 0x41, 0x51, 0x21, 0x5e // 51 Q
+	, 0x7f, 0x09, 0x19, 0x29, 0x46 // 52 R
+	, 0x46, 0x49, 0x49, 0x49, 0x31 // 53 S
+	, 0x01, 0x01, 0x7f, 0x01, 0x01 // 54 T
+	, 0x3f, 0x40, 0x40, 0x40, 0x3f // 55 U
+	, 0x1f, 0x20, 0x40, 0x20, 0x1f // 56 V
+	, 0x3f, 0x40, 0x38, 0x40, 0x3f // 57 W
+	, 0x63, 0x14, 0x08, 0x14, 0x63 // 58 X
+	, 0x07, 0x08, 0x70, 0x08, 0x07 // 59 Y
+	, 0x61, 0x51, 0x49, 0x45, 0x43 // 5a Z
+	, 0x00, 0x7f, 0x41, 0x41, 0x00 // 5b [
+	, 0x02, 0x04, 0x08, 0x10, 0x20 // 5c ?
+	, 0x00, 0x41, 0x41, 0x7f, 0x00 // 5d ]
+	, 0x04, 0x02, 0x01, 0x02, 0x04 // 5e ^
+	, 0x40, 0x40, 0x40, 0x40, 0x40 // 5f _
+	, 0x00, 0x01, 0x02, 0x04, 0x00 // 60 `
+	, 0x20, 0x54, 0x54, 0x54, 0x78 // 61 a
+	, 0x7f, 0x48, 0x44, 0x44, 0x38 // 62 b
+	, 0x38, 0x44, 0x44, 0x44, 0x20 // 63 c
+	, 0x38, 0x44, 0x44, 0x48, 0x7f // 64 d
+	, 0x38, 0x54, 0x54, 0x54, 0x18 // 65 e
+	, 0x08, 0x7e, 0x09, 0x01, 0x02 // 66 f
+	, 0x0c, 0x52, 0x52, 0x52, 0x3e // 67 g
+	, 0x7f, 0x08, 0x04, 0x04, 0x78 // 68 h
+	, 0x00, 0x44, 0x7d, 0x40, 0x00 // 69 i
+	, 0x20, 0x40, 0x44, 0x3d, 0x00 // 6a j
+	, 0x7f, 0x10, 0x28, 0x44, 0x00 // 6b k
+	, 0x00, 0x41, 0x7f, 0x40, 0x00 // 6c l
+	, 0x7c, 0x04, 0x18, 0x04, 0x78 // 6d m
+	, 0x7c, 0x08, 0x04, 0x04, 0x78 // 6e n
+	, 0x38, 0x44, 0x44, 0x44, 0x38 // 6f o
+	, 0x7c, 0x14, 0x14, 0x14, 0x08 // 70 p
+	, 0x08, 0x14, 0x14, 0x18, 0x7c // 71 q
+	, 0x7c, 0x08, 0x04, 0x04, 0x08 // 72 r
+	, 0x48, 0x54, 0x54, 0x54, 0x20 // 73 s
+	, 0x04, 0x3f, 0x44, 0x40, 0x20 // 74 t
+	, 0x3c, 0x40, 0x40, 0x20, 0x7c // 75 u
+	, 0x1c, 0x20, 0x40, 0x20, 0x1c // 76 v
+	, 0x3c, 0x40, 0x30, 0x40, 0x3c // 77 w
+	, 0x44, 0x28, 0x10, 0x28, 0x44 // 78 x
+	, 0x0c, 0x50, 0x50, 0x50, 0x3c // 79 y
+	, 0x44, 0x64, 0x54, 0x4c, 0x44 // 7a z
+	, 0x00, 0x08, 0x36, 0x41, 0x00 // 7b
+	, 0x00, 0x00, 0x7f, 0x00, 0x00 // 7c |
+	, 0x00, 0x41, 0x36, 0x08, 0x00 // 7d
+	, 0x10, 0x08, 0x08, 0x10, 0x08 // 7e ?
+	, 0x00, 0x06, 0x09, 0x09, 0x06 // 7f ?
+};
+/* Courrier 8x12 (char #32 to #57) */
+static const PROGMEM uint8_t ASCII8x12 [] = { //16
+	0x00, 0x00, 0x00, 0x00, 0xE0, 0x00, 0xE0, 0x00, 0xE0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 /* . */
+	, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+	, 0x1F, 0x80, 0x7F, 0xE0, 0xE0, 0x70, 0xC0, 0x30, 0xC0, 0x30, 0xE0, 0x70, 0x7F, 0xE0, 0x1F, 0x80 /* 0 */
+	, 0xC0, 0x60, 0xC0, 0x60, 0xC0, 0x60, 0xFF, 0xF0, 0xFF, 0xF0, 0xC0, 0x00, 0xC0, 0x00, 0xC0, 0x00 /* 1 */
+	, 0xC0, 0xC0, 0xE0, 0xE0, 0xF0, 0x70, 0xD8, 0x30, 0xCC, 0x30, 0xC6, 0x70, 0xC3, 0xE0, 0xC1, 0xC0 /* 2 */
+	, 0x60, 0x00, 0xE0, 0x60, 0xC0, 0x70, 0xC6, 0x30, 0xC6, 0x30, 0xCF, 0x30, 0x7F, 0xE0, 0x39, 0xC0 /* 3 */
+	, 0x1C, 0x00, 0x1E, 0x00, 0x1B, 0x80, 0xD9, 0xC0, 0xD8, 0x70, 0xFF, 0xF0, 0xFF, 0xF0, 0xD8, 0x00 /* 4 */
+	, 0x60, 0x00, 0xE7, 0xF0, 0xC7, 0xF0, 0xC3, 0x30, 0xC3, 0x30, 0xE7, 0x30, 0x7E, 0x30, 0x3C, 0x00 /* 5 */
+	, 0x1F, 0x00, 0x7F, 0xC0, 0xE6, 0xE0, 0xC3, 0x60, 0xC3, 0x30, 0xE7, 0x30, 0x7E, 0x30, 0x3C, 0x30 /* 6 */
+	, 0x00, 0x70, 0x00, 0x70, 0x00, 0x30, 0xE0, 0x30, 0xFC, 0x30, 0x3F, 0xB0, 0x07, 0xF0, 0x00, 0xF0 /* 7 */
+	, 0x39, 0xC0, 0x7F, 0xE0, 0xC6, 0x30, 0xC6, 0x30, 0xC6, 0x30, 0xC6, 0x30, 0x7F, 0xE0, 0x39, 0xC0 /* 8 */
+	, 0xC3, 0xC0, 0xC7, 0xE0, 0xCE, 0x70, 0xCC, 0x30, 0x6C, 0x30, 0x76, 0x70, 0x3F, 0xE0, 0x0F, 0x80 /* 9 */
+	, 0x00, 0x00, 0x00, 0x00, 0xE3, 0x80, 0xE3, 0x80, 0xE3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00  /* : */
+};
+
+//This table contains the hex values that represent pixels
+//for a font that is 5 pixels wide and 8 pixels high
+static const PROGMEM uint8_t ASCII [][5] = {
+	{ 0x00, 0x00, 0x00, 0x00, 0x00 } // 20   (space)
+	, { 0x00, 0x00, 0x5f, 0x00, 0x00 } // 21 !
+	, { 0x00, 0x07, 0x00, 0x07, 0x00 } // 22 "
+	, { 0x14, 0x7f, 0x14, 0x7f, 0x14 } // 23 #
+	, { 0x24, 0x2a, 0x7f, 0x2a, 0x12 } // 24 $
+	, { 0x23, 0x13, 0x08, 0x64, 0x62 } // 25 %
+	, { 0x36, 0x49, 0x55, 0x22, 0x50 } // 26 &
+	, { 0x00, 0x05, 0x03, 0x00, 0x00 } // 27 '
+	, { 0x00, 0x1c, 0x22, 0x41, 0x00 } // 28 (
+	, { 0x00, 0x41, 0x22, 0x1c, 0x00 } // 29 )
+	, { 0x14, 0x08, 0x3e, 0x08, 0x14 } // 2a *
+	, { 0x08, 0x08, 0x3e, 0x08, 0x08 } // 2b +
+	, { 0x00, 0x50, 0x30, 0x00, 0x00 } // 2c ,
+	, { 0x08, 0x08, 0x08, 0x08, 0x08 } // 2d -
+	, { 0x00, 0x60, 0x60, 0x00, 0x00 } // 2e .
+	, { 0x20, 0x10, 0x08, 0x04, 0x02 } // 2f /
+	, { 0x3e, 0x51, 0x49, 0x45, 0x3e } // 30 0
+	, { 0x00, 0x42, 0x7f, 0x40, 0x00 } // 31 1
+	, { 0x42, 0x61, 0x51, 0x49, 0x46 } // 32 2
+	, { 0x21, 0x41, 0x45, 0x4b, 0x31 } // 33 3
+	, { 0x18, 0x14, 0x12, 0x7f, 0x10 } // 34 4
+	, { 0x27, 0x45, 0x45, 0x45, 0x39 } // 35 5
+	, { 0x3c, 0x4a, 0x49, 0x49, 0x30 } // 36 6
+	, { 0x01, 0x71, 0x09, 0x05, 0x03 } // 37 7
+	, { 0x36, 0x49, 0x49, 0x49, 0x36 } // 38 8
+	, { 0x06, 0x49, 0x49, 0x29, 0x1e } // 39 9
+	, { 0x00, 0x36, 0x36, 0x00, 0x00 } // 3a :
+	, { 0x00, 0x56, 0x36, 0x00, 0x00 } // 3b ;
+	, { 0x08, 0x14, 0x22, 0x41, 0x00 } // 3c <
+	, { 0x14, 0x14, 0x14, 0x14, 0x14 } // 3d =
+	, { 0x00, 0x41, 0x22, 0x14, 0x08 } // 3e >
+	, { 0x02, 0x01, 0x51, 0x09, 0x06 } // 3f ?
+	, { 0x32, 0x49, 0x79, 0x41, 0x3e } // 40 @
+	, { 0x7e, 0x11, 0x11, 0x11, 0x7e } // 41 A
+	, { 0x7f, 0x49, 0x49, 0x49, 0x36 } // 42 B
+	, { 0x3e, 0x41, 0x41, 0x41, 0x22 } // 43 C
+	, { 0x7f, 0x41, 0x41, 0x22, 0x1c } // 44 D
+	, { 0x7f, 0x49, 0x49, 0x49, 0x41 } // 45 E
+	, { 0x7f, 0x09, 0x09, 0x09, 0x01 } // 46 F
+	, { 0x3e, 0x41, 0x49, 0x49, 0x7a } // 47 G
+	, { 0x7f, 0x08, 0x08, 0x08, 0x7f } // 48 H
+	, { 0x00, 0x41, 0x7f, 0x41, 0x00 } // 49 I
+	, { 0x20, 0x40, 0x41, 0x3f, 0x01 } // 4a J
+	, { 0x7f, 0x08, 0x14, 0x22, 0x41 } // 4b K
+	, { 0x7f, 0x40, 0x40, 0x40, 0x40 } // 4c L
+	, { 0x7f, 0x02, 0x0c, 0x02, 0x7f } // 4d M
+	, { 0x7f, 0x04, 0x08, 0x10, 0x7f } // 4e N
+	, { 0x3e, 0x41, 0x41, 0x41, 0x3e } // 4f O
+	, { 0x7f, 0x09, 0x09, 0x09, 0x06 } // 50 P
+	, { 0x3e, 0x41, 0x51, 0x21, 0x5e } // 51 Q
+	, { 0x7f, 0x09, 0x19, 0x29, 0x46 } // 52 R
+	, { 0x46, 0x49, 0x49, 0x49, 0x31 } // 53 S
+	, { 0x01, 0x01, 0x7f, 0x01, 0x01 } // 54 T
+	, { 0x3f, 0x40, 0x40, 0x40, 0x3f } // 55 U
+	, { 0x1f, 0x20, 0x40, 0x20, 0x1f } // 56 V
+	, { 0x3f, 0x40, 0x38, 0x40, 0x3f } // 57 W
+	, { 0x63, 0x14, 0x08, 0x14, 0x63 } // 58 X
+	, { 0x07, 0x08, 0x70, 0x08, 0x07 } // 59 Y
+	, { 0x61, 0x51, 0x49, 0x45, 0x43 } // 5a Z
+	, { 0x00, 0x7f, 0x41, 0x41, 0x00 } // 5b [
+	, { 0x02, 0x04, 0x08, 0x10, 0x20 } // 5c backslash
+	, { 0x00, 0x41, 0x41, 0x7f, 0x00 } // 5d ]
+	, { 0x04, 0x02, 0x01, 0x02, 0x04 } // 5e ^
+	, { 0x40, 0x40, 0x40, 0x40, 0x40 } // 5f _
+	, { 0x00, 0x01, 0x02, 0x04, 0x00 } // 60 `
+	, { 0x20, 0x54, 0x54, 0x54, 0x78 } // 61 a
+	, { 0x7f, 0x48, 0x44, 0x44, 0x38 } // 62 b
+	, { 0x38, 0x44, 0x44, 0x44, 0x20 } // 63 c
+	, { 0x38, 0x44, 0x44, 0x48, 0x7f } // 64 d
+	, { 0x38, 0x54, 0x54, 0x54, 0x18 } // 65 e
+	, { 0x08, 0x7e, 0x09, 0x01, 0x02 } // 66 f
+	, { 0x0c, 0x52, 0x52, 0x52, 0x3e } // 67 g
+	, { 0x7f, 0x08, 0x04, 0x04, 0x78 } // 68 h
+	, { 0x00, 0x44, 0x7d, 0x40, 0x00 } // 69 i
+	, { 0x20, 0x40, 0x44, 0x3d, 0x00 } // 6a j
+	, { 0x7f, 0x10, 0x28, 0x44, 0x00 } // 6b k
+	, { 0x00, 0x41, 0x7f, 0x40, 0x00 } // 6c l
+	, { 0x7c, 0x04, 0x18, 0x04, 0x78 } // 6d m
+	, { 0x7c, 0x08, 0x04, 0x04, 0x78 } // 6e n
+	, { 0x38, 0x44, 0x44, 0x44, 0x38 } // 6f o
+	, { 0x7c, 0x14, 0x14, 0x14, 0x08 } // 70 p
+	, { 0x08, 0x14, 0x14, 0x18, 0x7c } // 71 q
+	, { 0x7c, 0x08, 0x04, 0x04, 0x08 } // 72 r
+	, { 0x48, 0x54, 0x54, 0x54, 0x20 } // 73 s
+	, { 0x04, 0x3f, 0x44, 0x40, 0x20 } // 74 t
+	, { 0x3c, 0x40, 0x40, 0x20, 0x7c } // 75 u
+	, { 0x1c, 0x20, 0x40, 0x20, 0x1c } // 76 v
+	, { 0x3c, 0x40, 0x30, 0x40, 0x3c } // 77 w
+	, { 0x44, 0x28, 0x10, 0x28, 0x44 } // 78 x
+	, { 0x0c, 0x50, 0x50, 0x50, 0x3c } // 79 y
+	, { 0x44, 0x64, 0x54, 0x4c, 0x44 } // 7a z
+	, { 0x00, 0x08, 0x36, 0x41, 0x00 } // 7b {
+	, { 0x00, 0x00, 0x7f, 0x00, 0x00 } // 7c |
+	, { 0x00, 0x41, 0x36, 0x08, 0x00 } // 7d }
+	, { 0x10, 0x08, 0x08, 0x10, 0x08 } // 7e ~
+	, { 0x78, 0x46, 0x41, 0x46, 0x78 } // 7f DEL
+};
+
+class PCD8544_GRAPH : public Print
+{
+public:
+	PCD8544_GRAPH()
+	{
+	}
+
+	void clear(bool render = true)
+	{
+		memset(this->m_Buffer, 0x00, sizeof(this->m_Buffer));
+		if (render)
+			this->renderAll();
+		this->gotoXY(0, 0);
+	}
+
+	void begin(bool invert)
+	{
+		this->begin(invert, 0xB0, 0x04, 0x12);
+	}
+
+	void begin(bool invert, uint8_t vop, uint8_t tempCoef, uint8_t bias)
+	{
+		PCD8544_PORT |= (PIN_DC | PIN_RESET | PIN_CE);
+		PCD8544_DDR |= (PIN_DC | PIN_RESET | PIN_CE);
+		SPI.begin();
+
+		// LCD init section:
+
+		uint8_t invertSetting = invert ? 0x0D : 0x0C;
+		// Must reset LCD first!
+		PCD8544_PORT &= ~PIN_RESET;
+		PCD8544_PORT |= PIN_RESET;
+
+		this->writeLcd(PCD8544_COMMAND, 0x21); //Tell LCD that extended commands follow
+		this->writeLcd(PCD8544_COMMAND, vop); //Set LCD Vop (Contrast): Try 0xB1(good @ 3.3V) or 0xBF if your display is too dark
+		this->writeLcd(PCD8544_COMMAND, tempCoef); //Set Temp coefficent
+		this->writeLcd(PCD8544_COMMAND, bias); //LCD bias mode 1:48: Try 0x13 or 0x14. Mine works best with 1:65/1:65
+
+		this->writeLcd(PCD8544_COMMAND, 0x20); //We must send 0x20 before modifying the display control mode
+		this->writeLcd(PCD8544_COMMAND, invertSetting); //Set display control, normal mode. 0x0D for inverse
+
+		this->clear();
+	}
+
+	uint8_t gotoXY(uint8_t x, uint8_t y)
+	{
+		if (x >= PCD8544_X_PIXELS || y >= PCD8544_ROWS) return PCD8544_ERROR;
+		this->writeLcd(PCD8544_COMMAND, 0x80 | x);  // Column.
+		this->writeLcd(PCD8544_COMMAND, 0x40 | y);  // Row.
+		this->m_Position = (PCD8544_X_PIXELS * y) + x;
+		return PCD8544_SUCCESS;
+	}
+
+	void renderAll()
+	{
+		this->gotoXY(0, 0);
+		this->writeLcd(PCD8544_DATA, this->m_Buffer, BUF_LEN);
+	}
+
+	uint8_t renderString(uint8_t x, uint8_t y, uint16_t length)
+	{
+		if (this->gotoXY(x, y) == PCD8544_ERROR) return PCD8544_ERROR;
+		length *= 6;
+		this->writeLcd(PCD8544_DATA, this->m_Buffer + this->m_Position, length);
+		this->m_Position += length;
+		return PCD8544_SUCCESS;
+	}
+
+	void setByte(uint8_t x, uint8_t y, uint8_t value)
+	{
+		this->m_Buffer[(PCD8544_X_PIXELS * y) + x] = value;
+	}
+
+	void setPixel(uint8_t x, uint8_t y, uint8_t value)
+	{
+		if (x >= PCD8544_X_PIXELS || y >= PCD8544_Y_PIXELS) return;
+		uint8_t bank = y / 8;
+		uint8_t bitMask = 1 << (y % 8);
+		uint8_t &byte = this->m_Buffer[(PCD8544_X_PIXELS * bank) + x];
+		if (value)
+			byte |= bitMask;
+		else
+			byte &= ~bitMask;
+	}
+
+	void PrintByteLine(uint8_t data, int x, int y){
+		// Check overflow
+		if (x >= LCD_X) return;
+		uint8_t decal = y % 8;
+		uint8_t decal2 = 8 - decal;
+		uint8_t * data1 = (m_Buffer + ((y / 8) * LCD_X) + x);
+		*data1 = (*data1 & (0xFF >> decal2)) | (data << decal);
+
+		if (y % 8 != 0 && (y / 8 + 1) < 6){
+			uint8_t * data2 = data1 + LCD_X;
+			*data2 = (*data2 & (0xFF << decal)) | (data >> decal2);
+		}
+	}
+
+	void PrintByteLine(uint8_t data, int x, int y, int bytelen){
+		// Check overflow
+		if (x >= LCD_X) return;
+
+		uint8_t decal = y % 8;
+		uint8_t decal2 = 8 - decal;
+
+		uint8_t * data1 = (m_Buffer + ((y / 8) * LCD_X) + x);
+
+		*data1 = (*data1 & ((0xFF >> decal2) | (0xFF << (decal + bytelen)))) | (data << decal);
+
+		if (y % 8 != 0 && (y / 8 + 1) < 6){
+			uint8_t * data2 = data1 + LCD_X;
+			*data2 = (*data2 & (0xFF << decal + bytelen - 8)) | (data >> decal2);
+		}
+	}
+
+	int PrintCharacter(int x, int y, char character, int type){
+		int charsize = 0;
+		int squaresize = 3;
+		int squarespace = 0;
+		switch (type){
+		case 1:
+		case 4:
+		case 6:
+			charsize = 3;
+
+			if (print_right_to_left) x = x - charsize;
+
+			// Caractères spéciaux à la fin
+			if (character == '°') character = '`' + 1;
+
+			for (int index = 0; index < charsize; index++){
+				PrintByteLine(((type == 4) ? 0xFF : 0x00) ^ pgm_read_byte(ASCII5x3 + (character - 0x20) * 3 + index), x + index, y, 5);
+			}
+
+			if (x + charsize < 84){
+				PrintByteLine(((type == 4) ? 0xFF : 0x00) ^ 0x00, x + charsize, y, 5);
+			}
+			break;
+		case 2:
+		case 5:
+			charsize = 5;
+			if (print_right_to_left) x = x - charsize;
+
+			for (int index = 0; index < charsize; index++){
+				PrintByteLine(((type == 5) ? 0xFF : 0x00) ^ pgm_read_byte(ASCII8x5 + (character - 0x20) * 5 + index), x + index, y);
+			}
+			if (x + charsize < 84)
+				PrintByteLine(((type == 5) ? 0xFF : 0x00) ^ 0x00, x + charsize, y);
+			break;
+		case 3:
+			charsize = 8;
+			if (print_right_to_left) x = x - charsize;
+
+			if (character == ' ') character = 0x2e + 1;
+			for (int index = 0; index < charsize; index++){
+				PrintByteLine(/*0xFF ^*/ pgm_read_byte(ASCII8x12 + (character - 0x2E) * 16 + (index * 2) + 1), x + index, y);
+				PrintByteLine(/*0xFF ^*/pgm_read_byte(ASCII8x12 + (character - 0x2E) * 16 + (index * 2)), x + index, y + 8);
+			}
+			if (x + charsize < 84){
+				PrintByteLine(/*0xFF ^*/ 0x00, x + charsize, y);
+				PrintByteLine(/*0xFF ^*/ 0x00, x + charsize, y + 8);
+			}
+			break;
+
+		case 7:
+			charsize = (squaresize + 1) * 3;
+			if (print_right_to_left) x = x - charsize;
+
+			// Caractères spéciaux à la fin
+			if (character == '°') character = '`' + 1;
+
+			for (int index = 0; index < 3; index++){
+				for (int yp = 0; yp < 5; yp++){
+					boolean pixelvalue = (pgm_read_byte(ASCII5x3 + (character - 0x20) * 3 + index) & (0b00000001 << yp)) > 0;
+
+					for (int xx = 0; xx < squaresize; xx++)
+						for (int yy = 0; yy < squaresize; yy++)
+							setPixel(x + index*(squaresize + squarespace) + xx, y + yp*(squaresize + squarespace) + yy, pixelvalue);
+				}
+			}
+			break;
+		case 8:
+			charsize = (squaresize + 1) * 5;
+			if (print_right_to_left) x = x - charsize;
+
+			// Caractères spéciaux à la fin
+			if (character == '°') character = '`' + 1;
+
+			for (int index = 0; index < 5; index++){
+				for (int yp = 0; yp < 8; yp++){
+					boolean pixelvalue = (pgm_read_byte(ASCII8x5 + (character - 0x20) * 5 + index) & (0b00000001 << yp)) > 0;
+
+					for (int xx = 0; xx < squaresize; xx++)
+						for (int yy = 0; yy < squaresize; yy++)
+							setPixel(x + index*(squaresize + squarespace) + xx, y + yp*(squaresize + squarespace) + yy, pixelvalue);
+				}
+			}
+
+		default:
+			break;
+		}
+
+		if (print_right_to_left) {
+			return x - 1;
+		}
+
+		return x + charsize + 1;
+	}
+
+	//int PrintString(int x, int y, char * characters, int type){
+	//	int posx = x; while (*characters)	{ posx = PrintCharacter(posx, y, *characters++, type); }
+	//	return posx;
+	//}
+
+	void SetPrintPos(int x, int y){
+		print_x_pos = x;
+		print_y_pos = y;
+	}
+
+	void SetPrintPosX(int x){
+		print_x_pos = x;
+	}
+
+	void SetPrintPosY(int y){
+		print_y_pos = y;
+	}
+
+	int GetPrintPosX(){
+		return print_x_pos;
+	}
+
+	int GetPrintPosY(){
+		return print_y_pos;
+	}
+
+	void SetPrintFontType(int fontType){
+		print_font_type = fontType;
+	}
+
+	void SetRightToLeft(bool enable){
+		print_right_to_left = enable;
+	}
+
+	size_t write(uint8_t data){ // Impl?mentation minimale pour la classe print
+		print_x_pos = PrintCharacter(print_x_pos, print_y_pos, data, print_font_type);
+		return 1;
+	}
+
+	uint8_t writeRect(uint8_t x, uint8_t y, uint8_t width, uint8_t height, bool fill = false)
+	{
+		if (x >= PCD8544_X_PIXELS || y >= PCD8544_Y_PIXELS || width == 0 || height == 0) return PCD8544_ERROR;
+
+		// Calculate the bitmasks for the pixels.
+		uint8_t bottom = y + height - 1;
+		uint8_t bankTop = y / 8;
+		uint8_t bankBottom = bottom / 8;
+		uint8_t bitMaskTop = 0x01;
+		uint8_t bitMaskBottom = 0x80;
+		uint8_t bitMaskTopFill = 0xFF;
+		uint8_t bitMaskBottomFill = 0xFF;
+		bitMaskTop <<= (y % 8);
+		bitMaskBottom >>= 7 - (bottom % 8);
+		bitMaskTopFill <<= (y % 8);
+		bitMaskBottomFill >>= 7 - (bottom % 8);
+
+		// When fill is selected, we'll use the FillMask.
+		if (fill)
+		{
+			bitMaskTop = bitMaskTopFill;
+			bitMaskBottom = bitMaskBottomFill;
+		}
+
+		// When the rectangle fits in a single bank, we AND the top and bottom masks
+		// So that we only fill the required area on the LCD.
+		if (bankTop == bankBottom)
+		{
+			bitMaskTop = fill ? bitMaskTop & bitMaskBottom : bitMaskTop | bitMaskBottom;
+			bitMaskTopFill &= bitMaskBottomFill;
+		}
+		this->gotoXY(x, bankTop);
+
+		// Write the left 'side' of the rectangle on the top bank.
+		this->m_Buffer[this->m_Position++] |= bitMaskTopFill;
+		// Write a line or a fill.
+		for (uint8_t i = 1; i < width - 1; i++)
+			this->m_Buffer[this->m_Position++] |= bitMaskTop;
+		// Write the right 'side' of the rectangle on the top bank.
+		if (width > 1)
+			this->m_Buffer[this->m_Position++] |= bitMaskTopFill;
+
+		this->m_Position += (PCD8544_X_PIXELS - width);
+
+		// Write a fill across the middle banks or two sides of the rectangle.
+		if (bankBottom - bankTop > 1)
+		{
+			for (uint8_t i = bankTop + 1; i < bankBottom; i++)
+			{
+				if (fill)
+					memset(this->m_Buffer + this->m_Position, 0xFF, width);
+				else
+				{
+					this->m_Buffer[this->m_Position] = 0xFF;
+					this->m_Buffer[this->m_Position + width - 1] = 0xFF;
+				}
+				this->m_Position += PCD8544_X_PIXELS;
+			}
+		}
+		// If the rectangle spans across more than one bank,
+		// apply the same logic for the bottom as the top.
+		if (bankBottom > bankTop)
+		{
+			this->m_Buffer[this->m_Position++] |= bitMaskBottomFill;
+			for (uint8_t i = 1; i < width - 1; i++)
+				this->m_Buffer[this->m_Position++] |= bitMaskBottom;
+			if (width > 1)
+				this->m_Buffer[this->m_Position++] |= bitMaskBottomFill;
+		}
+		return PCD8544_SUCCESS;
+	}
+
+	uint8_t writeLine(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2)
+	{
+		if (x1 == x2 || y1 == y2)
+		{
+			if (y1 > y2)
+				swap(y1, y2);
+			if (x1 > x2)
+				swap(x1, x2);
+			return this->writeRect(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
+		}
+		else
+			return PCD8544_ERROR;
+	}
+
+private:
+
+	void writeLcd(uint8_t dataOrCommand, const uint8_t *data, uint16_t count)
+	{
+		PCD8544_PORT = (PCD8544_PORT & ~PINS_CE_DC) | dataOrCommand;
+		//for (uint16_t i = 0; i < count; i++)
+		//	SPI.transfer(data[i]);
+		for (uint16_t i = count; i > 0; i--)
+			SPI.transfer(data[count - i]);
+		PCD8544_PORT |= PIN_CE;
+	}
+
+	void writeLcd(uint8_t dataOrCommand, uint8_t data)
+	{
+		PCD8544_PORT = (PCD8544_PORT & ~PINS_CE_DC) | dataOrCommand;
+		SPI.transfer(data);
+		PCD8544_PORT |= PIN_CE;
+	}
+
+	inline void swap(uint8_t &a, uint8_t &b)
+	{
+		uint8_t temp = a;
+		a = b;
+		b = temp;
+	}
+	uint16_t m_Position;
+
+	int print_x_pos;
+	int print_y_pos;
+	int print_font_type;
+	bool print_right_to_left;
+
+	uint8_t m_Buffer[BUF_LEN];
+};
+
+PCD8544_GRAPH lcd;
+
+#define GREEN 0xFF00
+#define RED 0xFF00
+
+#define DIO 16//8
+#define CLK 15//7
+#define STB 17//9
+#define STB2 14//6
+
+/*TM1638 module1(DIO, CLK, STB);*/
+TM1638 module1(DIO, CLK, STB);
+TM1638 module2(DIO, CLK, STB2);
+
+const int outpin = 3;
+const int outpin2 = 4;
+
+byte  buttons1, oldbuttons1, buttons2, oldbuttons2;
+int intensity, oldintensity;
+
+int module1Intensity = -1;
+int module2Intensity = -1;
+
+void setup() {
+	Serial.begin(19200);
+
+	lcd.begin(false, 0xD0, 0x04, 0x12);
+	analogWrite(6, 255);
+
+	module1.setupDisplay(true, 7);
+	module2.setupDisplay(true, 7);
+
+	pinMode(outpin, OUTPUT);
+	pinMode(outpin2, OUTPUT);
+
+	oldbuttons1 = 0;
+	oldbuttons2 = 0;
+
+	module1.clearDisplay();
+	module2.clearDisplay();
+	module1.setLED(TM1638_COLOR_NONE, 1);
+
+	//while (1 == 1){
+	lcd.SetPrintFontType(1);
+	lcd.SetPrintPos(0, 0);
+	lcd.print("11:22:33");
+
+	lcd.SetPrintFontType(3);
+	lcd.SetPrintPos(0, 26);
+
+	lcd.print("01");
+	lcd.print(':');
+	lcd.print("02");
+	lcd.print(':');
+	lcd.print("15654");
+	lcd.writeRect(0, 0, 6, 48, false);
+
+	lcd.writeRect(2, 2, 2, 44, true);
+
+	lcd.renderAll();
+	//}
+}
+
+int setIntensity(TM1638* screen, int newIntensity, int oldIntensity){
+	if (newIntensity != oldIntensity){
+		screen->setupDisplay(true, newIntensity);
+	}
+	return newIntensity;
+}
+
+int i;
+byte displayValues [] = { 1, 2, 4, 8, 16, 32, 64, 128 };
+void SetDisplayFromSerial(TM1638* screen){
+	// Digits
+	{
+		for (i = 0; i < 8; i++){
+			displayValues[i] = Serial.read();
+		}
+		screen->setDisplay(displayValues);
+	}
+
+	// Leds
+	for (i = 0; i < 8; i++){
+		char state = (char) Serial.read();
+		if (state == 'G'){
+			screen->setLED(TM1638_COLOR_GREEN, i);
+		}
+		else if (state == 'R'){
+			screen->setLED(TM1638_COLOR_RED, i);
+		}
+		else{
+			screen->setLED(TM1638_COLOR_NONE, i);
+		}
+	}
+}
+
+void sendButtonState(){
+	bool sendButtons = false;
+
+	buttons1 = module1.getButtons();
+	if (buttons1 != oldbuttons1){
+		sendButtons = true;
+	}
+
+	buttons2 = module2.getButtons();
+	if (buttons2 != oldbuttons2){
+		sendButtons = true;
+	}
+
+	if (sendButtons){
+		Serial.write(buttons1);
+		Serial.write(buttons2);
+		Serial.flush();
+	}
+
+	oldbuttons1 = buttons1;
+	oldbuttons2 = buttons2;
+}
+
+int WaitAndRead(int byteRequired = 1){
+	while (Serial.available() < byteRequired) {
+	}
+	return Serial.read();
+}
+
+
+int newIntensity;
+void loop() {
+	// Wait
+	if (Serial.available() >= 1){
+		int opt = Serial.read();
+
+		// 2x7 segement data
+		if (opt == '2'){
+			// Wait fordisplay data
+			while (Serial.available() < 34) {
+			}
+
+			newIntensity = (int) Serial.read();
+			module1Intensity = setIntensity(&module1, newIntensity, module1Intensity);
+			SetDisplayFromSerial(&module1);
+
+			newIntensity = (int) Serial.read();
+			module2Intensity = setIntensity(&module2, newIntensity, module2Intensity);
+			SetDisplayFromSerial(&module2);
+		}
+
+		// Performance shit ...
+		if (opt == '3'){
+			for (uint8_t row = 0; row < 6; row++)
+			{
+				for (uint8_t col = 0; col < 84; col++)
+				{
+					while (Serial.available() < 1) {}
+					lcd.setByte(col, row, Serial.read());
+				}
+			}
+			lcd.renderAll();
+		}
+
+		// Deprecated
+		if (opt == '4'){
+			for (uint8_t row = 0; row < 84; row++)
+			{
+				while (Serial.available() < 1) {}
+				lcd.print((char) (Serial.read()));
+			}
+			lcd.renderAll();
+		}
+
+		// LCD clear
+		if (opt == '5'){
+			lcd.clear(false);
+		}
+
+		if (opt == '6'){
+			lcd.renderAll();
+		}
+
+		//// LCD font size
+		//if (opt == '6'){
+		//	lcd.SetPrintFontType(Serial.read());
+		//}
+
+		// LCD print => x,y,font,length,text
+		if (opt == '7'){
+
+			int x = WaitAndRead();
+			int y = WaitAndRead();
+			int font = WaitAndRead();
+			bool rightToLeft = (bool) WaitAndRead();
+			int length = WaitAndRead();
+			
+
+			lcd.SetPrintPos(x, y);
+			lcd.SetPrintFontType(font);
+			lcd.SetRightToLeft(rightToLeft);
+
+			for (int i = 0; i < length; i++){
+				lcd.print((char) (WaitAndRead()));
+			}
+		}
+
+		// LCD Rect => x, y, w, h, fill
+		if (opt == '8'){
+
+			int x = WaitAndRead();
+			int y = WaitAndRead();
+			int w = WaitAndRead();
+			int h = WaitAndRead();
+			bool f = (bool) WaitAndRead();
+			lcd.writeRect(x, y, w, h, f);
+		}
+
+
+		if (opt == '1'){
+			Serial.print('a');
+			Serial.flush();
+		}
+	}
+
+	sendButtonState();
+}

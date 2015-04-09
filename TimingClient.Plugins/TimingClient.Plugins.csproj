@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TimingClient.Plugins</RootNamespace>
     <AssemblyName>TimingClient.Plugins</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\TimingClient.Plugins.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,8 +32,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ScintillaNET, Version=2.6.0.0, Culture=neutral, PublicKeyToken=948d6c9751444115, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\ScintillaNET.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -40,12 +47,72 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataPlugins\DataCore\DataCorePlugin.cs" />
+    <Compile Include="DataPlugins\DataCore\DataCorePluginSettings.cs" />
+    <Compile Include="DataPlugins\DataCore\DataCorePluginSettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DataPlugins\DataCore\DataCorePluginSettingsControl.Designer.cs">
+      <DependentUpon>DataCorePluginSettingsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataPlugins\DataCore\ExpressionEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataPlugins\DataCore\ExpressionEditor.Designer.cs">
+      <DependentUpon>ExpressionEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="IDataPlugin.cs" />
-    <Compile Include="DataPlugins\PersistantTrackerPlugin\DataRecord.cs" />
-    <Compile Include="DataPlugins\PersistantTrackerPlugin\PersistantTrackerPlugin.cs" />
+    <Compile Include="DataPlugins\PersistantTracker\DataRecord.cs" />
+    <Compile Include="DataPlugins\PersistantTracker\PersistantTrackerPlugin.cs" />
     <Compile Include="InputPlugins\JoystickPlugin.cs" />
+    <Compile Include="InputPlugins\JoystickPluginSettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="InputPlugins\JoystickPluginSettingsControl.Designer.cs">
+      <DependentUpon>JoystickPluginSettingsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OutputPlugins\Dash\ScreenEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OutputPlugins\Dash\ScreenEditor.Designer.cs">
+      <DependentUpon>ScreenEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OutputPlugins\Dash\SerialDashPlugin.cs" />
+    <Compile Include="OutputPlugins\Dash\SerialDashPluginSettings.cs" />
+    <Compile Include="OutputPlugins\Dash\SerialDashSettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="OutputPlugins\Dash\SerialDashSettingsControl.Designer.cs">
+      <DependentUpon>SerialDashSettingsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OutputPlugins\Dash\TextGenerator.cs" />
     <Compile Include="PluginManager.cs" />
+    <Compile Include="PluginManagerSettings.cs" />
+    <Compile Include="UI\MappingPicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\MappingPicker.Designer.cs">
+      <DependentUpon>MappingPicker.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\PluginDefaultUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\PluginDefaultUI.Designer.cs">
+      <DependentUpon>PluginDefaultUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\PluginManagerUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\PluginManagerUI.Designer.cs">
+      <DependentUpon>PluginManagerUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\PluginsSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\PluginsSettings.Designer.cs">
+      <DependentUpon>PluginsSettings.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\_Libs\ACSharedMemory\ACSharedMemory.csproj">
@@ -56,6 +123,50 @@
       <Project>{50868155-3276-45fa-993a-deb931af229e}</Project>
       <Name>ACToolsUtilities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\_Libs\SerialDash\SerialDash.csproj">
+      <Project>{d975435b-a98f-4733-99d4-7a786fef8ea5}</Project>
+      <Name>SerialDash</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DataPlugins\DataCore\DataCorePluginSettingsControl.resx">
+      <DependentUpon>DataCorePluginSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataPlugins\DataCore\ExpressionEditor.resx">
+      <DependentUpon>ExpressionEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputPlugins\JoystickPluginSettingsControl.resx">
+      <DependentUpon>JoystickPluginSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OutputPlugins\Dash\ScreenEditor.resx">
+      <DependentUpon>ScreenEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OutputPlugins\Dash\SerialDashSettingsControl.resx">
+      <DependentUpon>SerialDashSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\MappingPicker.resx">
+      <DependentUpon>MappingPicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\PluginDefaultUI.resx">
+      <DependentUpon>PluginDefaultUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\PluginManagerUI.resx">
+      <DependentUpon>PluginManagerUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\PluginsSettings.resx">
+      <DependentUpon>PluginsSettings.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SciLexer.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="SciLexer64.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ScintillaNET.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

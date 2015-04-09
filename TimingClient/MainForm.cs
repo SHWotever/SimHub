@@ -5,7 +5,6 @@ using ACToolsUtilities.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -79,8 +78,6 @@ namespace TimingClient
                 logtimer.Enabled = true;
             });
         }
-
-
 
         private void FindBestLap(AsettoCorsaTrackingEntities acdb, TrackDesc track, string carCode)
         {
@@ -489,8 +486,6 @@ namespace TimingClient
                 MapPosition = new List<float[]>();
             }
         }
-
-
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {

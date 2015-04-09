@@ -28,12 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.pluginManagerUI1 = new TimingClient.Plugins.UI.PluginManagerUI();
+            this.SuspendLayout();
+            // 
+            // pluginManagerUI1
+            // 
+            this.pluginManagerUI1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pluginManagerUI1.Location = new System.Drawing.Point(0, 0);
+            this.pluginManagerUI1.Name = "pluginManagerUI1";
+            this.pluginManagerUI1.Size = new System.Drawing.Size(754, 640);
+            this.pluginManagerUI1.TabIndex = 0;
+            // 
+            // MainForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(754, 640);
+            this.Controls.Add(this.pluginManagerUI1);
+            this.Name = "MainForm";
             this.Text = "Form1";
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private TimingClient.Plugins.UI.PluginManagerUI pluginManagerUI1;
     }
 }
 

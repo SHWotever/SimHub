@@ -39,6 +39,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -48,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Automation\AHKMacroRunner.cs" />
+    <Compile Include="EvalProvider.cs" />
     <Compile Include="Input\JoystickManager.cs" />
     <Compile Include="Logging\CSVLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -55,6 +57,9 @@
     <Compile Include="Serialisation\JsonExtensions.cs" />
     <Compile Include="ThreadingUtils.cs" />
     <Compile Include="UI\Blinker.cs" />
+    <Compile Include="UI\VerticalTabControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
-namespace TimingClient.Plugins.DataPlugins.PersistantTrackerPlugin
+namespace TimingClient.Plugins.DataPlugins.PersistantTracker
 {
     public class PersistantTrackerPlugin : IDataPlugin
     {
@@ -32,6 +32,9 @@ namespace TimingClient.Plugins.DataPlugins.PersistantTrackerPlugin
 
             pluginManager.AddProperty("AllTimeBestDelta", typeof(PersistantTrackerPlugin), typeof(TimeSpan?));
             pluginManager.AddProperty("AllTimeBest", typeof(PersistantTrackerPlugin), typeof(TimeSpan?));
+
+            pluginManager.AddEvent("NewAllTimeBest", typeof(PersistantTrackerPlugin));
+            pluginManager.AddEvent("NewRecord", typeof(PersistantTrackerPlugin));
 
             ACManager.CarChanged += manager_CarChanged;
             ACManager.NewLap += manager_NewLap;
@@ -86,6 +89,9 @@ namespace TimingClient.Plugins.DataPlugins.PersistantTrackerPlugin
             return null;
         }
 
+        bool newRecordEvent = false;
+        bool newBestEvent = false;
+
         private void manager_NewLap(int completedLapNumber, bool testLap, ACManager manager)
         {
             // Save Lap
@@ -110,10 +116,12 @@ namespace TimingClient.Plugins.DataPlugins.PersistantTrackerPlugin
             {
                 if (newbest != null && best == null)
                 {
+                    newRecordEvent = true;
                     Debug.WriteLine("New record !!!");
                 }
                 else if (best == null && newbest != null && best.LapId == newbest.LapId)
                 {
+                    newBestEvent = true;
                     Debug.WriteLine("New best !!!");
                 }
             }
@@ -148,6 +156,19 @@ namespace TimingClient.Plugins.DataPlugins.PersistantTrackerPlugin
 
             pluginManager.SetPropertyValue("AllTimeBestDelta", typeof(PersistantTrackerPlugin), AllTimeBestDelta);
             pluginManager.SetPropertyValue("AllTimeBest", typeof(PersistantTrackerPlugin), AllTimeBest);
+
+            if (newRecordEvent)
+            {
+
+                pluginManager.TriggerEvent("NewAllTimeBest", typeof(PersistantTrackerPlugin));
+            }
+            if (newBestEvent)
+            {
+                pluginManager.TriggerEvent("NewRecord", typeof(PersistantTrackerPlugin));
+            }
+
+            newRecordEvent = false;
+            newBestEvent = false;
         }
 
         public System.Windows.Forms.Control GetSettingsControl(PluginManager pluginManager)
@@ -155,13 +176,6 @@ namespace TimingClient.Plugins.DataPlugins.PersistantTrackerPlugin
             return null;
         }
 
-        public List<string> GetActions(PluginManager pluginManager)
-        {
-            return null;
-        }
 
-        public void DoAction(PluginManager pluginManager, string command)
-        {
-        }
     }
 }
