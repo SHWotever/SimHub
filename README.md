@@ -3,6 +3,15 @@ Tools, MapGenerator, Arduino Dash
 
 ## ACManager
 
+ACManager is an event oriented class for reading Assetto caorsa chared memory, Additional data is added by reading content files of the game
+
+In addition of shared memory data you can access to :
+  - Track desctiption
+    - Min map data
+    - Current track + configuration ....
+  - Car description
+    - badge, preview image ... 
+
 ### How to use ACManager 
 
 ```csharp
