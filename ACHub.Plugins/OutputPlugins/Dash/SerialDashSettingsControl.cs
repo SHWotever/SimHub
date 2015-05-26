@@ -1,5 +1,9 @@
-﻿using System;
+﻿using ACToolsUtilities.Serialisation;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace ACHub.Plugins.OutputPlugins.Dash
@@ -65,7 +69,6 @@ namespace ACHub.Plugins.OutputPlugins.Dash
             this.numRPMBlink.Value = (decimal)plugin.Settings.RpmBlinkingLevel;
             this.numLowFuelRepeatInterval.Value = (decimal)plugin.Settings.LowFuelLapsAlertInterval;
             this.numIntensity.Value = (decimal)plugin.Settings.Intensity;
-
 
             if (!light)
             {
@@ -267,6 +270,47 @@ namespace ACHub.Plugins.OutputPlugins.Dash
             plugin.Settings.LowFuelLapsAlertInterval = (int)numLowFuelRepeatInterval.Value;
             plugin.Settings.Intensity = (int)numIntensity.Value;
             plugin.ApplySettings();
+        }
+
+        private void btnCopy_Click(object sender, EventArgs e)
+        {
+            if (this.lstScreens.SelectedItem != null)
+            {
+                Screen exp = this.lstScreens.SelectedItem as Screen;
+                var idx = plugin.Settings.Screens.IndexOf(exp);
+
+                exp = exp.JsonClone();
+                exp.ScreenName = GetCopyName(exp.ScreenName);
+                var result = EditScreen(exp);
+                if (result != null)
+                {
+                    lock (plugin.Settings)
+                    {
+                        plugin.Settings.Screens.Insert(idx + 1, result);
+                    }
+                }
+            }
+            this.lstScreens.RefreshItems();
+            plugin.ApplySettings();
+        }
+
+        private string GetCopyName(string currentName)
+        {
+            int i = 0;
+            currentName = Regex.Replace(currentName, "Copy[0-9]*$", "");
+
+            var newname = GetCopyName(currentName, i);
+            while (plugin.Settings.Screens.Exists(j => j.ScreenName == newname))
+            {
+                i++;
+                newname = GetCopyName(currentName, i);
+            }
+            return newname;
+        }
+
+        private static string GetCopyName(string currentName, int i)
+        {
+            return currentName + "Copy" + (i == 0 ? "" : i.ToString());
         }
     }
 }

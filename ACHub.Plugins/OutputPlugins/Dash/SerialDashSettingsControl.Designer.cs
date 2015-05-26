@@ -40,6 +40,9 @@
             this.btnUp = new System.Windows.Forms.Button();
             this.btnDown = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label9 = new System.Windows.Forms.Label();
+            this.numIntensity = new System.Windows.Forms.NumericUpDown();
             this.lblDetectedModules = new System.Windows.Forms.Label();
             this.cbReverseModule4 = new System.Windows.Forms.CheckBox();
             this.cbReverseModule3 = new System.Windows.Forms.CheckBox();
@@ -67,14 +70,14 @@
             this.label8 = new System.Windows.Forms.Label();
             this.detectTimer = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
-            this.numIntensity = new System.Windows.Forms.NumericUpDown();
-            this.label9 = new System.Windows.Forms.Label();
+            this.btnCopy = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.flowLayoutPanel7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numIntensity)).BeginInit();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
@@ -86,8 +89,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.numLowFuelLaps)).BeginInit();
             this.flowLayoutPanel6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numLowFuelRepeatInterval)).BeginInit();
-            this.flowLayoutPanel7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numIntensity)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -154,6 +155,7 @@
             this.flowLayoutPanel1.AutoSize = true;
             this.flowLayoutPanel1.Controls.Add(this.btnNewScreen);
             this.flowLayoutPanel1.Controls.Add(this.btnEdit);
+            this.flowLayoutPanel1.Controls.Add(this.btnCopy);
             this.flowLayoutPanel1.Controls.Add(this.btnDelete);
             this.flowLayoutPanel1.Controls.Add(this.btnUp);
             this.flowLayoutPanel1.Controls.Add(this.btnDown);
@@ -186,7 +188,7 @@
             // 
             // btnDelete
             // 
-            this.btnDelete.Location = new System.Drawing.Point(165, 3);
+            this.btnDelete.Location = new System.Drawing.Point(246, 3);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(75, 23);
             this.btnDelete.TabIndex = 5;
@@ -196,7 +198,7 @@
             // 
             // btnUp
             // 
-            this.btnUp.Location = new System.Drawing.Point(246, 3);
+            this.btnUp.Location = new System.Drawing.Point(327, 3);
             this.btnUp.Name = "btnUp";
             this.btnUp.Size = new System.Drawing.Size(75, 23);
             this.btnUp.TabIndex = 6;
@@ -206,7 +208,7 @@
             // 
             // btnDown
             // 
-            this.btnDown.Location = new System.Drawing.Point(327, 3);
+            this.btnDown.Location = new System.Drawing.Point(408, 3);
             this.btnDown.Name = "btnDown";
             this.btnDown.Size = new System.Drawing.Size(75, 23);
             this.btnDown.TabIndex = 7;
@@ -229,6 +231,39 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Modules settings";
+            // 
+            // flowLayoutPanel7
+            // 
+            this.flowLayoutPanel7.AutoSize = true;
+            this.flowLayoutPanel7.Controls.Add(this.label9);
+            this.flowLayoutPanel7.Controls.Add(this.numIntensity);
+            this.flowLayoutPanel7.Location = new System.Drawing.Point(3, 105);
+            this.flowLayoutPanel7.Name = "flowLayoutPanel7";
+            this.flowLayoutPanel7.Size = new System.Drawing.Size(125, 26);
+            this.flowLayoutPanel7.TabIndex = 14;
+            // 
+            // label9
+            // 
+            this.label9.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(0, 6);
+            this.label9.Margin = new System.Windows.Forms.Padding(0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(46, 13);
+            this.label9.TabIndex = 12;
+            this.label9.Text = "Intensity";
+            // 
+            // numIntensity
+            // 
+            this.numIntensity.Location = new System.Drawing.Point(49, 3);
+            this.numIntensity.Maximum = new decimal(new int[] {
+            7,
+            0,
+            0,
+            0});
+            this.numIntensity.Name = "numIntensity";
+            this.numIntensity.Size = new System.Drawing.Size(54, 20);
+            this.numIntensity.TabIndex = 5;
             // 
             // lblDetectedModules
             // 
@@ -506,38 +541,15 @@
             this.detectTimer.Interval = 2000;
             this.detectTimer.Tick += new System.EventHandler(this.detectTimer_Tick);
             // 
-            // flowLayoutPanel7
+            // btnCopy
             // 
-            this.flowLayoutPanel7.AutoSize = true;
-            this.flowLayoutPanel7.Controls.Add(this.label9);
-            this.flowLayoutPanel7.Controls.Add(this.numIntensity);
-            this.flowLayoutPanel7.Location = new System.Drawing.Point(3, 105);
-            this.flowLayoutPanel7.Name = "flowLayoutPanel7";
-            this.flowLayoutPanel7.Size = new System.Drawing.Size(125, 26);
-            this.flowLayoutPanel7.TabIndex = 14;
-            // 
-            // numIntensity
-            // 
-            this.numIntensity.Location = new System.Drawing.Point(49, 3);
-            this.numIntensity.Maximum = new decimal(new int[] {
-            7,
-            0,
-            0,
-            0});
-            this.numIntensity.Name = "numIntensity";
-            this.numIntensity.Size = new System.Drawing.Size(54, 20);
-            this.numIntensity.TabIndex = 5;
-            // 
-            // label9
-            // 
-            this.label9.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(0, 6);
-            this.label9.Margin = new System.Windows.Forms.Padding(0);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(46, 13);
-            this.label9.TabIndex = 12;
-            this.label9.Text = "Intensity";
+            this.btnCopy.Location = new System.Drawing.Point(165, 3);
+            this.btnCopy.Name = "btnCopy";
+            this.btnCopy.Size = new System.Drawing.Size(75, 23);
+            this.btnCopy.TabIndex = 8;
+            this.btnCopy.Text = "Copy";
+            this.btnCopy.UseVisualStyleBackColor = true;
+            this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
             // 
             // SerialDashSettingsControl
             // 
@@ -553,6 +565,9 @@
             this.flowLayoutPanel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.flowLayoutPanel7.ResumeLayout(false);
+            this.flowLayoutPanel7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numIntensity)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
@@ -569,9 +584,6 @@
             this.flowLayoutPanel6.ResumeLayout(false);
             this.flowLayoutPanel6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numLowFuelRepeatInterval)).EndInit();
-            this.flowLayoutPanel7.ResumeLayout(false);
-            this.flowLayoutPanel7.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numIntensity)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -619,5 +631,6 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel7;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.NumericUpDown numIntensity;
+        private System.Windows.Forms.Button btnCopy;
     }
 }
