@@ -27,9 +27,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACDashboard", "_Libs\ACDash
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACToolsUtilities", "_libs\ACToolsUtilities\ACToolsUtilities.csproj", "{50868155-3276-45FA-993A-DEB931AF229E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_TimingClientLibs", "_TimingClientLibs", "{B1E7A5AC-3E13-467F-AE06-4E0131E47F0C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_ACHubLibs", "_ACHubLibs", "{B1E7A5AC-3E13-467F-AE06-4E0131E47F0C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimingClient.Plugins", "TimingClient.Plugins\TimingClient.Plugins.csproj", "{9A2D62CB-642B-4DCD-87FA-98E368E728AC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACHub.Plugins", "TimingClient.Plugins\ACHub.Plugins.csproj", "{9A2D62CB-642B-4DCD-87FA-98E368E728AC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACHub", "ACHub\ACHub.csproj", "{A39E095A-D138-422F-BE5D-9D14AC1680E1}"
 EndProject

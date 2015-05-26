@@ -92,9 +92,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TimingClient.Plugins\TimingClient.Plugins.csproj">
+    <ProjectReference Include="..\TimingClient.Plugins\ACHub.Plugins.csproj">
       <Project>{9a2d62cb-642b-4dcd-87fa-98e368e728ac}</Project>
-      <Name>TimingClient.Plugins</Name>
+      <Name>ACHub.Plugins</Name>
     </ProjectReference>
     <ProjectReference Include="..\_Libs\ACSharedMemory\ACSharedMemory.csproj">
       <Project>{020af3ed-0a4c-4215-9b1d-1d41dd26f8bb}</Project>

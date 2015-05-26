@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 
-namespace TimingClient.Plugins.UI
+namespace ACHub.Plugins.UI
 {
     /// <summary>
     /// Plungin Manager Settings UI

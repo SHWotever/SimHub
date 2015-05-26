@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 
-namespace TimingClient.Plugins.DataPlugins.Shell
+namespace ACHub.Plugins.DataPlugins.Shell
 {
     internal class ShellPlugin : IDataPlugin
     {

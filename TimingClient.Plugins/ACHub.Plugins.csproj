@@ -7,8 +7,8 @@
     <ProjectGuid>{9A2D62CB-642B-4DCD-87FA-98E368E728AC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TimingClient.Plugins</RootNamespace>
-    <AssemblyName>TimingClient.Plugins</AssemblyName>
+    <RootNamespace>ACHub.Plugins</RootNamespace>
+    <AssemblyName>ACHub.Plugins</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -23,7 +23,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\TimingClient.Plugins.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>

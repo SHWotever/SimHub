@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace TimingClient.Plugins.OutputPlugins.Dash
+namespace ACHub.Plugins.OutputPlugins.Dash
 {
     /// <summary>
     /// Screen editor UI

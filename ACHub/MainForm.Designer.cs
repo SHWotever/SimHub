@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.pluginManagerUI1 = new TimingClient.Plugins.UI.PluginManagerUI();
+            this.pluginManagerUI1 = new ACHub.Plugins.UI.PluginManagerUI();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.SuspendLayout();
             // 
@@ -65,7 +65,7 @@
 
         #endregion
 
-        private TimingClient.Plugins.UI.PluginManagerUI pluginManagerUI1;
+        private ACHub.Plugins.UI.PluginManagerUI pluginManagerUI1;
         private System.Windows.Forms.NotifyIcon notifyIcon;
     }
 }

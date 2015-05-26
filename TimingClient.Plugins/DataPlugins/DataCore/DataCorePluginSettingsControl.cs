@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace TimingClient.Plugins.DataPlugins.DataCore
+namespace ACHub.Plugins.DataPlugins.DataCore
 {
 
 	/// <summary>

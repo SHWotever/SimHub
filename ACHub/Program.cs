@@ -1,7 +1,7 @@
 ﻿using log4net.Config;
 using System;
 using System.Windows.Forms;
-using TimingClient.Plugins;
+using ACHub.Plugins;
 
 namespace ACHub
 {

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace TimingClient.Plugins.InputPlugins
+namespace ACHub.Plugins.InputPlugins
 {
     /// <summary>
     /// Joystick plugin settings control

@@ -1,4 +1,4 @@
-﻿namespace TimingClient.Plugins.OutputPlugins.Dash
+﻿namespace ACHub.Plugins.OutputPlugins.Dash
 {
     partial class LedEditorItem
     {

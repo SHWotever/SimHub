@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace TimingClient.Plugins.UI
+namespace ACHub.Plugins.UI
 {
     /// <summary>
     /// Default settings UI

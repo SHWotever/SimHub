@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace TimingClient.Plugins.UI
+namespace ACHub.Plugins.UI
 {
     public partial class PluginsSettings : UserControl
     {

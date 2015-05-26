@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TimingClient.Plugins
+namespace ACHub.Plugins
 {
     /// <summary>
     /// Mapping class

@@ -1,7 +1,7 @@
 ﻿using ACSharedMemory;
 using System.Windows.Forms;
 
-namespace TimingClient.Plugins
+namespace ACHub.Plugins
 {
     /// <summary>
     /// Base Plugin interface for output

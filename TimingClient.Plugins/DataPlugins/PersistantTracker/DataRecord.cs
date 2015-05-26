@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TimingClient.Plugins.DataPlugins.PersistantTracker
+namespace ACHub.Plugins.DataPlugins.PersistantTracker
 {
     /// <summary>
     /// Lap record 

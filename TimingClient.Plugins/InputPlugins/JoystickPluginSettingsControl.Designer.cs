@@ -1,4 +1,4 @@
-﻿namespace TimingClient.Plugins.InputPlugins
+﻿namespace ACHub.Plugins.InputPlugins
 {
     partial class JoystickPluginSettingsControl
     {

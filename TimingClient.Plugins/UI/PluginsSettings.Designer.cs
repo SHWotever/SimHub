@@ -1,4 +1,4 @@
-﻿namespace TimingClient.Plugins.UI
+﻿namespace ACHub.Plugins.UI
 {
 	/// <summary>
 	/// Plugins settings host

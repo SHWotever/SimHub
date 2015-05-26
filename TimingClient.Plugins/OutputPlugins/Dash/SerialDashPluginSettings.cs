@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace TimingClient.Plugins.OutputPlugins.Dash
+namespace ACHub.Plugins.OutputPlugins.Dash
 {
     /// <summary>
     /// Led definition

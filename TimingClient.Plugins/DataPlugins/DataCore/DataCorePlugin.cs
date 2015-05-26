@@ -9,7 +9,7 @@ using System.Threading;
 using WindowsInput;
 using WindowsInput.Native;
 
-namespace TimingClient.Plugins.DataPlugins.DataCore
+namespace ACHub.Plugins.DataPlugins.DataCore
 {
     /// <summary>
     /// Core plugin

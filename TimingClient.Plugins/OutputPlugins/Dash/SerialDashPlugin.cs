@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TimingClient.Plugins.OutputPlugins.Dash
+namespace ACHub.Plugins.OutputPlugins.Dash
 {
     /// <summary>
     /// Plugin for LM16XX

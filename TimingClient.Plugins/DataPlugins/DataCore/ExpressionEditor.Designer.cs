@@ -1,4 +1,4 @@
-﻿namespace TimingClient.Plugins.DataPlugins.DataCore
+﻿namespace ACHub.Plugins.DataPlugins.DataCore
 {
     partial class ExpressionEditor
     {

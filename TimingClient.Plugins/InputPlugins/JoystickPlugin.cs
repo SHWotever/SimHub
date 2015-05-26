@@ -2,7 +2,7 @@
 using ACToolsUtilities.Input;
 using System.Timers;
 
-namespace TimingClient.Plugins.InputPlugins
+namespace ACHub.Plugins.InputPlugins
 {
     /// <summary>
     /// Joystick input control

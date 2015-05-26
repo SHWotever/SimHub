@@ -11,7 +11,7 @@ using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Tcp;
 using System.Threading.Tasks;
 
-namespace TimingClient.Plugins
+namespace ACHub.Plugins
 {
     /// <summary>
     /// Plugin manager (HUB)
@@ -167,10 +167,10 @@ namespace TimingClient.Plugins
             this.settings = JsonExtensions.FromJsonFile<PluginManagerSettings>(SettingsPath);
             LoadSettings();
 
-            this.dataPlugins.Add(new TimingClient.Plugins.DataPlugins.DataCore.DataCorePlugin());
-            this.dataPlugins.Add(new TimingClient.Plugins.DataPlugins.PersistantTracker.PersistantTrackerPlugin());
-            this.dataPlugins.Add(new TimingClient.Plugins.DataPlugins.Shell.ShellPlugin());
-            this.inputPlugins.Add(new TimingClient.Plugins.InputPlugins.JoystickPlugin());
+            this.dataPlugins.Add(new ACHub.Plugins.DataPlugins.DataCore.DataCorePlugin());
+            this.dataPlugins.Add(new ACHub.Plugins.DataPlugins.PersistantTracker.PersistantTrackerPlugin());
+            this.dataPlugins.Add(new ACHub.Plugins.DataPlugins.Shell.ShellPlugin());
+            this.inputPlugins.Add(new ACHub.Plugins.InputPlugins.JoystickPlugin());
             this.outputPlugins.Add(new OutputPlugins.Dash.SerialDashPlugin());
 
             PluginAction(i => i.Init(this));

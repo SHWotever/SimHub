@@ -1,4 +1,4 @@
-﻿namespace TimingClient.Plugins.OutputPlugins.Dash
+﻿namespace ACHub.Plugins.OutputPlugins.Dash
 {
     partial class SerialDashSettingsControl
     {
@@ -46,7 +46,7 @@
             this.cbReverseModule2 = new System.Windows.Forms.CheckBox();
             this.cbReverseModule1 = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.ledEditor2 = new TimingClient.Plugins.OutputPlugins.Dash.LedEditor();
+            this.ledEditor2 = new ACHub.Plugins.OutputPlugins.Dash.LedEditor();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();

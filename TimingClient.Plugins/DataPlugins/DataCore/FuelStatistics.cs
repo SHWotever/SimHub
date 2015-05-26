@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TimingClient.Plugins.DataPlugins.DataCore
+namespace ACHub.Plugins.DataPlugins.DataCore
 {
     /// <summary>
     /// Lap fuel statistics object

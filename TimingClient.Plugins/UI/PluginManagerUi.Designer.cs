@@ -1,4 +1,4 @@
-﻿namespace TimingClient.Plugins.UI
+﻿namespace ACHub.Plugins.UI
 {
     partial class PluginManagerUI
     {
@@ -53,7 +53,7 @@
             this.btnDownEvent = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.InputSettings = new TimingClient.Plugins.UI.PluginsSettings();
+            this.InputSettings = new ACHub.Plugins.UI.PluginsSettings();
             this.tabInputs.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();

@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TimingClient.Plugins
+namespace ACHub.Plugins
 {
     public static class Logging
     {

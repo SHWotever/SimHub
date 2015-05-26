@@ -4,7 +4,7 @@ using System.CodeDom.Compiler;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace TimingClient.Plugins.DataPlugins.DataCore
+namespace ACHub.Plugins.DataPlugins.DataCore
 {
     /// <summary>
     /// Expression editor form

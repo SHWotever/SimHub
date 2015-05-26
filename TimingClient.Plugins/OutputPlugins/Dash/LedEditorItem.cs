@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace TimingClient.Plugins.OutputPlugins.Dash
+namespace ACHub.Plugins.OutputPlugins.Dash
 {
     public partial class LedEditorItem : UserControl
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TimingClient.Plugins.OutputPlugins.Dash
+namespace ACHub.Plugins.OutputPlugins.Dash
 {
     /// <summary>
     /// Generate text
@@ -14,7 +14,7 @@ namespace TimingClient.Plugins.OutputPlugins.Dash
         /// <param name="manager"></param>
         /// <param name="parts"></param>
         /// <returns></returns>
-        public static string GetText(global::TimingClient.Plugins.PluginManager manager, List<ScreenPart> parts)
+        public static string GetText(global::ACHub.Plugins.PluginManager manager, List<ScreenPart> parts)
         {
             string result = "";
 

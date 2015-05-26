@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 using System.Windows.Forms;
-using TimingClient.Plugins;
+using ACHub.Plugins;
 
 namespace ACHub
 {
@@ -36,9 +36,9 @@ namespace ACHub
 
             //ACManagerRemoteMarshal = RemotingServices.Marshal(ACManager, "ACManager");
             //managerRemote = (ACManager)Activator.GetObject(typeof(ACManager), "tcp://cortex:8080/ACManager");
-            //PluginManager = new TimingClient.Plugins.PluginManager(managerRemote);
+            //PluginManager = new ACHub.Plugins.PluginManager(managerRemote);
 
-            PluginManager = new TimingClient.Plugins.PluginManager(ACManager);
+            PluginManager = new ACHub.Plugins.PluginManager(ACManager);
             PluginManager.GameStateChanged += PluginManager_GameStateChanged;
             this.pluginManagerUI1.Init(PluginManager);
 
