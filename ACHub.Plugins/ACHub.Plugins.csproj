@@ -101,6 +101,12 @@
     <Compile Include="OutputPlugins\Dash\LedEditorItem.Designer.cs">
       <DependentUpon>LedEditorItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="OutputPlugins\Dash\ScreenAnnounceEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="OutputPlugins\Dash\ScreenAnnounceEditor.Designer.cs">
+      <DependentUpon>ScreenAnnounceEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="OutputPlugins\Dash\ScreenEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -179,6 +185,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="OutputPlugins\Dash\LedEditorItem.resx">
       <DependentUpon>LedEditorItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OutputPlugins\Dash\ScreenAnnounceEditor.resx">
+      <DependentUpon>ScreenAnnounceEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OutputPlugins\Dash\ScreenEditor.resx">
       <DependentUpon>ScreenEditor.cs</DependentUpon>

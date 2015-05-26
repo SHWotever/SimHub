@@ -40,6 +40,11 @@ namespace ACHub.Plugins.OutputPlugins.Dash
                     control.Parts = new BindingList<ScreenPart>(screen.ScrenParts[i].Select(j => j.Clone() as ScreenPart).ToList());
                     control.Announce = screen.ScrenParts[i].AnnounceText;
                 }
+                if (screen != null && screen.ScrenAnnounce != null && screen.ScrenParts.Count > i)
+                {
+                    (flpAnnounce.Controls[i] as ScreenAnnounceEditor).Value = screen.ScrenAnnounce[i].AnnounceText;
+                }
+
 
                 tab.Controls.Add(control);
                 tab.Controls[0].Dock = DockStyle.Fill;
@@ -68,6 +73,12 @@ namespace ACHub.Plugins.OutputPlugins.Dash
                             { AnnounceText = (tabControl1.TabPages[2].Controls[0] as ScreenEditorControl).Announce},
                             new ScreenItem (   (tabControl1.TabPages[3].Controls[0] as ScreenEditorControl).Parts.ToList())
                             { AnnounceText = (tabControl1.TabPages[3].Controls[0] as ScreenEditorControl).Announce}
+                    }),
+                    ScrenAnnounce = new List<ScreenAnnouncePart>(new ScreenAnnouncePart[]{
+                    new ScreenAnnouncePart{ AnnounceText= (flpAnnounce.Controls[0] as ScreenAnnounceEditor).Value},
+                    new ScreenAnnouncePart{ AnnounceText= (flpAnnounce.Controls[1] as ScreenAnnounceEditor).Value},
+                    new ScreenAnnouncePart{ AnnounceText= (flpAnnounce.Controls[2] as ScreenAnnounceEditor).Value},
+                    new ScreenAnnouncePart{ AnnounceText= (flpAnnounce.Controls[3] as ScreenAnnounceEditor).Value}
                     })
                 };
             }

@@ -43,10 +43,20 @@
             this.label2 = new System.Windows.Forms.Label();
             this.numBlinkTime = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
+            this.Announce = new System.Windows.Forms.GroupBox();
+            this.flpAnnounce = new System.Windows.Forms.FlowLayoutPanel();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.screenAnnounceEditor1 = new ACHub.Plugins.OutputPlugins.Dash.ScreenAnnounceEditor();
+            this.screenAnnounceEditor2 = new ACHub.Plugins.OutputPlugins.Dash.ScreenAnnounceEditor();
+            this.screenAnnounceEditor3 = new ACHub.Plugins.OutputPlugins.Dash.ScreenAnnounceEditor();
+            this.screenAnnounceEditor4 = new ACHub.Plugins.OutputPlugins.Dash.ScreenAnnounceEditor();
             this.tabControl1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numBlinkTime)).BeginInit();
+            this.Announce.SuspendLayout();
+            this.flpAnnounce.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // timer1
@@ -76,14 +86,13 @@
             // 
             // tabControl1
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.tabControl1, 2);
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(3, 55);
+            this.tabControl1.Location = new System.Drawing.Point(3, 16);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(977, 556);
+            this.tabControl1.Size = new System.Drawing.Size(971, 412);
             this.tabControl1.TabIndex = 20;
             // 
             // tabPage1
@@ -91,7 +100,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(969, 530);
+            this.tabPage1.Size = new System.Drawing.Size(963, 386);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -101,7 +110,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(969, 533);
+            this.tabPage2.Size = new System.Drawing.Size(963, 386);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -122,19 +131,22 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.tabControl1, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.txtName, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.btnSave, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.btnSave, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.Announce, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.groupBox1, 0, 3);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 4;
+            this.tableLayoutPanel1.RowCount = 5;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(983, 642);
             this.tableLayoutPanel1.TabIndex = 21;
             // 
@@ -208,6 +220,80 @@
             this.label5.TabIndex = 25;
             this.label5.Text = "ms";
             // 
+            // Announce
+            // 
+            this.Announce.AutoSize = true;
+            this.tableLayoutPanel1.SetColumnSpan(this.Announce, 2);
+            this.Announce.Controls.Add(this.flpAnnounce);
+            this.Announce.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Announce.Location = new System.Drawing.Point(3, 55);
+            this.Announce.Name = "Announce";
+            this.Announce.Size = new System.Drawing.Size(977, 119);
+            this.Announce.TabIndex = 24;
+            this.Announce.TabStop = false;
+            this.Announce.Text = "Announce content (leave empty for no announce)";
+            // 
+            // flpAnnounce
+            // 
+            this.flpAnnounce.AutoSize = true;
+            this.flpAnnounce.Controls.Add(this.screenAnnounceEditor1);
+            this.flpAnnounce.Controls.Add(this.screenAnnounceEditor2);
+            this.flpAnnounce.Controls.Add(this.screenAnnounceEditor3);
+            this.flpAnnounce.Controls.Add(this.screenAnnounceEditor4);
+            this.flpAnnounce.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flpAnnounce.Location = new System.Drawing.Point(3, 16);
+            this.flpAnnounce.Name = "flpAnnounce";
+            this.flpAnnounce.Size = new System.Drawing.Size(971, 100);
+            this.flpAnnounce.TabIndex = 24;
+            // 
+            // groupBox1
+            // 
+            this.tableLayoutPanel1.SetColumnSpan(this.groupBox1, 2);
+            this.groupBox1.Controls.Add(this.tabControl1);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox1.Location = new System.Drawing.Point(3, 180);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(977, 431);
+            this.groupBox1.TabIndex = 25;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Live content";
+            // 
+            // screenAnnounceEditor1
+            // 
+            this.screenAnnounceEditor1.Location = new System.Drawing.Point(3, 3);
+            this.screenAnnounceEditor1.Name = "screenAnnounceEditor1";
+            this.screenAnnounceEditor1.Size = new System.Drawing.Size(177, 94);
+            this.screenAnnounceEditor1.TabIndex = 0;
+            this.screenAnnounceEditor1.Title = "Module 1";
+            this.screenAnnounceEditor1.Value = "";
+            // 
+            // screenAnnounceEditor2
+            // 
+            this.screenAnnounceEditor2.Location = new System.Drawing.Point(186, 3);
+            this.screenAnnounceEditor2.Name = "screenAnnounceEditor2";
+            this.screenAnnounceEditor2.Size = new System.Drawing.Size(177, 94);
+            this.screenAnnounceEditor2.TabIndex = 1;
+            this.screenAnnounceEditor2.Title = "Module 2";
+            this.screenAnnounceEditor2.Value = "";
+            // 
+            // screenAnnounceEditor3
+            // 
+            this.screenAnnounceEditor3.Location = new System.Drawing.Point(369, 3);
+            this.screenAnnounceEditor3.Name = "screenAnnounceEditor3";
+            this.screenAnnounceEditor3.Size = new System.Drawing.Size(177, 94);
+            this.screenAnnounceEditor3.TabIndex = 2;
+            this.screenAnnounceEditor3.Title = "Module 3";
+            this.screenAnnounceEditor3.Value = "";
+            // 
+            // screenAnnounceEditor4
+            // 
+            this.screenAnnounceEditor4.Location = new System.Drawing.Point(552, 3);
+            this.screenAnnounceEditor4.Name = "screenAnnounceEditor4";
+            this.screenAnnounceEditor4.Size = new System.Drawing.Size(177, 94);
+            this.screenAnnounceEditor4.TabIndex = 3;
+            this.screenAnnounceEditor4.Title = "Module 4";
+            this.screenAnnounceEditor4.Value = "";
+            // 
             // ScreenEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -222,6 +308,10 @@
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numBlinkTime)).EndInit();
+            this.Announce.ResumeLayout(false);
+            this.Announce.PerformLayout();
+            this.flpAnnounce.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -242,5 +332,12 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown numBlinkTime;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.GroupBox Announce;
+        private System.Windows.Forms.FlowLayoutPanel flpAnnounce;
+        private ScreenAnnounceEditor screenAnnounceEditor1;
+        private ScreenAnnounceEditor screenAnnounceEditor2;
+        private ScreenAnnounceEditor screenAnnounceEditor3;
+        private ScreenAnnounceEditor screenAnnounceEditor4;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }

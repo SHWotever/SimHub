@@ -217,7 +217,7 @@ namespace ACHub.Plugins.DataPlugins.PersistantTracker
         public void DataUpdate(PluginManager pluginManager, ACSharedMemory.GameData data)
         {
             TimeSpan? AllTimeBestDelta = null;
-            TimeSpan? AllTimeBest = null;
+            TimeSpan? AllTimeBest = TimeSpan.Zero;
 
             if (data.GameRunning)
             {

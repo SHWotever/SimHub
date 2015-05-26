@@ -82,11 +82,18 @@ namespace ACHub.Plugins.OutputPlugins.Dash
         /// </summary>
         public List<ScreenItem> ScrenParts { get; set; }
 
+        public List<ScreenAnnouncePart> ScrenAnnounce { get; set; }
+
 
         /// <summary>
         /// Blink Frequency
         /// </summary>
         public int BlinkFrequency { get; set; }
+    }
+
+    public class ScreenAnnouncePart {
+        public string AnnounceText { get; set; }
+    
     }
 
     public class ScreenItem : List<ScreenPart>

@@ -16,7 +16,7 @@ namespace ACHub.Plugins.OutputPlugins.Dash
         private Blinker RpmBlink = new Blinker();
         private Blinker FuelLapsBlink = new Blinker() { BlinkTime = 500 };
         private AlertManager FuelLapsAlertManager = new AlertManager { AlertRecurency = 60 };
-
+        private double annoncelength = 0.5;
         private Blinker ScreenBlinker = new Blinker();
 
         private const string SettingsPath = "PluginsData\\SerialDashPlugin.json";
@@ -156,7 +156,7 @@ namespace ACHub.Plugins.OutputPlugins.Dash
         {
             dash.SetText("");
             dash.SetLedsColor(LedColor.None);
-            
+
             lock (settings)
             {
                 if (data.GameRunning)
@@ -186,12 +186,37 @@ namespace ACHub.Plugins.OutputPlugins.Dash
 
                 if (currentStaticScreen != null)
                 {
+
                     DisplayScreen(pluginManager, currentStaticScreen);
+
+                    bool annonce = false;
+                    if (LastStaticScreen == currentStaticScreen)
+                    {
+                        if (LastStaticScreenFirstDisplayed > DateTime.Now.AddSeconds(-annoncelength))
+                        {
+                            annonce = true;
+                        }
+                    }
+                    else
+                    {
+                        LastStaticScreenFirstDisplayed = DateTime.Now;
+                        LastStaticScreen = currentStaticScreen;
+                        annonce = true;
+                    }
+
+                    if (annonce && currentStaticScreen.ScrenAnnounce != null && currentStaticScreen.ScrenAnnounce.Exists(i => !string.IsNullOrEmpty(i.AnnounceText)))
+                    {
+                        for (int i = 0; i < currentStaticScreen.ScrenAnnounce.Count; i++)
+                        {
+                            if (!string.IsNullOrEmpty(currentStaticScreen.ScrenAnnounce[i].AnnounceText))
+                            {
+                                dash.SetText(i, currentStaticScreen.ScrenAnnounce[i].AnnounceText ?? "");
+                            }
+                        }
+                    }
                 }
-                else
-                {
-                    currentStaticScreen = null;
-                }
+
+
 
 
 
@@ -262,10 +287,14 @@ namespace ACHub.Plugins.OutputPlugins.Dash
             }
         }
 
+        private Screen LastScreen = null;
+        private DateTime LastScreenFirstDisplayed;
+
+        private Screen LastStaticScreen = null;
+        private DateTime LastStaticScreenFirstDisplayed;
+
         private int DisplayScreen(PluginManager pluginManager, System.Collections.Generic.List<Screen> RunningScreens, int CurrentScreenIndex)
         {
-
-
             if (RunningScreens.Count > 0)
             {
                 CurrentScreenIndex = Math.Max(0, CurrentScreenIndex);
@@ -273,6 +302,35 @@ namespace ACHub.Plugins.OutputPlugins.Dash
                 var screen = RunningScreens[CurrentScreenIndex];
 
                 DisplayScreen(pluginManager, RunningScreens.First());
+
+                bool annonce = false;
+                if (LastScreen == screen)
+                {
+                    if (LastScreenFirstDisplayed > DateTime.Now.AddSeconds(-annoncelength))
+                    {
+                        annonce = true;
+                    }
+                }
+                else
+                {
+                    LastScreenFirstDisplayed = DateTime.Now;
+                    LastScreen = screen;
+                    annonce = true;
+                }
+
+                if (annonce && screen.ScrenAnnounce != null && screen.ScrenAnnounce.Exists(i => !string.IsNullOrEmpty(i.AnnounceText)))
+                {
+                    for (int i = 0; i < screen.ScrenAnnounce.Count; i++)
+                    {
+                        if (!string.IsNullOrEmpty(screen.ScrenAnnounce[i].AnnounceText))
+                        {
+                            dash.SetText(i, screen.ScrenAnnounce[i].AnnounceText ?? "");
+                        }
+                    }
+
+                    return CurrentScreenIndex;
+                }
+
                 if (CurrentScreenIndex > 0)
                 {
                     DisplayScreen(pluginManager, screen);
