@@ -92,7 +92,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TimingClient.Plugins\ACHub.Plugins.csproj">
+    <ProjectReference Include="..\ACHub.Plugins\ACHub.Plugins.csproj">
       <Project>{9a2d62cb-642b-4dcd-87fa-98e368e728ac}</Project>
       <Name>ACHub.Plugins</Name>
     </ProjectReference>
