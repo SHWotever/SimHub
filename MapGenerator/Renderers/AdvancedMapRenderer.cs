@@ -157,20 +157,23 @@ namespace MapGenerator.Renderers
 
         private void DrawSeparator(DrawingContext dc, float[] point1, float[] point2)
         {
-            var point = toScaledPoint(point1);
-            var prevpoint = toScaledPoint(point2);
-            var vector = new Vector(point.X - prevpoint.X, point.Y - prevpoint.Y);
-            var angle = Vector.AngleBetween(vector, new Vector(0, 1));
-
-            dc.PushTransform(new TranslateTransform(point.X, point.Y));
+            if (SectorSeparators)
             {
-                dc.PushTransform(new RotateTransform(-angle));
+                var point = toScaledPoint(point1);
+                var prevpoint = toScaledPoint(point2);
+                var vector = new Vector(point.X - prevpoint.X, point.Y - prevpoint.Y);
+                var angle = Vector.AngleBetween(vector, new Vector(0, 1));
+
+                dc.PushTransform(new TranslateTransform(point.X, point.Y));
                 {
-                    dc.DrawLine(new Pen(new SolidColorBrush(Colors.Red), 5), new Point(-20, 0), new Point(20, 0));
+                    dc.PushTransform(new RotateTransform(-angle));
+                    {
+                        dc.DrawLine(new Pen(new SolidColorBrush(SectorSeparatorsColor), SectorSeparatorsHeight), new Point(-SectorSeparatorsWidth / 2, 0), new Point(SectorSeparatorsWidth / 2, 0));
+                    }
+                    dc.Pop();
                 }
                 dc.Pop();
             }
-            dc.Pop();
         }
 
         private void DrawInnerPath(DrawingContext dc)
@@ -190,23 +193,23 @@ namespace MapGenerator.Renderers
                    );
 
                     //Sector separator
-                    if (data.Data[i].Graphics.CurrentSectorIndex != data.Data[i - 1].Graphics.CurrentSectorIndex)
-                    {
-                        var point = toScaledPoint(data.Data[i].Graphics.CarCoordinates);
-                        var prevpoint = toScaledPoint(data.Data[i - 1].Graphics.CarCoordinates);
-                        var vector = new Vector(point.X - prevpoint.X, point.Y - prevpoint.Y);
-                        var angle = Vector.AngleBetween(vector, new Vector(0, 1));
+                    //if (data.Data[i].Graphics.CurrentSectorIndex != data.Data[i - 1].Graphics.CurrentSectorIndex)
+                    //{
+                    //    var point = toScaledPoint(data.Data[i].Graphics.CarCoordinates);
+                    //    var prevpoint = toScaledPoint(data.Data[i - 1].Graphics.CarCoordinates);
+                    //    var vector = new Vector(point.X - prevpoint.X, point.Y - prevpoint.Y);
+                    //    var angle = Vector.AngleBetween(vector, new Vector(0, 1));
 
-                        dc.PushTransform(new TranslateTransform(point.X, point.Y));
-                        {
-                            dc.PushTransform(new RotateTransform(-angle));
-                            {
-                                dc.DrawLine(new Pen(new SolidColorBrush(Colors.Red), 5), new Point(-20, 0), new Point(20, 0));
-                            }
-                            dc.Pop();
-                        }
-                        dc.Pop();
-                    }
+                    //    dc.PushTransform(new TranslateTransform(point.X, point.Y));
+                    //    {
+                    //        dc.PushTransform(new RotateTransform(-angle));
+                    //        {
+                    //            dc.DrawLine(new Pen(new SolidColorBrush(Colors.Red), 5), new Point(-20, 0), new Point(20, 0));
+                    //        }
+                    //        dc.Pop();
+                    //    }
+                    //    dc.Pop();
+                    //}
                 }
             }
         }
@@ -218,8 +221,8 @@ namespace MapGenerator.Renderers
 
         private Color GetColor(int idx)
         {
-            int nbPointsBefore = 10;
-            int nbPointsAfter = 10;
+            int nbPointsBefore = 20;
+            int nbPointsAfter = 20;
             bool alternatesector = data.Data[idx].Graphics.CurrentSectorIndex % 2 != 0;
 
             List<Vector> vectors = new List<Vector>();
@@ -243,9 +246,9 @@ namespace MapGenerator.Renderers
             //var avgAngle = Math.Abs(total / count);
 
             var avgAngle = Math.Abs(Vector.AngleBetween(ToVector(data.Data[startidx], data.Data[idx]), ToVector(data.Data[idx], data.Data[endidx])));
-            if (avgAngle > 5)
+            if (avgAngle > TurnAngleThreshold && HighlightTurns)
             {
-                return Color.FromArgb((byte)255, avgAngle > 5 ? (byte)255 : (byte)0, 0, 0);
+                return TurnColor;
             }
             else
             {
@@ -289,5 +292,6 @@ namespace MapGenerator.Renderers
                 }
             }
         }
+        public override int GetTrackLenght() { return (int)data.Data.Max(i => i.Graphics.DistanceTraveled) - (int)data.Data.Min(i => i.Graphics.DistanceTraveled); }
     }
 }

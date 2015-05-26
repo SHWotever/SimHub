@@ -1,5 +1,8 @@
 ﻿namespace TimingClient.Plugins.UI
 {
+	/// <summary>
+	/// Plugins settings host
+	/// </summary>
     partial class PluginsSettings
     {
         /// <summary> 

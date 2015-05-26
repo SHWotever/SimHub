@@ -1,19 +1,19 @@
-﻿using Microsoft.CSharp;
-using System;
-using System.CodeDom.Compiler;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace TimingClient.Plugins.OutputPlugins.Dash
 {
-  
+    /// <summary>
+    /// Generate text
+    /// </summary>
     public class TextGenerator
     {
-
-
-
-
+        /// <summary>
+        /// Returns text
+        /// </summary>
+        /// <param name="manager"></param>
+        /// <param name="parts"></param>
+        /// <returns></returns>
         public static string GetText(global::TimingClient.Plugins.PluginManager manager, List<ScreenPart> parts)
         {
             string result = "";

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace ACToolsUtilities.Serialisation
 {
@@ -20,6 +21,24 @@ namespace ACToolsUtilities.Serialisation
                 return default(T);
             }
             return (T)Newtonsoft.Json.JsonConvert.DeserializeObject<T>(System.IO.File.ReadAllText(path));
+        }
+
+        public static void CleanFolder(string directory) {
+            foreach (var file in GetFiles(directory, "*")) {
+                File.Delete(file);
+            }
+        }
+
+        public static  IEnumerable<string> GetFiles(string directory, string pattern)
+        {
+            if (Directory.Exists(directory))
+            {
+                return System.IO.Directory.GetFiles(directory, pattern);
+            }
+            else { 
+                return new string[0];
+            }
+
         }
     }
 }

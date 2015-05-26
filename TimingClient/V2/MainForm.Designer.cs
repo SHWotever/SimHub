@@ -44,6 +44,8 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.txtS = new System.Windows.Forms.TextBox();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.linkCar = new System.Windows.Forms.LinkLabel();
+            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -74,11 +76,13 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(441, 220);
+            this.tabControl1.Size = new System.Drawing.Size(441, 324);
             this.tabControl1.TabIndex = 3;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.linkLabel2);
+            this.tabPage1.Controls.Add(this.linkCar);
             this.tabPage1.Controls.Add(this.numericUpDown1);
             this.tabPage1.Controls.Add(this.rbBestLap);
             this.tabPage1.Controls.Add(this.rbMyBestLap);
@@ -87,7 +91,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(433, 194);
+            this.tabPage1.Size = new System.Drawing.Size(433, 298);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -144,7 +148,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(934, 725);
+            this.tabPage2.Size = new System.Drawing.Size(433, 194);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -156,7 +160,7 @@
             this.txtG.Multiline = true;
             this.txtG.Name = "txtG";
             this.txtG.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtG.Size = new System.Drawing.Size(928, 719);
+            this.txtG.Size = new System.Drawing.Size(427, 188);
             this.txtG.TabIndex = 1;
             // 
             // textBox1
@@ -165,7 +169,7 @@
             this.textBox1.Location = new System.Drawing.Point(3, 3);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(928, 719);
+            this.textBox1.Size = new System.Drawing.Size(427, 188);
             this.textBox1.TabIndex = 0;
             // 
             // tabPage3
@@ -174,7 +178,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(934, 725);
+            this.tabPage3.Size = new System.Drawing.Size(433, 194);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -186,7 +190,7 @@
             this.txtP.Multiline = true;
             this.txtP.Name = "txtP";
             this.txtP.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtP.Size = new System.Drawing.Size(928, 719);
+            this.txtP.Size = new System.Drawing.Size(427, 188);
             this.txtP.TabIndex = 2;
             // 
             // tabPage4
@@ -195,7 +199,7 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(934, 725);
+            this.tabPage4.Size = new System.Drawing.Size(433, 194);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "tabPage4";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -207,7 +211,7 @@
             this.txtS.Multiline = true;
             this.txtS.Name = "txtS";
             this.txtS.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtS.Size = new System.Drawing.Size(928, 719);
+            this.txtS.Size = new System.Drawing.Size(427, 188);
             this.txtS.TabIndex = 2;
             // 
             // tabPage5
@@ -215,16 +219,37 @@
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(934, 725);
+            this.tabPage5.Size = new System.Drawing.Size(433, 194);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "tabPage5";
             this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // linkCar
+            // 
+            this.linkCar.AutoSize = true;
+            this.linkCar.Location = new System.Drawing.Point(10, 127);
+            this.linkCar.Name = "linkCar";
+            this.linkCar.Size = new System.Drawing.Size(39, 13);
+            this.linkCar.TabIndex = 6;
+            this.linkCar.TabStop = true;
+            this.linkCar.Text = "linkCar";
+            this.linkCar.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkCar_LinkClicked);
+            // 
+            // linkLabel2
+            // 
+            this.linkLabel2.AutoSize = true;
+            this.linkLabel2.Location = new System.Drawing.Point(10, 140);
+            this.linkLabel2.Name = "linkLabel2";
+            this.linkLabel2.Size = new System.Drawing.Size(55, 13);
+            this.linkLabel2.TabIndex = 7;
+            this.linkLabel2.TabStop = true;
+            this.linkLabel2.Text = "linkLabel2";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(441, 220);
+            this.ClientSize = new System.Drawing.Size(441, 324);
             this.Controls.Add(this.tabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
@@ -260,6 +285,8 @@
         private System.Windows.Forms.TextBox txtS;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.LinkLabel linkLabel2;
+        private System.Windows.Forms.LinkLabel linkCar;
     }
 }
 

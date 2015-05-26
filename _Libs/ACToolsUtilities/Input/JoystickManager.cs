@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 
 namespace ACToolsUtilities
 {
@@ -20,32 +21,91 @@ namespace ACToolsUtilities
             }
         }
 
+        public List<string> ButtonReleased()
+        {
+            lock (this)
+            {
+                var result = OldPressedButtons.Where(i => !PressedButtons.Contains(i)).ToList();
+                result.ForEach(i => Console.WriteLine("Relased" + i));
+                return result;
+            }
+        }
+
+        [HandleProcessCorruptedStateExceptions]
         public void ReadState()
         {
-            OldPressedButtons = PressedButtons;
-            PressedButtons = new List<string>();
-
-            for (int i = 0; i < 4; i++)
+            lock (this)
             {
-                var state = Joystick.GetState(i);
-                if (state.IsConnected)
+                OldPressedButtons = PressedButtons;
+                PressedButtons = new List<string>();
+
+                try
                 {
-                    for (int button = 1; button < 32; button++)
+                    for (int i = 0; i < 4; i++)
                     {
-                        if (state.GetButton((JoystickButton)button) == ButtonState.Pressed)
+                        var state = Joystick.GetState(i);
+                        if (state.IsConnected)
                         {
-                            PressedButtons.Add("J" + i.ToString() + "B" + button.ToString("00"));
-                            // TODO Remove this, exists only fortiming client BackCompat
-                            PressedButtons.Add("J" + i.ToString() + "B" + button.ToString("0"));
+                            for (int button = 0; button < 32; button++)
+                            {
+                                if (state.GetButton((JoystickButton)button) == ButtonState.Pressed)
+                                {
+                                    PressedButtons.Add("J" + i.ToString() + "B" + button.ToString("00"));
+                                    // TODO Remove this, exists only fortiming client BackCompat
+                                    //PressedButtons.Add("J" + i.ToString() + "B" + button.ToString("0"));
+                                }
+                            }
+
+                            var hat = state.GetHat(JoystickHat.Hat0);
+                            if (hat.Position != HatPosition.Centered)
+                            {
+                                PressedButtons.Add("J" + i.ToString() + "HAT" + hat.Position.ToString());
+                            }
                         }
                     }
-
-                    var hat = state.GetHat(JoystickHat.Hat0);
-                    if (hat.Position != HatPosition.Centered)
-                    {
-                        PressedButtons.Add("J" + i.ToString() + "HAT" + hat.Position.ToString());
-                    }
+                    PressedButtons = PressedButtons.Distinct().ToList();
                 }
+                catch { }
+            }
+        }
+
+
+        public List<string> GetState()
+        {
+            lock (this)
+            {
+                
+                var currentButtons = new List<string>();
+
+                try
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        var state = Joystick.GetState(i);
+                        if (state.IsConnected)
+                        {
+                            for (int button = 0; button < 32; button++)
+                            {
+                                if (state.GetButton((JoystickButton)button) == ButtonState.Pressed)
+                                {
+                                    currentButtons.Add("J" + i.ToString() + "B" + button.ToString("00"));
+                                    // TODO Remove this, exists only fortiming client BackCompat
+                                    //PressedButtons.Add("J" + i.ToString() + "B" + button.ToString("0"));
+                                }
+                            }
+
+                            var hat = state.GetHat(JoystickHat.Hat0);
+                            if (hat.Position != HatPosition.Centered)
+                            {
+                                currentButtons.Add("J" + i.ToString() + "HAT" + hat.Position.ToString());
+                            }
+                        }
+                    }
+                    currentButtons = currentButtons.Distinct().ToList();
+                }
+                catch { }
+
+                return currentButtons;
             }
         }
 
@@ -56,7 +116,7 @@ namespace ACToolsUtilities
 
             for (int i = 0; i < 4; i++)
             {
-                for (int button = 1; button < 32; button++)
+                for (int button = 0; button < 32; button++)
                 {
                     yield return "J" + i.ToString() + "B" + button.ToString("00");
                 }

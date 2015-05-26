@@ -12,6 +12,8 @@
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,6 +34,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="ScintillaNET, Version=2.6.0.0, Culture=neutral, PublicKeyToken=948d6c9751444115, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\ScintillaNET.dll</HintPath>
@@ -39,12 +48,17 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsInput, Version=1.0.4.0, Culture=neutral, PublicKeyToken=9b287f7dc5073cad, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\InputSimulator.1.0.4.0\lib\net20\WindowsInput.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataPlugins\DataCore\DataCorePlugin.cs" />
@@ -61,6 +75,8 @@
     <Compile Include="DataPlugins\DataCore\ExpressionEditor.Designer.cs">
       <DependentUpon>ExpressionEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataPlugins\DataCore\FuelStatistics.cs" />
+    <Compile Include="DataPlugins\Shell\ShellPlugin.cs" />
     <Compile Include="IDataPlugin.cs" />
     <Compile Include="DataPlugins\PersistantTracker\DataRecord.cs" />
     <Compile Include="DataPlugins\PersistantTracker\PersistantTrackerPlugin.cs" />
@@ -71,11 +87,30 @@
     <Compile Include="InputPlugins\JoystickPluginSettingsControl.Designer.cs">
       <DependentUpon>JoystickPluginSettingsControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Logging.cs" />
+    <Compile Include="OutputPlugins\Dash\LedEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="OutputPlugins\Dash\LedEditor.Designer.cs">
+      <DependentUpon>LedEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OutputPlugins\Dash\LedEditorItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="OutputPlugins\Dash\LedEditorItem.Designer.cs">
+      <DependentUpon>LedEditorItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="OutputPlugins\Dash\ScreenEditor.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="OutputPlugins\Dash\ScreenEditor.Designer.cs">
       <DependentUpon>ScreenEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OutputPlugins\Dash\ScreenEditorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="OutputPlugins\Dash\ScreenEditorControl.Designer.cs">
+      <DependentUpon>ScreenEditorControl.cs</DependentUpon>
     </Compile>
     <Compile Include="OutputPlugins\Dash\SerialDashPlugin.cs" />
     <Compile Include="OutputPlugins\Dash\SerialDashPluginSettings.cs" />
@@ -138,8 +173,17 @@
     <EmbeddedResource Include="InputPlugins\JoystickPluginSettingsControl.resx">
       <DependentUpon>JoystickPluginSettingsControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="OutputPlugins\Dash\LedEditor.resx">
+      <DependentUpon>LedEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OutputPlugins\Dash\LedEditorItem.resx">
+      <DependentUpon>LedEditorItem.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="OutputPlugins\Dash\ScreenEditor.resx">
       <DependentUpon>ScreenEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OutputPlugins\Dash\ScreenEditorControl.resx">
+      <DependentUpon>ScreenEditorControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OutputPlugins\Dash\SerialDashSettingsControl.resx">
       <DependentUpon>SerialDashSettingsControl.cs</DependentUpon>
@@ -158,6 +202,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="SciLexer.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -168,7 +213,18 @@
   <ItemGroup>
     <Content Include="ScintillaNET.dll" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DataPlugins\Copilot\" />
+    <Folder Include="DataPlugins\Remoting\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

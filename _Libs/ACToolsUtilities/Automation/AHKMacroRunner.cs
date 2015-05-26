@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Timers;
+using WindowsInput;
 
 namespace ACToolsUtilities.Automation
 {
@@ -15,7 +16,7 @@ namespace ACToolsUtilities.Automation
         public AHKMacroRunner(bool enabled = false)
         {
             LoadMacros();
-            timer.Interval = 5;
+            timer.Interval = 2;
             timer.Elapsed += timer_Elapsed;
             this.Enabled = enabled;
         }
@@ -28,9 +29,41 @@ namespace ACToolsUtilities.Automation
 
         private void timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            joystickManager.ReadState();
-            lastInputs = joystickManager.ButtonPressed();
-            RunMacros();
+            lock (timer)
+            {
+                try
+                {
+                    joystickManager.ReadState();
+                    lastInputs = joystickManager.ButtonPressed();
+                    RunMacros();
+
+                    if (lastInputs.Contains("J0B00"))
+                    {
+                        (new InputSimulator()).Keyboard.KeyDown(WindowsInput.Native.VirtualKeyCode.CONTROL);
+                        (new InputSimulator()).Keyboard.KeyDown(WindowsInput.Native.VirtualKeyCode.VK_T);
+                    }
+
+                    if (joystickManager.ButtonReleased().Contains("J0B00"))
+                    {
+                        (new InputSimulator()).Keyboard.KeyUp(WindowsInput.Native.VirtualKeyCode.VK_T);
+                        (new InputSimulator()).Keyboard.KeyUp(WindowsInput.Native.VirtualKeyCode.CONTROL);
+                    }
+
+                    if (lastInputs.Contains("J0B15"))
+                    {
+                        (new InputSimulator()).Keyboard.KeyDown(WindowsInput.Native.VirtualKeyCode.CONTROL);
+                        (new InputSimulator()).Keyboard.KeyDown(WindowsInput.Native.VirtualKeyCode.VK_O);
+                    }
+
+                    if (joystickManager.ButtonReleased().Contains("J0B15"))
+                    {
+                        (new InputSimulator()).Keyboard.KeyUp(WindowsInput.Native.VirtualKeyCode.VK_O);
+                        (new InputSimulator()).Keyboard.KeyUp(WindowsInput.Native.VirtualKeyCode.CONTROL);
+                    }
+
+                }
+                catch { }
+            }
         }
 
         private void LoadMacros()

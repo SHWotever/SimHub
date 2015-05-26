@@ -30,6 +30,8 @@ namespace MapGenerator.Renderers
 
         public decimal Scale { get; set; }
 
+        public virtual int GetTrackLenght() { return 0; }
+
         public int Margin { get; protected set; }
 
         public int MinValueX { get; protected set; }
@@ -52,9 +54,23 @@ namespace MapGenerator.Renderers
 
         public Color TrackBorderColor { get; set; }
 
+        public bool SectorSeparators { get; set; }
+
+        public Color SectorSeparatorsColor { get; set; }
+
+        public int SectorSeparatorsWidth { get; set; }
+
+        public int SectorSeparatorsHeight { get; set; }
+
         public Color AlternateSectorColor { get; set; }
 
+        public Color TurnColor { get; set; }
+
         public int InnerPathWidth { get; set; }
+
+        public int TurnAngleThreshold { get; set; }
+
+        public bool HighlightTurns { get; set; }
 
         public int OuterPathWidth { get; set; }
 

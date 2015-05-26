@@ -10,19 +10,32 @@ using System.Windows.Forms;
 
 namespace TimingClient.Plugins.InputPlugins
 {
+    /// <summary>
+    /// Joystick plugin settings control
+    /// </summary>
     public partial class JoystickPluginSettingsControl : UserControl
     {
+        /// <summary>
+        /// CTor
+        /// </summary>
         public JoystickPluginSettingsControl()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Refesh inputs
+        /// </summary>
+        /// <param name="inputs"></param>
         public void Refresh(List<string> inputs)
         {
             if (this.cbShowStatus.Checked)
             {
-                if (inputs.Count > 0)
-                    this.txtSettings.Text += DateTime.Now.ToString() + " : " + string.Join("\r\n" + DateTime.Now.ToString() + " : ", inputs) + "\r\n";
+                this.Invoke((MethodInvoker)delegate
+                {
+                    if (inputs.Count > 0)
+                        this.txtSettings.Text += DateTime.Now.ToString() + " : " + string.Join("\r\n" + DateTime.Now.ToString() + " : ", inputs) + "\r\n";
+                });
             }
         }
 

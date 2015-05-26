@@ -25,6 +25,11 @@ namespace MapGenerator
             }
         }
 
+        //public new bool Enabled {
+        //    set {   this.pictureBox1. }
+        //    get {return this.Enabled }
+        //}
+
         private void btnSelect_Click(object sender, EventArgs e)
         {
             var ColorDialog = new ColorDialog();

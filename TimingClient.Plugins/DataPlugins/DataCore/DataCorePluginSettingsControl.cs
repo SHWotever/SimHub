@@ -10,11 +10,20 @@ using System.Windows.Forms;
 
 namespace TimingClient.Plugins.DataPlugins.DataCore
 {
+
+	/// <summary>
+	/// Date Core plugin settings control
+	/// </summary>
     public partial class DataCorePluginSettingsControl : UserControl
     {
         DataCorePlugin plugin;
         PluginManager manager;
 
+        /// <summary>
+        /// CTor
+        /// </summary>
+        /// <param name="plugin"></param>
+        /// <param name="manager"></param>
         public DataCorePluginSettingsControl(DataCorePlugin plugin, PluginManager manager)
             : this()
         {
@@ -24,7 +33,9 @@ namespace TimingClient.Plugins.DataPlugins.DataCore
             this.lstExpressions.DisplayMember = "Name";
         }
 
-
+		/// <summary>
+		/// CTor
+		/// </summary>
         public DataCorePluginSettingsControl()
         {
             InitializeComponent();

@@ -24,9 +24,11 @@ namespace ACSharedMemory
 
         public bool TrackChanged { get; internal set; }
 
-        public string CurrentGear { get; internal set; }
-    }
+        public bool PitChanged { get; internal set; }
 
+        //public string CurrentGearChanged { get; internal set; }
+    }
+    [Serializable]
     public class GameData
     {
         public bool GameRunning { get; internal set; }
@@ -43,7 +45,7 @@ namespace ACSharedMemory
 
         public Events Events { get; internal set; }
 
-        public string Gear { get; internal set; }
+
     }
 
     public class ACManager
@@ -89,6 +91,18 @@ namespace ACSharedMemory
         {
             get { return data; }
         }
+        //public override object InitializeLifetimeService()
+        //{
+        //    return null;
+        //}
+
+        private Guid guid = Guid.NewGuid();
+
+        public Guid Guid
+        {
+            get { return guid; }
+            set { guid = value; }
+        }
 
         public ACManager()
         {
@@ -97,6 +111,7 @@ namespace ACSharedMemory
             timer.Elapsed += timer_Elapsed;
             ac = new ACReader();
             ac.Start();
+
         }
 
         public ISynchronizeInvoke SynchronizingObject
@@ -126,13 +141,14 @@ namespace ACSharedMemory
                         data.NewData = ac.GetData();
 
                         CheckGameStatusChanged();
+                        CheckPitChanged();
+                        CheckTrackChanged();
+                        CheckCarChanged();
 
                         if (data.NewData.Graphics.Status == AC_STATUS.AC_LIVE)
                         {
-                            CheckTrackChanged();
-                            CheckCarChanged();
-                            PreParseData();
 
+                            PreParseData();
                             CheckSessionRestart();
                             CheckGameSessionTypeChanged();
                             CheckLapChanged();
@@ -153,7 +169,7 @@ namespace ACSharedMemory
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(ex);
+                    Logging.Current.Warn(ex);
                 }
                 finally
                 {
@@ -166,7 +182,13 @@ namespace ACSharedMemory
         {
             if (data.GameRunning)
             {
-                data.Gear = ACHelper.GetGear(this.data.NewData.Physics.Gear);
+                data.NewData.Gear = ACHelper.GetGear(this.data.NewData.Physics.Gear);
+                data.NewData.CurrentLapTime = TimeSpan.FromMilliseconds(this.data.NewData.Graphics.iCurrentTime);
+                data.NewData.LastLapTime = TimeSpan.FromMilliseconds(this.data.NewData.Graphics.iLastTime);
+                data.NewData.BestLapTime = TimeSpan.FromMilliseconds(this.data.NewData.Graphics.iBestTime);
+                data.NewData.LastSectorTime = TimeSpan.FromMilliseconds(this.data.NewData.Graphics.LastSectorTime);
+                data.NewData.SessionTimeLeft = TimeSpan.FromMilliseconds(this.data.NewData.Graphics.SessionTimeLeft);
+                data.NewData.SpeedMph = this.data.NewData.Physics.SpeedKmh * 0.621371192f;
             }
         }
 
@@ -192,6 +214,15 @@ namespace ACSharedMemory
             }
         }
 
+        private void CheckPitChanged()
+        {
+            if (data.OldData == null ||
+                    data.OldData.Graphics.IsInPit != data.NewData.Graphics.IsInPit)
+            {
+                data.Events.PitChanged = true;
+            }
+        }
+
         private void CheckCarChanged()
         {
             if (data.Car != null && !data.GameRunning)
@@ -207,11 +238,14 @@ namespace ACSharedMemory
             {
                 if (data.Car == null || data.Car.Model != data.NewData.StaticInfo.CarModel)
                 {
-                    data.Car = ACHelper.GetCarData(data.NewData.StaticInfo); data.Events.CarChanged = true;
-                    if (CarChanged != null)
+                    if (!string.IsNullOrWhiteSpace(data.NewData.StaticInfo.CarModel))
                     {
-                        SecureDo(() => CarChanged(data.Car, this));
-                        return;
+                        data.Car = ACHelper.GetCarData(data.NewData.StaticInfo); data.Events.CarChanged = true;
+                        if (CarChanged != null)
+                        {
+                            SecureDo(() => CarChanged(data.Car, this));
+                            return;
+                        }
                     }
                 }
             }
@@ -233,10 +267,13 @@ namespace ACSharedMemory
             {
                 if (data.Track == null)
                 {
-                    data.Track = ACHelper.GetCurrentTrack(data.NewData.StaticInfo); data.Events.TrackChanged = true;
-                    if (TrackChanged != null)
+                    if (!string.IsNullOrWhiteSpace(data.NewData.StaticInfo.Track))
                     {
-                        SecureDo(() => TrackChanged(data.Track, this));
+                        data.Track = ACHelper.GetCurrentTrack(data.NewData.StaticInfo); data.Events.TrackChanged = true;
+                        if (TrackChanged != null)
+                        {
+                            SecureDo(() => TrackChanged(data.Track, this));
+                        }
                     }
                 }
             }
@@ -261,7 +298,10 @@ namespace ACSharedMemory
             {
                 a();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Logging.Current.Warn(ex);
+            }
         }
 
         private void CheckGameStatusChanged()

@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabInputs = new System.Windows.Forms.TabPage();
             this.tabGeneral = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -43,40 +43,41 @@
             this.btnAddActionMapping = new System.Windows.Forms.Button();
             this.btnRemoveInputMapping = new System.Windows.Forms.Button();
             this.btnEditInputMapping = new System.Windows.Forms.Button();
-            this.tabInputs = new System.Windows.Forms.TabPage();
-            this.InputSettings = new TimingClient.Plugins.UI.PluginsSettings();
-            this.tabData = new System.Windows.Forms.TabPage();
-            this.DataSettings = new TimingClient.Plugins.UI.PluginsSettings();
-            this.tabOutput = new System.Windows.Forms.TabPage();
-            this.outputSettings = new TimingClient.Plugins.UI.PluginsSettings();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.dataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.doSampleDataSnapshotToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tabControl1.SuspendLayout();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.btnDownInput = new System.Windows.Forms.Button();
+            this.btnUpInput = new System.Windows.Forms.Button();
+            this.btnUpEvent = new System.Windows.Forms.Button();
+            this.btnDownEvent = new System.Windows.Forms.Button();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.InputSettings = new TimingClient.Plugins.UI.PluginsSettings();
+            this.tabInputs.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            this.tabInputs.SuspendLayout();
-            this.tabData.SuspendLayout();
-            this.tabOutput.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tabControl1
+            // tabInputs
             // 
-            this.tabControl1.Controls.Add(this.tabGeneral);
-            this.tabControl1.Controls.Add(this.tabInputs);
-            this.tabControl1.Controls.Add(this.tabData);
-            this.tabControl1.Controls.Add(this.tabOutput);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(906, 711);
-            this.tabControl1.TabIndex = 0;
+            this.tabInputs.Controls.Add(this.InputSettings);
+            this.tabInputs.ForeColor = System.Drawing.Color.Black;
+            this.tabInputs.Location = new System.Drawing.Point(4, 22);
+            this.tabInputs.Name = "tabInputs";
+            this.tabInputs.Padding = new System.Windows.Forms.Padding(3);
+            this.tabInputs.Size = new System.Drawing.Size(898, 685);
+            this.tabInputs.TabIndex = 1;
+            this.tabInputs.Text = "Plugins";
+            this.tabInputs.UseVisualStyleBackColor = true;
             // 
             // tabGeneral
             // 
@@ -97,71 +98,71 @@
             this.tableLayoutPanel2.Controls.Add(this.groupBox2, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.groupBox1, 0, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 27);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(892, 655);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(892, 679);
             this.tableLayoutPanel2.TabIndex = 3;
             // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.tableLayoutPanel3);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox2.Location = new System.Drawing.Point(3, 330);
+            this.groupBox2.Location = new System.Drawing.Point(3, 342);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(886, 322);
+            this.groupBox2.Size = new System.Drawing.Size(886, 334);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Events mapping";
             // 
             // tableLayoutPanel3
             // 
-            this.tableLayoutPanel3.ColumnCount = 3;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel3.ColumnCount = 1;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.Controls.Add(this.flowLayoutPanel2, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.lstEventMapping, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.btnAddEventMapping, 2, 1);
-            this.tableLayoutPanel3.Controls.Add(this.btnRemoveEventMapping, 0, 1);
-            this.tableLayoutPanel3.Controls.Add(this.btnEditEventMapping, 1, 1);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(880, 303);
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(880, 315);
             this.tableLayoutPanel3.TabIndex = 2;
             // 
             // lstEventMapping
             // 
-            this.tableLayoutPanel3.SetColumnSpan(this.lstEventMapping, 3);
             this.lstEventMapping.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstEventMapping.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lstEventMapping.FormattingEnabled = true;
+            this.lstEventMapping.ItemHeight = 14;
             this.lstEventMapping.Location = new System.Drawing.Point(3, 3);
             this.lstEventMapping.Name = "lstEventMapping";
-            this.lstEventMapping.Size = new System.Drawing.Size(874, 268);
+            this.lstEventMapping.Size = new System.Drawing.Size(874, 280);
             this.lstEventMapping.TabIndex = 0;
             // 
             // btnAddEventMapping
             // 
-            this.btnAddEventMapping.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnAddEventMapping.Location = new System.Drawing.Point(589, 277);
+            this.btnAddEventMapping.Location = new System.Drawing.Point(127, 3);
             this.btnAddEventMapping.Name = "btnAddEventMapping";
-            this.btnAddEventMapping.Size = new System.Drawing.Size(288, 23);
+            this.btnAddEventMapping.Size = new System.Drawing.Size(56, 23);
             this.btnAddEventMapping.TabIndex = 1;
-            this.btnAddEventMapping.Text = "Add";
+            this.btnAddEventMapping.Text = "New";
             this.btnAddEventMapping.UseVisualStyleBackColor = true;
             this.btnAddEventMapping.Click += new System.EventHandler(this.btnAddEventMapping_Click);
             // 
             // btnRemoveEventMapping
             // 
-            this.btnRemoveEventMapping.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnRemoveEventMapping.Location = new System.Drawing.Point(3, 277);
+            this.btnRemoveEventMapping.Location = new System.Drawing.Point(251, 3);
             this.btnRemoveEventMapping.Name = "btnRemoveEventMapping";
-            this.btnRemoveEventMapping.Size = new System.Drawing.Size(287, 23);
+            this.btnRemoveEventMapping.Size = new System.Drawing.Size(56, 23);
             this.btnRemoveEventMapping.TabIndex = 2;
             this.btnRemoveEventMapping.Text = "Remove";
             this.btnRemoveEventMapping.UseVisualStyleBackColor = true;
@@ -169,10 +170,9 @@
             // 
             // btnEditEventMapping
             // 
-            this.btnEditEventMapping.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnEditEventMapping.Location = new System.Drawing.Point(296, 277);
+            this.btnEditEventMapping.Location = new System.Drawing.Point(189, 3);
             this.btnEditEventMapping.Name = "btnEditEventMapping";
-            this.btnEditEventMapping.Size = new System.Drawing.Size(287, 23);
+            this.btnEditEventMapping.Size = new System.Drawing.Size(56, 23);
             this.btnEditEventMapping.TabIndex = 3;
             this.btnEditEventMapping.Text = "Edit";
             this.btnEditEventMapping.UseVisualStyleBackColor = true;
@@ -184,57 +184,53 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(886, 321);
+            this.groupBox1.Size = new System.Drawing.Size(886, 333);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Input mapping";
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 3;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.lstInputMappings, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.btnAddActionMapping, 2, 1);
-            this.tableLayoutPanel1.Controls.Add(this.btnRemoveInputMapping, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.btnEditInputMapping, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(880, 302);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(880, 314);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // lstInputMappings
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.lstInputMappings, 3);
             this.lstInputMappings.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstInputMappings.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lstInputMappings.FormattingEnabled = true;
+            this.lstInputMappings.ItemHeight = 14;
             this.lstInputMappings.Location = new System.Drawing.Point(3, 3);
             this.lstInputMappings.Name = "lstInputMappings";
-            this.lstInputMappings.Size = new System.Drawing.Size(874, 267);
+            this.lstInputMappings.Size = new System.Drawing.Size(874, 279);
             this.lstInputMappings.TabIndex = 0;
             // 
             // btnAddActionMapping
             // 
-            this.btnAddActionMapping.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnAddActionMapping.Location = new System.Drawing.Point(589, 276);
+            this.btnAddActionMapping.Location = new System.Drawing.Point(127, 3);
             this.btnAddActionMapping.Name = "btnAddActionMapping";
-            this.btnAddActionMapping.Size = new System.Drawing.Size(288, 23);
+            this.btnAddActionMapping.Size = new System.Drawing.Size(56, 23);
             this.btnAddActionMapping.TabIndex = 1;
-            this.btnAddActionMapping.Text = "Add";
+            this.btnAddActionMapping.Text = "New";
             this.btnAddActionMapping.UseVisualStyleBackColor = true;
             this.btnAddActionMapping.Click += new System.EventHandler(this.btnAddActionMapping_Click);
             // 
             // btnRemoveInputMapping
             // 
-            this.btnRemoveInputMapping.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnRemoveInputMapping.Location = new System.Drawing.Point(3, 276);
+            this.btnRemoveInputMapping.Location = new System.Drawing.Point(251, 3);
             this.btnRemoveInputMapping.Name = "btnRemoveInputMapping";
-            this.btnRemoveInputMapping.Size = new System.Drawing.Size(287, 23);
+            this.btnRemoveInputMapping.Size = new System.Drawing.Size(56, 23);
             this.btnRemoveInputMapping.TabIndex = 2;
             this.btnRemoveInputMapping.Text = "Remove";
             this.btnRemoveInputMapping.UseVisualStyleBackColor = true;
@@ -242,70 +238,13 @@
             // 
             // btnEditInputMapping
             // 
-            this.btnEditInputMapping.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnEditInputMapping.Location = new System.Drawing.Point(296, 276);
+            this.btnEditInputMapping.Location = new System.Drawing.Point(189, 3);
             this.btnEditInputMapping.Name = "btnEditInputMapping";
-            this.btnEditInputMapping.Size = new System.Drawing.Size(287, 23);
+            this.btnEditInputMapping.Size = new System.Drawing.Size(56, 23);
             this.btnEditInputMapping.TabIndex = 3;
             this.btnEditInputMapping.Text = "Edit";
             this.btnEditInputMapping.UseVisualStyleBackColor = true;
             this.btnEditInputMapping.Click += new System.EventHandler(this.btnEditInputMapping_Click);
-            // 
-            // tabInputs
-            // 
-            this.tabInputs.Controls.Add(this.InputSettings);
-            this.tabInputs.Location = new System.Drawing.Point(4, 22);
-            this.tabInputs.Name = "tabInputs";
-            this.tabInputs.Padding = new System.Windows.Forms.Padding(3);
-            this.tabInputs.Size = new System.Drawing.Size(682, 685);
-            this.tabInputs.TabIndex = 1;
-            this.tabInputs.Text = "Inputs";
-            this.tabInputs.UseVisualStyleBackColor = true;
-            // 
-            // InputSettings
-            // 
-            this.InputSettings.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.InputSettings.Location = new System.Drawing.Point(3, 3);
-            this.InputSettings.Name = "InputSettings";
-            this.InputSettings.Size = new System.Drawing.Size(676, 679);
-            this.InputSettings.TabIndex = 0;
-            // 
-            // tabData
-            // 
-            this.tabData.Controls.Add(this.DataSettings);
-            this.tabData.Location = new System.Drawing.Point(4, 22);
-            this.tabData.Name = "tabData";
-            this.tabData.Padding = new System.Windows.Forms.Padding(3);
-            this.tabData.Size = new System.Drawing.Size(898, 685);
-            this.tabData.TabIndex = 2;
-            this.tabData.Text = "Data";
-            this.tabData.UseVisualStyleBackColor = true;
-            // 
-            // DataSettings
-            // 
-            this.DataSettings.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DataSettings.Location = new System.Drawing.Point(3, 3);
-            this.DataSettings.Name = "DataSettings";
-            this.DataSettings.Size = new System.Drawing.Size(892, 679);
-            this.DataSettings.TabIndex = 0;
-            // 
-            // tabOutput
-            // 
-            this.tabOutput.Controls.Add(this.outputSettings);
-            this.tabOutput.Location = new System.Drawing.Point(4, 22);
-            this.tabOutput.Name = "tabOutput";
-            this.tabOutput.Size = new System.Drawing.Size(898, 685);
-            this.tabOutput.TabIndex = 3;
-            this.tabOutput.Text = "Output";
-            this.tabOutput.UseVisualStyleBackColor = true;
-            // 
-            // outputSettings
-            // 
-            this.outputSettings.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.outputSettings.Location = new System.Drawing.Point(0, 0);
-            this.outputSettings.Name = "outputSettings";
-            this.outputSettings.Size = new System.Drawing.Size(898, 685);
-            this.outputSettings.TabIndex = 0;
             // 
             // menuStrip1
             // 
@@ -316,6 +255,7 @@
             this.menuStrip1.Size = new System.Drawing.Size(892, 24);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
+            this.menuStrip1.Visible = false;
             // 
             // dataToolStripMenuItem
             // 
@@ -331,6 +271,95 @@
             this.doSampleDataSnapshotToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this.doSampleDataSnapshotToolStripMenuItem.Text = "Do sample data snapshot";
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabGeneral);
+            this.tabControl1.Controls.Add(this.tabInputs);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(906, 711);
+            this.tabControl1.TabIndex = 0;
+            // 
+            // btnDownInput
+            // 
+            this.btnDownInput.Location = new System.Drawing.Point(65, 3);
+            this.btnDownInput.Name = "btnDownInput";
+            this.btnDownInput.Size = new System.Drawing.Size(56, 23);
+            this.btnDownInput.TabIndex = 4;
+            this.btnDownInput.Text = "Down";
+            this.btnDownInput.UseVisualStyleBackColor = true;
+            this.btnDownInput.Click += new System.EventHandler(this.btnDownInput_Click);
+            // 
+            // btnUpInput
+            // 
+            this.btnUpInput.Location = new System.Drawing.Point(3, 3);
+            this.btnUpInput.Name = "btnUpInput";
+            this.btnUpInput.Size = new System.Drawing.Size(56, 23);
+            this.btnUpInput.TabIndex = 5;
+            this.btnUpInput.Text = "Up";
+            this.btnUpInput.UseVisualStyleBackColor = true;
+            this.btnUpInput.Click += new System.EventHandler(this.btnUpInput_Click);
+            // 
+            // btnUpEvent
+            // 
+            this.btnUpEvent.Location = new System.Drawing.Point(3, 3);
+            this.btnUpEvent.Name = "btnUpEvent";
+            this.btnUpEvent.Size = new System.Drawing.Size(56, 23);
+            this.btnUpEvent.TabIndex = 4;
+            this.btnUpEvent.Text = "Up";
+            this.btnUpEvent.UseVisualStyleBackColor = true;
+            this.btnUpEvent.Click += new System.EventHandler(this.btnUpEvent_Click);
+            // 
+            // btnDownEvent
+            // 
+            this.btnDownEvent.Location = new System.Drawing.Point(65, 3);
+            this.btnDownEvent.Name = "btnDownEvent";
+            this.btnDownEvent.Size = new System.Drawing.Size(56, 23);
+            this.btnDownEvent.TabIndex = 5;
+            this.btnDownEvent.Text = "Down";
+            this.btnDownEvent.UseVisualStyleBackColor = true;
+            this.btnDownEvent.Click += new System.EventHandler(this.btnDownEvent_Click);
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.AutoSize = true;
+            this.flowLayoutPanel1.Controls.Add(this.btnUpInput);
+            this.flowLayoutPanel1.Controls.Add(this.btnDownInput);
+            this.flowLayoutPanel1.Controls.Add(this.btnAddActionMapping);
+            this.flowLayoutPanel1.Controls.Add(this.btnEditInputMapping);
+            this.flowLayoutPanel1.Controls.Add(this.btnRemoveInputMapping);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 285);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(880, 29);
+            this.flowLayoutPanel1.TabIndex = 6;
+            // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.AutoSize = true;
+            this.flowLayoutPanel2.Controls.Add(this.btnUpEvent);
+            this.flowLayoutPanel2.Controls.Add(this.btnDownEvent);
+            this.flowLayoutPanel2.Controls.Add(this.btnAddEventMapping);
+            this.flowLayoutPanel2.Controls.Add(this.btnEditEventMapping);
+            this.flowLayoutPanel2.Controls.Add(this.btnRemoveEventMapping);
+            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 286);
+            this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(880, 29);
+            this.flowLayoutPanel2.TabIndex = 7;
+            // 
+            // InputSettings
+            // 
+            this.InputSettings.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.InputSettings.Location = new System.Drawing.Point(3, 3);
+            this.InputSettings.Name = "InputSettings";
+            this.InputSettings.Size = new System.Drawing.Size(892, 679);
+            this.InputSettings.TabIndex = 0;
+            // 
             // PluginManagerUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -338,39 +367,30 @@
             this.Controls.Add(this.tabControl1);
             this.Name = "PluginManagerUI";
             this.Size = new System.Drawing.Size(906, 711);
-            this.tabControl1.ResumeLayout(false);
+            this.tabInputs.ResumeLayout(false);
             this.tabGeneral.ResumeLayout(false);
             this.tabGeneral.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel3.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
-            this.tabInputs.ResumeLayout(false);
-            this.tabData.ResumeLayout(false);
-            this.tabOutput.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabGeneral;
         private System.Windows.Forms.TabPage tabInputs;
-        private System.Windows.Forms.TabPage tabData;
-        private System.Windows.Forms.TabPage tabOutput;
         private PluginsSettings InputSettings;
-        private PluginsSettings DataSettings;
-        private PluginsSettings outputSettings;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.ListBox lstInputMappings;
-        private System.Windows.Forms.Button btnAddActionMapping;
-        private System.Windows.Forms.Button btnRemoveInputMapping;
-        private System.Windows.Forms.Button btnEditInputMapping;
+        private System.Windows.Forms.TabPage tabGeneral;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
@@ -378,8 +398,21 @@
         private System.Windows.Forms.Button btnAddEventMapping;
         private System.Windows.Forms.Button btnRemoveEventMapping;
         private System.Windows.Forms.Button btnEditEventMapping;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.ListBox lstInputMappings;
+        private System.Windows.Forms.Button btnAddActionMapping;
+        private System.Windows.Forms.Button btnRemoveInputMapping;
+        private System.Windows.Forms.Button btnEditInputMapping;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem dataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem doSampleDataSnapshotToolStripMenuItem;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+        private System.Windows.Forms.Button btnUpEvent;
+        private System.Windows.Forms.Button btnDownEvent;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.Button btnUpInput;
+        private System.Windows.Forms.Button btnDownInput;
     }
 }

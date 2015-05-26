@@ -11,7 +11,12 @@ namespace ACSharedMemory.Models.Track
 
         public string TrackConfig { get; set; }
 
-        private string tracksPath;
+        private string trackPath;
+
+        public string TrackPath
+        {
+            get { return trackPath; }
+        }
 
         public string TrackCode
         {
@@ -58,9 +63,22 @@ namespace ACSharedMemory.Models.Track
             }
         }
 
+        public string TrackOutlinePath
+        {
+            get
+            {
+                string path = System.IO.Path.Combine(trackPath, UIPath, "outline.png");
+                if (File.Exists(path))
+                {
+                    return path;
+                }
+                return null;
+            }
+        }
+
         public byte[] getTrackOutline()
         {
-            string path = System.IO.Path.Combine(tracksPath, UIPath, "outline.png");
+            string path = TrackOutlinePath;
             if (File.Exists(path))
             {
                 return File.ReadAllBytes(path);
@@ -70,12 +88,25 @@ namespace ACSharedMemory.Models.Track
 
         public byte[] getTrackPreview()
         {
-            string path = System.IO.Path.Combine(tracksPath, UIPath, "preview.png");
+            string path = TrackPreviewPath;
             if (File.Exists(path))
             {
                 return File.ReadAllBytes(path);
             }
             return null;
+        }
+
+        public string TrackPreviewPath
+        {
+            get
+            {
+                string path = System.IO.Path.Combine(trackPath, UIPath, "preview.png");
+                if (File.Exists(path))
+                {
+                    return path;
+                }
+                return null;
+            }
         }
 
         public static TrackDesc GetFromGameSettings(string acpath)
@@ -84,6 +115,11 @@ namespace ACSharedMemory.Models.Track
             parser.Parser.Configuration.AssigmentSpacer = "";
 
             var raceIniPath = System.IO.Path.Combine(Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments), "Assetto Corsa", "cfg", "race.ini");
+
+            if (!File.Exists(raceIniPath))
+            {
+                return null;
+            }
 
             var data = parser.ReadFile(raceIniPath);
 
@@ -110,15 +146,15 @@ namespace ACSharedMemory.Models.Track
         {
             this.Track = trackCode;
             this.TrackConfig = trackConfig;
-            this.tracksPath = System.IO.Path.Combine(acpath, "content", "tracks");
+            this.trackPath = System.IO.Path.Combine(acpath, "content", "tracks");
 
             var parser = new FileIniDataParser();
             parser.Parser.Configuration.AssigmentSpacer = "";
 
             try
             {
-                string MapIniPath = System.IO.Path.Combine(this.tracksPath, this.MapPath, "data", "map.ini");
-                string MapImagePath = System.IO.Path.Combine(this.tracksPath, this.MapPath, "map.png");
+                string MapIniPath = System.IO.Path.Combine(this.trackPath, this.MapPath, "data", "map.ini");
+                string MapImagePath = System.IO.Path.Combine(this.trackPath, this.MapPath, "map.png");
 
                 if (System.IO.File.Exists(MapImagePath))
                 {

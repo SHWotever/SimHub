@@ -12,23 +12,25 @@
 #define _VSARDUINO_H_
 #define __AVR_ATmega328p__
 #define __AVR_ATmega328P__
-#define ARDUINO 106
+#define ARDUINO 163
 #define ARDUINO_MAIN
 #define __AVR__
 #define __avr__
 #define F_CPU 16000000L
 #define __cplusplus
-#define GCC_VERSION 40302
+#define GCC_VERSION 40801
 #define ARDUINO_ARCH_AVR
-#define ARDUINO_AVR_NANO328
+#define ARDUINO_AVR_NANO
 #define __inline__
 #define __asm__(x)
 #define __extension__
-#define __ATTR_PURE__
-#define __ATTR_CONST__
+//#define __ATTR_PURE__
+//#define __ATTR_CONST__
 #define __inline__
-#define __asm__ 
+//#define __asm__ 
 #define __volatile__
+#define GCC_VERSION 40801
+#define volatile(va_arg) 
 
 typedef void *__builtin_va_list;
 #define __builtin_va_start
@@ -38,11 +40,29 @@ typedef void *__builtin_va_list;
 #define NOINLINE __attribute__((noinline))
 #define prog_void
 #define PGM_VOID_P int
-
 #define NEW_H
-            
+/*
+#ifndef __ATTR_CONST__
+#define __ATTR_CONST__ __attribute__((__const__))
+#endif
+
+#ifndef __ATTR_MALLOC__
+#define __ATTR_MALLOC__ __attribute__((__malloc__))
+#endif
+
+#ifndef __ATTR_NORETURN__
+#define __ATTR_NORETURN__ __attribute__((__noreturn__))
+#endif
+
+#ifndef __ATTR_PURE__
+#define __ATTR_PURE__ __attribute__((__pure__))
+#endif            
+*/
 typedef unsigned char byte;
 extern "C" void __cxa_pure_virtual() {;}
+
+
+
 #include <arduino.h>
 #include <pins_arduino.h> 
 #undef F

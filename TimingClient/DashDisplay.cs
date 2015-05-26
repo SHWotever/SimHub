@@ -72,7 +72,7 @@ namespace TimingClient
             }
             StartStaticDisplay("blink", 1000, "RPML", settings.RpmBlinkLevel.ToString() + " PER");
         }
-
+        private int maxrpm = 0;
         public void Refresh(DataContainer data)
         {
 
@@ -154,6 +154,14 @@ namespace TimingClient
 
                 if (data.GameRunning)
                 {
+                    if (data.StaticInfo.MaxRpm == 0)
+                    {
+                        maxrpm = Math.Max(maxrpm, data.Physics.Rpms);
+                    }
+                    else {
+                        maxrpm = data.StaticInfo.MaxRpm;
+                    }
+
                     SetLapGearSpd(data);
 
                     if (settings.RpmDisplayMode == 0)
@@ -169,11 +177,15 @@ namespace TimingClient
                         SetRpmLedMode3(data);
                     }
                 }
+                else
+                {
+                    maxrpm = 0;
+                }
 
                 if (!data.GameRunning)
                 {
-                    dash.SetText(1, DateTime.Now.ToString("HH.mm.ss"));
-                    dash.SetText(0, DateTime.Now.Millisecond.ToString());
+                    dash.SetText(1, DateTime.Now.ToString("  HH.mm  "));
+                    dash.SetText(0, "");
                 }
 
                 dash.Send();
@@ -302,14 +314,17 @@ namespace TimingClient
             dash.SetText(1, text);
         }
 
+        
+
         private void SetRpmLedMode1(DataContainer data)
         {
+            
             // RPM
-            var rpm = Math.Round((double)Math.Max(data.Physics.Rpms, 0) / (double)data.StaticInfo.MaxRpm * (double)16);
+            var rpm = Math.Round((double)Math.Max(data.Physics.Rpms, 0) / (double)maxrpm * (double)16);
             dash.SetLedsColor(0, SerialDash.LedColor.None);
             dash.SetLedsColor(1, SerialDash.LedColor.None);
 
-            RPMBlink.Started = Math.Round((double)Math.Max(data.Physics.Rpms, 0) / (double)data.StaticInfo.MaxRpm * (double)100) >= settings.RpmBlinkLevel;
+            RPMBlink.Started = Math.Round((double)Math.Max(data.Physics.Rpms, 0) / (double)maxrpm * (double)100) >= settings.RpmBlinkLevel;
 
             bool blink = RPMBlink.Blink;
             for (int i = 0; i < 8 && i < rpm; i++)
@@ -331,12 +346,12 @@ namespace TimingClient
         private void SetRpmLedMode2(DataContainer data)
         {
             // RPM
-            var rpm = Math.Round((double)Math.Max(data.Physics.Rpms, 0) / (double)data.StaticInfo.MaxRpm * (double)64);
+            var rpm = Math.Round((double)Math.Max(data.Physics.Rpms, 0) / (double)maxrpm * (double)64);
 
             dash.SetLedsColor(0, SerialDash.LedColor.None);
             dash.SetLedsColor(1, SerialDash.LedColor.None);
 
-            RPMBlink.Started = Math.Round((double)Math.Max(data.Physics.Rpms, 0) / (double)data.StaticInfo.MaxRpm * (double)100) >= settings.RpmBlinkLevel;
+            RPMBlink.Started = Math.Round((double)Math.Max(data.Physics.Rpms, 0) / (double)maxrpm * (double)100) >= settings.RpmBlinkLevel;
 
             bool blink = RPMBlink.Blink;
 
@@ -351,12 +366,12 @@ namespace TimingClient
         private void SetRpmLedMode3(DataContainer data)
         {
             // RPM
-            var rpm = Math.Round((double)Math.Max(data.Physics.Rpms, 0) / (double)data.StaticInfo.MaxRpm * (double)64);
+            var rpm = Math.Round((double)Math.Max(data.Physics.Rpms, 0) / (double)maxrpm * (double)64);
 
             dash.SetLedsColor(0, SerialDash.LedColor.None);
             dash.SetLedsColor(1, SerialDash.LedColor.None);
 
-            RPMBlink.Started = Math.Round((double)Math.Max(data.Physics.Rpms, 0) / (double)data.StaticInfo.MaxRpm * (double)100) >= settings.RpmBlinkLevel;
+            RPMBlink.Started = Math.Round((double)Math.Max(data.Physics.Rpms, 0) / (double)maxrpm * (double)100) >= settings.RpmBlinkLevel;
 
             bool blink = RPMBlink.Blink;
 
@@ -399,9 +414,9 @@ namespace TimingClient
         {
             RpmBlinkLevel = 80;
             TimeDeltaModeSwithInput = "J0B6";
-            RpmBlinkLevelIncrementInput = "J0B7";
-            RpmBlinkLevelIncrementInput = "J0B3";
+            RpmBlinkLevelIncrementInput = "J0B1";
             RpmDisplayModeSwithInput = "J0B2";
+
             IncrementGameVolume = "J0HATUp";
             DecrementGameVolume = "J0HATDown";
             IncrementGeneralVolume = "J0HATRight";

@@ -1,258 +1,106 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Windows.Forms;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace TimingClient.Plugins.OutputPlugins.Dash
 {
-
-
+    /// <summary>
+    /// Screen editor UI
+    /// </summary>
     public partial class ScreenEditor : Form
     {
-        private PluginManager manager;
-
         private BindingList<ScreenPart> parts = new BindingList<ScreenPart>();
 
-        public ScreenEditor(PluginManager manager)
-            : this()
+        /// <summary>
+        /// Show dialog
+        /// </summary>
+        /// <param name="screen"></param>
+        /// <param name="manager"></param>
+        /// <returns></returns>
+        public Screen ShowDialog(Screen screen, PluginManager manager)
         {
-
-            foreach (var prop in manager.GeneratedProperties)
+            this.tabControl1.TabPages.Clear();
+            if (screen != null)
             {
-                lstExpression.Items.Add(prop.Key);
+                cbIdleScreen.Checked = screen.GameNotRunningScreen;
+                cbInGameScreen.Checked = screen.GameRunningScreen;
+                numBlinkTime.Value = screen.BlinkFrequency;
             }
-            RefreshDisplay();
-            this.manager = manager;
+            for (int i = 0; i < 4; i++)
+            {
+                var tab = new TabPage();
+                tab.Text = "Module " + (i + 1).ToString();
+                var control = new ScreenEditorControl(manager);
+                control.Dock = DockStyle.Fill;
 
-            UpdateEditing(null);
+                if (screen != null && screen.ScrenParts != null && screen.ScrenParts.Count > i)
+                {
+                    control.Parts = new BindingList<ScreenPart>(screen.ScrenParts[i].Select(j => j.Clone() as ScreenPart).ToList());
+                    control.Announce = screen.ScrenParts[i].AnnounceText;
+                }
 
-            this.lstParts.DataSource = parts;
-            this.lstParts.DisplayMember = "";
-            this.lstParts.DisplayMember = "Description";
+                tab.Controls.Add(control);
+                tab.Controls[0].Dock = DockStyle.Fill;
+                this.tabControl1.TabPages.Add(tab);
+            }
+            this.txtName.Text = screen.ScreenName;
 
-            //CreateItem();
+            this.ShowDialog();
+
+            if (this.DialogResult == DialogResult.OK)
+            {
+                //var t = new ScreenItem((tabControl1.TabPages[3].Controls[0] as ScreenEditorControl).Parts.ToList());
+                return new Screen()
+                {
+                    GameNotRunningScreen = cbIdleScreen.Checked,
+                    GameRunningScreen = cbInGameScreen.Checked,
+                    ScreenName = this.txtName.Text,
+                    BlinkFrequency = (int)numBlinkTime.Value,
+                    ScrenParts = new List<ScreenItem>(
+                        new ScreenItem[] {
+                        new ScreenItem (   (tabControl1.TabPages[0].Controls[0] as ScreenEditorControl).Parts.ToList())
+                        { AnnounceText = (tabControl1.TabPages[0].Controls[0] as ScreenEditorControl).Announce},
+                            new ScreenItem (   (tabControl1.TabPages[1].Controls[0] as ScreenEditorControl).Parts.ToList())
+                            { AnnounceText = (tabControl1.TabPages[1].Controls[0] as ScreenEditorControl).Announce},
+                            new ScreenItem (   (tabControl1.TabPages[2].Controls[0] as ScreenEditorControl).Parts.ToList())
+                            { AnnounceText = (tabControl1.TabPages[2].Controls[0] as ScreenEditorControl).Announce},
+                            new ScreenItem (   (tabControl1.TabPages[3].Controls[0] as ScreenEditorControl).Parts.ToList())
+                            { AnnounceText = (tabControl1.TabPages[3].Controls[0] as ScreenEditorControl).Announce}
+                    })
+                };
+            }
+            return null;
         }
 
+        /// <summary>
+        /// Ctor
+        /// </summary>
         public ScreenEditor()
         {
             InitializeComponent();
         }
 
-        private ScreenPart editing = null;
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            CreateItem();
-        }
-
-        private void CreateItem()
-        {
-            lock (this)
-            {
-                var newitem = new ScreenPart() { Text = "-" };
-
-                UpdateEditing(null);
-                parts.Add(newitem);
-                UpdateEditing(newitem);
-
-                RefreshDisplay();
-            }
-        }
-
-        public void UpdateEditing(ScreenPart part)
-        {
-            this.editing = null;
-            if (part == null)
-            {
-                panelEdit.Enabled = false;
-                this.editing = part;
-            }
-            else
-            {
-                lock (this)
-                {
-                    panelEdit.Enabled = true;
-
-                    if (part.Expression != null)
-                    {
-                        this.lstExpression.SelectedItem = part.Expression;
-                    }
-                    else
-                    {
-                        this.lstExpression.SelectedIndex = 0;
-                    }
-                    this.txtText.Text = part.Text;
-                    this.cbRightToLeft.Checked = part.RightAlign;
-                    this.numMaxLength.Value = part.FixedLength;
-                    this.rbExpression.Checked = part.Expression != null;
-                    this.rbText.Checked = part.Expression == null;
-                    this.txtCustomFormat.Text = part.FormatString ?? "";
-                }
-                this.editing = part;
-                SetPartSourceStatus();
-            }
-        }
-
-        public void RefreshDisplay()
-        {
-
-            this.lblPreview.Text = TextGenerator.GetText(manager, parts.ToList());
-            this.display1.SetText(this.lblPreview.Text);
-        }
-
-        private void RefreshList()
-        {
-            this.lstParts.RefreshItems();
-        }
-
-        public void SetValuesToPart()
-        {
-            if (editing != null)
-            {
-                lock (this)
-                {
-                    editing.Expression = ToNotEmptyOrNull(this.lstExpression.SelectedItem as string);
-                    editing.Text = ToNotEmptyOrNull(this.txtText.Text);
-                    editing.RightAlign = this.cbRightToLeft.Checked;
-                    editing.FixedLength = (int)this.numMaxLength.Value;
-                    editing.FormatString = txtCustomFormat.Text;
-                    if (rbText.Checked)
-                    {
-                        editing.Expression = null;
-                    }
-                    else
-                    {
-                        editing.Text = null;
-                    }
-                }
-                RefreshList();
-            }
-            RefreshDisplay();
-        }
-
-        private string ToNotEmptyOrNull(string value)
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                return null;
-            }
-            else return value;
-        }
-
-        private void txtText_TextChanged(object sender, EventArgs e)
-        {
-            SetValuesToPart();
-        }
-
-        private void lstExpression_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            SetValuesToPart();
-        }
-
-        private void numMaxLength_ValueChanged(object sender, EventArgs e)
-        {
-            SetValuesToPart();
-        }
-
-        private void cbRightToLeft_CheckedChanged(object sender, EventArgs e)
-        {
-            SetValuesToPart();
-        }
-
-        private void SetPartSourceStatus()
-        {
-            txtText.Enabled = !rbExpression.Checked;
-            panelExpression.Enabled = rbExpression.Checked;
-        }
-
-        private void rbExpression_CheckedChanged(object sender, EventArgs e)
-        {
-            SetPartSourceStatus();
-            SetValuesToPart();
-        }
-
-        private void lstParts_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            UpdateEditing(lstParts.SelectedItem as ScreenPart);
-        }
-
-        private void btnEdit_Click(object sender, EventArgs e)
-        {
-            UpdateEditing(lstParts.SelectedItem as ScreenPart);
-        }
-
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-            if (this.lstParts.SelectedItem != null)
-            {
-                this.parts.Remove(this.lstParts.SelectedItem as ScreenPart);
-            }
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            RefreshDisplay();
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-            FindItem(true);
-        }
-
-        private void btnFindExp_Click(object sender, EventArgs e)
-        {
-            FindItem(false);
-        }
-
-        private void FindItem(bool fromStart)
-        {
-            if (!string.IsNullOrEmpty(txtSearch.Text))
-            {
-
-                int baseindex = fromStart ? 0 : lstExpression.SelectedIndex;
-                for (int i = 1; i < lstExpression.Items.Count; i++)
-                {
-                    if (lstExpression.Items[(baseindex + i) % lstExpression.Items.Count].ToString().ToLower().Contains(txtSearch.Text.ToLower()))
-                    {
-                        lstExpression.SelectedIndex = (baseindex + i) % lstExpression.Items.Count;
-                        return;
-                    }
-                }
-
-
-            }
-        }
-
-
-        private void txtSearch_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                FindItem(false);
-            }
-        }
-
-        private void txtCustomFormat_TextChanged(object sender, EventArgs e)
-        {
-            SetValuesToPart();
-        }
-
         private void btnSave_Click(object sender, EventArgs e)
         {
-
-        }
-    }
-    public class RefreshingListBox : ListBox
-    {
-        public new void RefreshItem(int index)
-        {
-            base.RefreshItem(index);
+            this.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.Close();
         }
 
-        public new void RefreshItems()
+        private void txtName_TextChanged(object sender, EventArgs e)
         {
-            base.RefreshItems();
+            txtName.Text = new String(txtName.Text.Where(i => (i >= 'a' && i <= 'z') || (i >= 'A' && i <= 'Z') || (i >= '0' && i <= '9') || i == '.').ToArray());
+        }
+
+        private void txtName_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            var i = e.KeyChar;
+            if (i == '\b') { return; }
+            if ((i >= 'a' && i <= 'z') || (i >= 'A' && i <= 'Z') || (i >= '0' && i <= '9') || i == '.')
+            {
+            }
+            else { e.Handled = true; }
         }
     }
 }

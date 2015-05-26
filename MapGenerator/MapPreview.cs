@@ -1,6 +1,7 @@
 ﻿using ACSharedMemory;
 using MapGenerator.Renderers;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -84,6 +85,9 @@ namespace MapGenerator
             dragLink = new DragLink(this.pictureBox1, this.panel1);
             //this.pictureBox1.MouseWheel += pictureBox1_MouseWheel;
             this.panel1.MouseWheel += pictureBox1_MouseWheel;
+
+            cbDrawSectorSeparators_CheckedChanged(null, null);
+            cbHighlightTurns_CheckedChanged(null, null);
         }
 
         private void pictureBox1_MouseWheel(object sender, MouseEventArgs e)
@@ -101,18 +105,25 @@ namespace MapGenerator
             this.pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
 
             data.Scale = (decimal)numTrackZoom.Value;
-            data.CloseLoopPoints = (int)numericUpDown1.Value;
+            data.CloseLoopPoints = (int)numLoopFix.Value;
             data.TrackBorderColor = ToMediaColor(TrackBorderColorPicker.SelectedColor);
             data.TrackColor = ToMediaColor(TrackColorPicker.SelectedColor);
             data.AlternateSectorColor = ToMediaColor(AlternateSectorMember.SelectedColor);
+            data.TurnColor = ToMediaColor(TurnColorPicker.SelectedColor);
+            data.SectorSeparators = cbDrawSectorSeparators.Checked;
+            data.SectorSeparatorsColor = ToMediaColor(sectorSeparatorColorPicker.SelectedColor);
+            data.SectorSeparatorsHeight = (int)numSectorSeparatorHeight.Value;
+            data.SectorSeparatorsWidth = (int)numSectorSeparatorWidth.Value;
 
             data.InnerPathWidth = (int)numInner.Value;
             data.OuterPathWidth = (int)numOuter.Value;
+            data.TurnAngleThreshold = (int)numTurnAngle.Value;
+            data.HighlightTurns = cbHighlightTurns.Checked;
 
             this.pictureBox1.Image = data.GetMap();
 
             this.pictureBox1.BorderStyle = BorderStyle.FixedSingle;
-            this.lblOutputSize.Text = this.pictureBox1.Image.Width + "x" + this.pictureBox1.Image.Height;
+            this.lblOutputSize.Text = this.pictureBox1.Image.Width + "x" + this.pictureBox1.Image.Height + "\r\n" + data.GetTrackLenght().ToString("0 meters");
             SetImageZoom();
         }
 
@@ -141,6 +152,9 @@ namespace MapGenerator
                     of.InitialDirectory = Properties.Settings.Default.LastDataFolder;
                 }
             }
+            //else{
+            //      of.InitialDirectory = "c:\\";
+            //}
 
             if (of.ShowDialog() == DialogResult.OK)
             {
@@ -153,7 +167,22 @@ namespace MapGenerator
                     }
                     else
                     {
-                        data = new SimpleMapRenderer(of.FileName);
+                        // Convert to telemetry
+                        var filedata = Newtonsoft.Json.JsonConvert.DeserializeObject<DataRecord>(File.ReadAllText(of.FileName));
+                        var newFile = System.IO.Path.GetFileName( System.IO.Path.ChangeExtension(of.FileName, ".tracktelemetry"));
+                        newFile = Path.Combine(System.IO.Path.GetTempPath(),newFile);
+
+                        TelemetryWriter tw = new TelemetryWriter(newFile);
+
+                        var s = new StaticInfo();
+                        foreach (var item in filedata.CarCoordinates)
+                        {
+                            tw.Write(new TelemetryContainer { Graphics = new ACSharedMemory.Graphics { CarCoordinates = item.Value }, Physics = new Physics() }, s);
+                        }
+                        tw.close();
+
+                        var telemetry = TelemetryReader.Read(newFile);
+                        data = new AdvancedMapRenderer(newFile, telemetry);
                     }
                     RefreshMap();
                     this.tableLayoutPanel1.Enabled = true;
@@ -165,7 +194,55 @@ namespace MapGenerator
                 }
             }
         }
+        class DataRecord
+        {
+            /// <summary>
+            /// CTOr
+            /// </summary>
+            public DataRecord()
+            {
+                this.CarPositions = new List<KeyValuePair<TimeSpan, float>>();
+                this.CarPositions.Add(new KeyValuePair<TimeSpan, float>(TimeSpan.FromSeconds(0), 0));
+                this.LapId = Guid.NewGuid();
+                this.SessionId = Guid.NewGuid();
+                this.SectorsTime = new Dictionary<int, TimeSpan>();
+                this.CarCoordinates = new List<KeyValuePair<TimeSpan, float[]>>();
+            }
 
+            /// <summary>
+            /// Record date
+            /// </summary>
+            public DateTime RecordDate { get; set; }
+
+            /// <summary>
+            /// Lap time 
+            /// </summary>
+            public TimeSpan LapTime { get; set; }
+
+            /// <summary>
+            /// Lap number
+            /// </summary>
+            public int LapNumber { get; set; }
+
+            /// <summary>
+            /// Lap Id
+            /// </summary>
+            public Guid LapId { get; set; }
+
+            /// <summary>
+            /// Session Id
+            /// </summary>
+            public Guid SessionId { get; set; }
+
+            /// <summary>
+            /// Positions 
+            /// </summary>
+            public List<KeyValuePair<TimeSpan, float>> CarPositions { get; set; }
+
+            public List<KeyValuePair<TimeSpan, float[]>> CarCoordinates { get; set; }
+
+            public Dictionary<int, TimeSpan> SectorsTime { get; set; }
+        }
         private void tbZoom_ValueChanged(object sender, EventArgs e)
         {
             SetImageZoom();
@@ -178,22 +255,25 @@ namespace MapGenerator
 
         private void exportMapToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            RefreshMap();
-            FolderBrowserDialogEx diag = new FolderBrowserDialogEx();
-            if (!string.IsNullOrEmpty(Properties.Settings.Default.LastExportFolder))
+            if (data != null)
             {
-                if (Directory.Exists(Properties.Settings.Default.LastExportFolder))
+                RefreshMap();
+                FolderBrowserDialogEx diag = new FolderBrowserDialogEx();
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.LastExportFolder))
                 {
-                    diag.SelectedPath = Properties.Settings.Default.LastExportFolder;
+                    if (Directory.Exists(Properties.Settings.Default.LastExportFolder))
+                    {
+                        diag.SelectedPath = Properties.Settings.Default.LastExportFolder;
+                    }
                 }
-            }
 
-            //diag.
-            if (diag.ShowDialog() == DialogResult.OK)
-            {
-                data.ExportMap(diag.SelectedPath);
-                Properties.Settings.Default.LastExportFolder = diag.SelectedPath;
-                Properties.Settings.Default.Save();
+                //diag.
+                if (diag.ShowDialog() == DialogResult.OK)
+                {
+                    data.ExportMap(diag.SelectedPath);
+                    Properties.Settings.Default.LastExportFolder = diag.SelectedPath;
+                    Properties.Settings.Default.Save();
+                }
             }
         }
 
@@ -221,6 +301,25 @@ namespace MapGenerator
 
                 recordForm.ShowDialog();
             }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            //if (data != null)
+            //    RefreshMap();
+        }
+
+        private void cbDrawSectorSeparators_CheckedChanged(object sender, EventArgs e)
+        {
+            numSectorSeparatorHeight.Enabled = cbDrawSectorSeparators.Checked;
+            numSectorSeparatorWidth.Enabled = cbDrawSectorSeparators.Checked;
+            sectorSeparatorColorPicker.Enabled = cbDrawSectorSeparators.Checked;
+        }
+
+        private void cbHighlightTurns_CheckedChanged(object sender, EventArgs e)
+        {
+            numTurnAngle.Enabled = cbHighlightTurns.Checked;
+            TurnColorPicker.Enabled = cbHighlightTurns.Checked;
         }
     }
 }

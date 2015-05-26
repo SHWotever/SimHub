@@ -1,12 +1,6 @@
 ﻿using ACSharedMemory;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections;
 using System.Windows.Forms;
 using TimingClient.Plugins;
 
@@ -22,28 +16,81 @@ namespace ACHub
         public MainForm()
         {
 
+            
+            Hashtable props = new Hashtable();
+            props["port"] = 8080;
+            props["name"] = "ACManager";
+
+            //Set up for remoting events properly
+            //BinaryServerFormatterSinkProvider serverProv = new BinaryServerFormatterSinkProvider();
+            //serverProv.TypeFilterLevel = System.Runtime.Serialization.Formatters.TypeFilterLevel.Full;
+            //var serverChannel = new TcpServerChannel(props, serverProv);
+            //ChannelServices.RegisterChannel(serverChannel, false);
+
             InitializeComponent();
 
-            this.Text = string.Format("{0} - {1}", FORM_TITLE, "Disconected");
+            this.Text = string.Format("{0} - {1}", FORM_TITLE, "Game disconnected");
 
             ACManager = new ACSharedMemory.ACManager();
             ACManager.SynchronizingObject = this;
-            ACManager.GameStateChanged += ACManager_GameStateChanged;
+
+            //ACManagerRemoteMarshal = RemotingServices.Marshal(ACManager, "ACManager");
+            //managerRemote = (ACManager)Activator.GetObject(typeof(ACManager), "tcp://cortex:8080/ACManager");
+            //PluginManager = new TimingClient.Plugins.PluginManager(managerRemote);
 
             PluginManager = new TimingClient.Plugins.PluginManager(ACManager);
+            PluginManager.GameStateChanged += PluginManager_GameStateChanged;
+            this.pluginManagerUI1.Init(PluginManager);
 
             ACManager.Start();
-            this.pluginManagerUI1.Init(PluginManager);
+
+            this.Resize += MainForm_Resize;
         }
 
-        private void ACManager_GameStateChanged(bool running, ACSharedMemory.ACManager manager)
+        private void PluginManager_GameStateChanged(bool running, PluginManager manager)
         {
-
-            this.Text = string.Format("{0} - {1}", FORM_TITLE, running ? "Connected" : "Disconected");
-
+            this.Invoke((MethodInvoker)delegate
+            {
+                this.Text = string.Format("{0} - {1}", FORM_TITLE, running ? "Game connected" : "Game disconnected");
+            });
         }
 
-     
+        private bool allowVisible;     // ContextMenu's Show command used
+        private bool allowClose;       // ContextMenu's Exit command used
 
+        protected override void SetVisibleCore(bool value)
+        {
+            //if (!allowVisible)
+            //{
+            //    value = false;
+            //    if (!this.IsHandleCreated) CreateHandle();
+            //}
+            base.SetVisibleCore(value);
+        }
+
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                notifyIcon.Visible = true;
+                //notifyIcon.ShowBalloonTip(3000);
+                this.ShowInTaskbar = false;
+            }
+        }
+
+        private void ImportStatusForm_Resize(object sender, EventArgs e)
+        {
+        }
+
+        private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            allowVisible = true;
+
+            this.WindowState = FormWindowState.Normal;
+            this.ShowInTaskbar = true;
+            notifyIcon.Visible = false;
+
+            this.Show();
+        }
     }
 }

@@ -1,25 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using ACToolsUtilities;
+﻿using ACToolsUtilities;
+using System;
 using System.CodeDom.Compiler;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace TimingClient.Plugins.DataPlugins.DataCore
 {
+    /// <summary>
+    /// Expression editor form
+    /// </summary>
     public partial class ExpressionEditor : Form
     {
+        private PluginManager manager;
+
+        /// <summary>
+        /// CTOR
+        /// </summary>
         public ExpressionEditor()
         {
             InitializeComponent();
         }
-        PluginManager manager;
-
+        /// <summary>
+        /// Edit expression
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <param name="manager"></param>
+        /// <returns></returns>
         public Expression ShowDialog(Expression expression, PluginManager manager)
         {
             this.manager = manager;
@@ -35,7 +41,6 @@ namespace TimingClient.Plugins.DataPlugins.DataCore
                     Assemblies = this.txtAssemblies.Lines.Where(i => !string.IsNullOrWhiteSpace(i)).OrderBy(i => i).ToList(),
                     Code = this.txtCode.Text
                 };
-
             }
             return null;
         }
@@ -44,6 +49,7 @@ namespace TimingClient.Plugins.DataPlugins.DataCore
         {
             var assemblies = this.txtAssemblies.Lines.Where(i => !string.IsNullOrWhiteSpace(i)).OrderBy(i => i).ToList();
             assemblies.Add(typeof(PluginManager).Assembly.Location);
+            assemblies.Add(typeof(ACSharedMemory.ACManager).Assembly.Location);
 
             var result = EvalProvider.EvalCode<PluginManager, object>(manager, this.txtCode.Text, null, assemblies.Distinct().ToArray());
             this.txtErrors.Text = string.Join("\r\n", result.CompilerResults.Errors.Cast<CompilerError>().Select(i => i.Line + " : " + i.ErrorText));
@@ -65,6 +71,12 @@ namespace TimingClient.Plugins.DataPlugins.DataCore
             }
         }
 
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.Close();
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             this.txtDump.Text = string.Empty;
@@ -73,28 +85,19 @@ namespace TimingClient.Plugins.DataPlugins.DataCore
                 this.txtDump.Text += string.Format("{0}\t{2} [{1}]\r\n", prop.Key, prop.Value.Key, prop.Value.Value);
             }
         }
-
-        private void btnSave_Click(object sender, EventArgs e)
+        private void txtName_KeyPress(object sender, KeyPressEventArgs e)
         {
-            this.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.Close();
+            var i = e.KeyChar;
+            if (i == '\b') { return; }
+            if ((i >= 'a' && i <= 'z') || (i >= 'A' && i <= 'Z') || (i >= '0' && i <= '9') || i == '.')
+            {
+            }
+            else { e.Handled = true; }
         }
 
         private void txtName_TextChanged(object sender, EventArgs e)
         {
             txtName.Text = new String(txtName.Text.Where(i => (i >= 'a' && i <= 'z') || (i >= 'A' && i <= 'Z') || (i >= '0' && i <= '9') || i == '.').ToArray());
-        }
-
-        private void txtName_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            
-            var i = e.KeyChar;
-            if (i == '\b') { return; }
-            if ((i >= 'a' && i <= 'z') || (i >= 'A' && i <= 'Z') || (i >= '0' && i <= '9') || i == '.')
-            {
-
-            }
-            else { e.Handled = true; }
         }
     }
 }

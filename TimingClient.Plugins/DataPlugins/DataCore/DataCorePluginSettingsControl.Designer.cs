@@ -31,7 +31,7 @@
             this.btnAddExpression = new System.Windows.Forms.Button();
             this.btnRemoveExpression = new System.Windows.Forms.Button();
             this.btnEditExpression = new System.Windows.Forms.Button();
-            this.lstExpressions = new TimingClient.Plugins.OutputPlugins.Dash.RefreshingListBox();
+            this.lstExpressions = new ACToolsUtilities.UI.RefreshingListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -76,7 +76,7 @@
             this.lstExpressions.FormattingEnabled = true;
             this.lstExpressions.Location = new System.Drawing.Point(3, 3);
             this.lstExpressions.Name = "lstExpressions";
-            this.lstExpressions.Size = new System.Drawing.Size(652, 463);
+            this.lstExpressions.Size = new System.Drawing.Size(764, 463);
             this.lstExpressions.TabIndex = 0;
             // 
             // groupBox1
@@ -85,7 +85,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(664, 523);
+            this.groupBox1.Size = new System.Drawing.Size(776, 523);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Custom data (c# scripts)";
@@ -102,7 +102,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(658, 504);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(770, 504);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // flowLayoutPanel1
@@ -114,7 +114,7 @@
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 472);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(652, 29);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(764, 29);
             this.flowLayoutPanel1.TabIndex = 8;
             // 
             // DataCorePluginSettingsControl
@@ -123,7 +123,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupBox1);
             this.Name = "DataCorePluginSettingsControl";
-            this.Size = new System.Drawing.Size(664, 523);
+            this.Size = new System.Drawing.Size(776, 523);
             this.groupBox1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
@@ -134,7 +134,7 @@
 
         #endregion
 
-        private TimingClient.Plugins.OutputPlugins.Dash.RefreshingListBox lstExpressions;
+        private ACToolsUtilities.UI.RefreshingListBox lstExpressions;
         private System.Windows.Forms.Button btnAddExpression;
         private System.Windows.Forms.Button btnRemoveExpression;
         private System.Windows.Forms.Button btnEditExpression;

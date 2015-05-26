@@ -13,6 +13,10 @@ namespace TimingClient.Plugins.UI
     public partial class PluginsSettings : UserControl
     {
         private Size itemSize;
+
+        /// <summary>
+        /// CTor
+        /// </summary>
         public PluginsSettings()
         {
             InitializeComponent();
@@ -20,6 +24,12 @@ namespace TimingClient.Plugins.UI
             this.verticalTabControl1.TabPages.Clear();
         }
 
+        /// <summary>
+        /// Add plugin settings control
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="version"></param>
+        /// <param name="control"></param>
         public void AddPlugin(string name, string version, Control control)
         {
             this.verticalTabControl1.ItemSize = itemSize;

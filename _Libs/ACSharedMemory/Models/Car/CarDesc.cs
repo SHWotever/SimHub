@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using IniParser;
+using System;
+using System.IO;
 
 namespace ACSharedMemory.Models.Car
 {
@@ -13,7 +15,11 @@ namespace ACSharedMemory.Models.Car
             get { return carPath; }
         }
 
-        public string Model { get; private set; }
+        public string Model
+        {
+            get;
+            private set;
+        }
 
         public static CarDesc FromModel(string ACPAth, string model)
         {
@@ -22,6 +28,24 @@ namespace ACSharedMemory.Models.Car
             result.CarInfo = CarInfo.FromModel(ACPAth, model);
             result.Model = model;
             return result;
+        }
+
+        public static CarDesc GetFromGameSettings(string acpath)
+        {
+            var parser = new FileIniDataParser();
+            parser.Parser.Configuration.AssigmentSpacer = "";
+
+            var raceIniPath = System.IO.Path.Combine(Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments), "Assetto Corsa", "cfg", "race.ini");
+
+            if (!File.Exists(raceIniPath))
+            {
+                return null;
+            }
+            var data = parser.ReadFile(raceIniPath);
+
+            string Model = data["RACE"]["MODEL"];
+
+            return CarDesc.FromModel(acpath, Model);
         }
 
         public byte[] GetCarBadge()
@@ -34,31 +58,57 @@ namespace ACSharedMemory.Models.Car
             return null;
         }
 
-        public byte[] GetCarPreview()
+        public string CarPreviewPath
         {
-            string[] filenames = { "preview_small.png", "preview.png", "preview.jpg", "preview_small.jpg" };
-
-            foreach (var filename in filenames)
+            get
             {
-                string path = System.IO.Path.Combine(carPath, "ui", filename);
-                if (System.IO.File.Exists(path))
+                string skinspath = System.IO.Path.Combine(carPath, "skins");
+                if (Directory.Exists(skinspath))
                 {
-                    return System.IO.File.ReadAllBytes(path);
-                }
-            }
-
-            foreach (var skin in Directory.GetDirectories(System.IO.Path.Combine(carPath, "skins")))
-            {
-                foreach (var filename in filenames)
-                {
-                    var path = Path.Combine(skin, filename);
-                    if (System.IO.File.Exists(path))
+                    foreach (var skin in Directory.GetDirectories(skinspath))
                     {
-                        return System.IO.File.ReadAllBytes(path);
+                        string path = System.IO.Path.Combine(skin, "preview.jpg");
+                        if (System.IO.File.Exists(path))
+                        {
+                            return path;
+                        }
                     }
                 }
-            }
 
+                string[] filenames = { "preview_small.png", "preview.png", "preview.jpg", "preview_small.jpg" };
+
+                foreach (var filename in filenames)
+                {
+                    string path = System.IO.Path.Combine(carPath, "ui", filename);
+                    if (System.IO.File.Exists(path))
+                    {
+                        return path;
+                    }
+                }
+
+                foreach (var skin in Directory.GetDirectories(System.IO.Path.Combine(carPath, "skins")))
+                {
+                    foreach (var filename in filenames)
+                    {
+                        var path = Path.Combine(skin, filename);
+                        if (System.IO.File.Exists(path))
+                        {
+                            return path;
+                        }
+                    }
+                }
+
+                return null;
+            }
+        }
+
+        public byte[] GetCarPreview()
+        {
+            var path = CarPreviewPath;
+            if (System.IO.File.Exists(path))
+            {
+                return System.IO.File.ReadAllBytes(path);
+            }
             return null;
         }
     }

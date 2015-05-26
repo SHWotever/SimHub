@@ -59,12 +59,23 @@ namespace TimingClient.V2
             Task.Factory.StartNew(() =>
             {
                 dash = new DashDisplay();
+                manager.SynchronizingObject = this;
                 manager.UpdateInterval = 10;
                 manager.DataUpdated += manager_DataUpdated;
                 manager.GameStateChanged += manager_GameStateChanged;
+                manager.CarChanged += manager_CarChanged;
                 manager.Enabled = true;
                 manager.Start();
             });
+        }
+
+        void manager_CarChanged(ACSharedMemory.Models.Car.CarDesc newCar, ACManager manager)
+        {
+            if (newCar != null)
+            {
+                this.linkCar.Tag = newCar.CarPath;
+                this.linkCar.Text = newCar.Model;
+            }
         }
 
         void manager_GameStateChanged(bool running, ACManager manager)
@@ -90,8 +101,12 @@ namespace TimingClient.V2
                         ResetSession();
                         return;
                     }
+                    if (g.Status != AC_STATUS.AC_LIVE)
+                    {
+                        return;
+                    }
 
-                    if (data.Events.GameStarted || data.Events.SessionRestarted)
+                    if (data.Events.GameStarted || data.Events.SessionRestarted || sessionId == -1)
                     {
                         ResetSession();
 
@@ -123,41 +138,40 @@ namespace TimingClient.V2
                     }
 
                     SetCurrentPlayer();
-                    if (g.Status == AC_STATUS.AC_LIVE)
+
+                    if (data.Events.IsNewLap)
                     {
-                        if (data.Events.IsNewLap)
+                        using (AsettoCorsaTrackingEntities acdb = new AsettoCorsaTrackingEntities())
                         {
-                            using (AsettoCorsaTrackingEntities acdb = new AsettoCorsaTrackingEntities())
+                            if (!data.Events.IsPreviousLapTest)
                             {
-                                if (!data.Events.IsPreviousLapTest)
+                                CarPosition.Add(new KeyValuePair<TimeSpan, float>(ACHelper.ToTimeSpan(g.iLastTime), 1));
+                                var lap = new Lap
                                 {
-                                    CarPosition.Add(new KeyValuePair<TimeSpan, float>(ACHelper.ToTimeSpan(g.iLastTime), 1));
-                                    var lap = new Lap
-                                    {
-                                        LapNumber = data.NewData.Graphics.CompletedLaps,
-                                        LapTime = ACHelper.ToTimeSpan(g.iLastTime),
-                                        SessionId = this.sessionId,
-                                        Timings = Newtonsoft.Json.JsonConvert.SerializeObject(CarPosition)
-                                    };
+                                    LapNumber = data.NewData.Graphics.CompletedLaps,
+                                    LapTime = ACHelper.ToTimeSpan(g.iLastTime),
+                                    SessionId = this.sessionId,
+                                    Timings = Newtonsoft.Json.JsonConvert.SerializeObject(CarPosition)
+                                };
 
-                                    acdb.Lap.Add(lap);
-                                    acdb.SaveChanges();
-                                }
-
-                                ResetCarPosition();
-                                FindBestLap(acdb, data.Track, s.CarModel);
+                                acdb.Lap.Add(lap);
+                                acdb.SaveChanges();
                             }
-                        }
 
-                        // Track timings all 100ms
-                        if (CarPosition.Count == 0 || CarPosition.Last().Key.TotalMilliseconds + 50 < ACHelper.ToTimeSpan(g.iCurrentTime).TotalMilliseconds)
-                        {
-                            if (CarPosition.Count == 0 || CarPosition.Last().Value < g.NormalizedCarPosition)
-                            {
-                                CarPosition.Add(new KeyValuePair<TimeSpan, float>(ACHelper.ToTimeSpan(g.iCurrentTime), g.NormalizedCarPosition));
-                            }
+                            ResetCarPosition();
+                            FindBestLap(acdb, data.Track, s.CarModel);
                         }
                     }
+
+                    // Track timings all 100ms
+                    if (CarPosition.Count == 0 || CarPosition.Last().Key.TotalMilliseconds + 50 < ACHelper.ToTimeSpan(g.iCurrentTime).TotalMilliseconds)
+                    {
+                        if (CarPosition.Count == 0 || CarPosition.Last().Value < g.NormalizedCarPosition)
+                        {
+                            CarPosition.Add(new KeyValuePair<TimeSpan, float>(ACHelper.ToTimeSpan(g.iCurrentTime), g.NormalizedCarPosition));
+                        }
+                    }
+
 
                     outputdata.AllTimeDelta = ACHelper.GetLapDelta(g, BestLapData);
                     outputdata.MyTimeDelta = ACHelper.GetLapDelta(g, MyBestLapData);
@@ -225,7 +239,7 @@ namespace TimingClient.V2
             }
         }
 
-        private Car GetCar(StaticInfo s, AsettoCorsaTrackingEntities acdb)
+        private static Car GetCar(StaticInfo s, AsettoCorsaTrackingEntities acdb)
         {
             Car car = acdb.Car.FirstOrDefault(i => i.Code == s.CarModel);
 
@@ -325,6 +339,15 @@ namespace TimingClient.V2
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
             this.manager.UpdateInterval = (int)numericUpDown1.Value;
+        }
+
+        private void linkCar_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                Process.Start(linkCar.Tag as string);
+            }
+            catch { }
         }
     }
 }
