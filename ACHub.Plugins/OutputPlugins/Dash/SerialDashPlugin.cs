@@ -154,6 +154,9 @@ namespace ACHub.Plugins.OutputPlugins.Dash
         /// <param name="data"></param>
         public void DataUpdate(PluginManager pluginManager, ACSharedMemory.GameData data)
         {
+            dash.SetText("");
+            dash.SetLedsColor(LedColor.None);
+            
             lock (settings)
             {
                 if (data.GameRunning)
@@ -190,10 +193,7 @@ namespace ACHub.Plugins.OutputPlugins.Dash
                     currentStaticScreen = null;
                 }
 
-                for (int i = 0; i < 4; i++)
-                {
-                    dash.SetLedsColor(i, SerialDash.LedColor.None);
-                }
+
 
                 if (data.GameRunning)
                 {
@@ -264,7 +264,7 @@ namespace ACHub.Plugins.OutputPlugins.Dash
 
         private int DisplayScreen(PluginManager pluginManager, System.Collections.Generic.List<Screen> RunningScreens, int CurrentScreenIndex)
         {
-            dash.SetText(CurrentScreenIndex, "");
+
 
             if (RunningScreens.Count > 0)
             {

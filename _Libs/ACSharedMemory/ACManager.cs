@@ -329,7 +329,9 @@ namespace ACSharedMemory
 
         private bool CheckGameRunning()
         {
-            if (!ACHelper.IsProcessRunning())
+            var path = ACHelper.GetAsettoCorsaPath();
+
+            if (path == null)
             {
                 SetGameState(false);
                 return false;
@@ -341,7 +343,7 @@ namespace ACSharedMemory
                 return false;
             }
 
-            data.GamePath = ACHelper.GetAsettoCorsaPath();
+            data.GamePath = path;
             SetGameState(true);
             return true;
         }

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapGenerator", "MapGenerator\MapGenerator.csproj", "{46867015-B02C-40B2-BA7B-DE7BCBA75923}"
 EndProject
@@ -111,5 +111,8 @@ Global
 		{D975435B-A98F-4733-99D4-7A786FEF8EA5} = {D293C1FB-29E8-41F9-A59A-5CFA60C87763}
 		{3B375A90-757C-4854-9C8F-79EF65157317} = {D293C1FB-29E8-41F9-A59A-5CFA60C87763}
 		{50868155-3276-45FA-993A-DEB931AF229E} = {D293C1FB-29E8-41F9-A59A-5CFA60C87763}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

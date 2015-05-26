@@ -588,6 +588,17 @@ namespace SerialDash
             this.DashLeds[screenIndex][ledNumber] = color;
         }
 
+        public void SetLedsColor(LedColor color)
+        {
+            for (int i = 0; i < this.DashLeds.Count; i++)
+            {
+                for (int j = 0; j < DashLeds[i].Count; j++)
+                {
+                    this.DashLeds[i][j] = color;
+                }
+            }
+        }
+
         public void SetRGBLedColor(int ledNumber, Color color)
         {
             this.RGBLedColor[ledNumber] = color;
@@ -612,6 +623,14 @@ namespace SerialDash
         public void SetText(int screenIndex, string text)
         {
             this.DashStrings[screenIndex] = text;
+        }
+
+        public void SetText(string text)
+        {
+            for (int i = 0; i < this.DashStrings.Count; i++)
+            {
+                this.DashStrings[i] = text;
+            }
         }
 
         private static byte InvertDataByte(byte data)
