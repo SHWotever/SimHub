@@ -92,7 +92,7 @@
             this.tabControl1.Location = new System.Drawing.Point(3, 16);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(971, 412);
+            this.tabControl1.Size = new System.Drawing.Size(971, 413);
             this.tabControl1.TabIndex = 20;
             // 
             // tabPage1
@@ -100,7 +100,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(963, 386);
+            this.tabPage1.Size = new System.Drawing.Size(963, 387);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -228,7 +228,7 @@
             this.Announce.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Announce.Location = new System.Drawing.Point(3, 55);
             this.Announce.Name = "Announce";
-            this.Announce.Size = new System.Drawing.Size(977, 119);
+            this.Announce.Size = new System.Drawing.Size(977, 118);
             this.Announce.TabIndex = 24;
             this.Announce.TabStop = false;
             this.Announce.Text = "Announce content (leave empty for no announce)";
@@ -243,7 +243,7 @@
             this.flpAnnounce.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flpAnnounce.Location = new System.Drawing.Point(3, 16);
             this.flpAnnounce.Name = "flpAnnounce";
-            this.flpAnnounce.Size = new System.Drawing.Size(971, 100);
+            this.flpAnnounce.Size = new System.Drawing.Size(971, 99);
             this.flpAnnounce.TabIndex = 24;
             // 
             // groupBox1
@@ -251,9 +251,9 @@
             this.tableLayoutPanel1.SetColumnSpan(this.groupBox1, 2);
             this.groupBox1.Controls.Add(this.tabControl1);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox1.Location = new System.Drawing.Point(3, 180);
+            this.groupBox1.Location = new System.Drawing.Point(3, 179);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(977, 431);
+            this.groupBox1.Size = new System.Drawing.Size(977, 432);
             this.groupBox1.TabIndex = 25;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Live content";
@@ -262,34 +262,34 @@
             // 
             this.screenAnnounceEditor1.Location = new System.Drawing.Point(3, 3);
             this.screenAnnounceEditor1.Name = "screenAnnounceEditor1";
-            this.screenAnnounceEditor1.Size = new System.Drawing.Size(177, 94);
+            this.screenAnnounceEditor1.Size = new System.Drawing.Size(178, 93);
             this.screenAnnounceEditor1.TabIndex = 0;
             this.screenAnnounceEditor1.Title = "Module 1";
             this.screenAnnounceEditor1.Value = "";
             // 
             // screenAnnounceEditor2
             // 
-            this.screenAnnounceEditor2.Location = new System.Drawing.Point(186, 3);
+            this.screenAnnounceEditor2.Location = new System.Drawing.Point(187, 3);
             this.screenAnnounceEditor2.Name = "screenAnnounceEditor2";
-            this.screenAnnounceEditor2.Size = new System.Drawing.Size(177, 94);
+            this.screenAnnounceEditor2.Size = new System.Drawing.Size(178, 93);
             this.screenAnnounceEditor2.TabIndex = 1;
             this.screenAnnounceEditor2.Title = "Module 2";
             this.screenAnnounceEditor2.Value = "";
             // 
             // screenAnnounceEditor3
             // 
-            this.screenAnnounceEditor3.Location = new System.Drawing.Point(369, 3);
+            this.screenAnnounceEditor3.Location = new System.Drawing.Point(371, 3);
             this.screenAnnounceEditor3.Name = "screenAnnounceEditor3";
-            this.screenAnnounceEditor3.Size = new System.Drawing.Size(177, 94);
+            this.screenAnnounceEditor3.Size = new System.Drawing.Size(178, 93);
             this.screenAnnounceEditor3.TabIndex = 2;
             this.screenAnnounceEditor3.Title = "Module 3";
             this.screenAnnounceEditor3.Value = "";
             // 
             // screenAnnounceEditor4
             // 
-            this.screenAnnounceEditor4.Location = new System.Drawing.Point(552, 3);
+            this.screenAnnounceEditor4.Location = new System.Drawing.Point(555, 3);
             this.screenAnnounceEditor4.Name = "screenAnnounceEditor4";
-            this.screenAnnounceEditor4.Size = new System.Drawing.Size(177, 94);
+            this.screenAnnounceEditor4.Size = new System.Drawing.Size(178, 93);
             this.screenAnnounceEditor4.TabIndex = 3;
             this.screenAnnounceEditor4.Title = "Module 4";
             this.screenAnnounceEditor4.Value = "";

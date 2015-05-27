@@ -43,7 +43,6 @@
             this.txtAnnouceText = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.display1 = new SerialDash.Display();
             this.lblPreview = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.panelEdit = new System.Windows.Forms.Panel();
@@ -62,6 +61,7 @@
             this.txtText = new System.Windows.Forms.TextBox();
             this.rbExpression = new System.Windows.Forms.RadioButton();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.display1 = new ACHub.Plugins.OutputPlugins.Dash.DashDisplay();
             this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -239,34 +239,23 @@
             this.tableLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tableLayoutPanel2.ColumnCount = 2;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Controls.Add(this.display1, 0, 0);
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 66.66666F));
             this.tableLayoutPanel2.Controls.Add(this.lblPreview, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.display1, 0, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 61F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(1194, 56);
             this.tableLayoutPanel2.TabIndex = 2;
-            // 
-            // display1
-            // 
-            this.display1.BackColor = System.Drawing.Color.Black;
-            this.display1.Location = new System.Drawing.Point(3, 3);
-            this.display1.Name = "display1";
-            this.display1.Padding = new System.Windows.Forms.Padding(10);
-            this.display1.Size = new System.Drawing.Size(220, 55);
-            this.display1.TabIndex = 1;
             // 
             // lblPreview
             // 
             this.lblPreview.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.lblPreview.AutoSize = true;
             this.lblPreview.Font = new System.Drawing.Font("Consolas", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPreview.Location = new System.Drawing.Point(229, 9);
+            this.lblPreview.Location = new System.Drawing.Point(202, 6);
             this.lblPreview.Name = "lblPreview";
             this.lblPreview.Size = new System.Drawing.Size(159, 43);
             this.lblPreview.TabIndex = 0;
@@ -469,6 +458,13 @@
             this.timer1.Enabled = true;
             this.timer1.Interval = 50;
             // 
+            // display1
+            // 
+            this.display1.Location = new System.Drawing.Point(3, 3);
+            this.display1.Name = "display1";
+            this.display1.Size = new System.Drawing.Size(193, 49);
+            this.display1.TabIndex = 1;
+            // 
             // ScreenEditorControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -511,7 +507,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private SerialDash.Display display1;
         private System.Windows.Forms.Label lblPreview;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Panel panelEdit;
@@ -534,5 +529,6 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtAnnouceText;
+        private DashDisplay display1;
     }
 }

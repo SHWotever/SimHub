@@ -19,8 +19,9 @@ namespace ACToolsUtilities.UI
             try { 
             //if (this.Items.Count > 0)
             {
-                this.SelectedIndex = Math.Min(this.SelectedIndex, this.Items.Count - 1);
+                int oldidx = this.SelectedIndex;
                 base.RefreshItems();
+                this.SelectedIndex = Math.Min(oldidx, this.Items.Count - 1);
             }
             }
             catch { }
