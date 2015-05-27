@@ -1,0 +1,16 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:SerialDashWPF"
+        x:Class="SerialDashWPF.DisplayWPF" mc:Ignorable="d" d:DesignHeight="265" d:DesignWidth="1384">
+    <Grid Margin="6">
+        <StackPanel Orientation="Horizontal" SizeChanged="StackPanel_SizeChanged">
+            <local:Letter x:Name="displayLetter0" Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type StackPanel}}}" />
+            <local:Letter x:Name="displayLetter1" Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type StackPanel}}}" />
+            <local:Letter x:Name="displayLetter2" Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type StackPanel}}}" />
+            <local:Letter x:Name="displayLetter3" Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type StackPanel}}}" />
+            <local:Letter x:Name="displayLetter4" Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type StackPanel}}}" />
+            <local:Letter x:Name="displayLetter5" Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type StackPanel}}}" />
+            <local:Letter x:Name="displayLetter6" Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type StackPanel}}}" />
+            <local:Letter x:Name="displayLetter7" Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type StackPanel}}}" />
+        </StackPanel>
+    </Grid>
+</UserControl>
