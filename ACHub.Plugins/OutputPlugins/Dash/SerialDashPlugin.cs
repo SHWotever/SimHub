@@ -162,9 +162,10 @@ namespace ACHub.Plugins.OutputPlugins.Dash
                 if (data.GameRunning)
                 {
                     var fuelLapsRemaining = Convert.ToDouble(pluginManager.GetPropertyValue("DataCorePlugin.Computed.Fuel_RemainingLaps") ?? "-1");
+                    var fuelConsumption = Convert.ToDouble(pluginManager.GetPropertyValue("DataCorePlugin.Computed.Fuel_LitersPerLap") ?? "-1");
                     FuelLapsAlertManager.Started = fuelLapsRemaining <= settings.LowFuelLapsLevel;
 
-                    if (FuelLapsAlertManager.Elapsed && fuelLapsRemaining != -1 && data.NewData.Graphics.IsInPit == 0)
+                    if (FuelLapsAlertManager.Elapsed && fuelLapsRemaining != -1 && fuelConsumption > 0 && data.NewData.Graphics.IsInPit == 0)
                     {
                         FuelLapsAlertManager.Reset();
                         pluginManager.TriggerEvent("LowFuelLapAlert", typeof(SerialDashPlugin));

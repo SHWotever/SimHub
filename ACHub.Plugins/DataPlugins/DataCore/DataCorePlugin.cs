@@ -79,6 +79,10 @@ namespace ACHub.Plugins.DataPlugins.DataCore
         /// <param name="data"></param>
         public void DataUpdate(PluginManager pluginManager, ACSharedMemory.GameData data)
         {
+            pluginManager.SetPropertyValue("Computed.Fuel_RemainingLaps", typeof(DataCorePlugin), 0);
+            pluginManager.SetPropertyValue("Computed.Fuel_LitersPerLap", typeof(DataCorePlugin), 0);
+            pluginManager.SetPropertyValue("Computed.Fuel_Percent", typeof(DataCorePlugin), 0);
+
             if (data.GameRunning)
             {
                 //if (data.NewData != null)
@@ -145,8 +149,6 @@ namespace ACHub.Plugins.DataPlugins.DataCore
                     if (data.NewData.Graphics.IsInPit > 0) { fuel_InvalidLap = true; }
                 }
 
-                pluginManager.SetPropertyValue("Computed.Fuel_RemainingLaps", typeof(DataCorePlugin), null);
-                pluginManager.SetPropertyValue("Computed.Fuel_LitersPerLap", typeof(DataCorePlugin), null);
 
                 if (fuel_AverageConsumptionPerLap > 0)
                 {
@@ -222,6 +224,7 @@ namespace ACHub.Plugins.DataPlugins.DataCore
 
             pluginManager.AddEvent("NewLap", typeof(DataCorePlugin));
             pluginManager.AddEvent("NewValidLap", typeof(DataCorePlugin));
+            pluginManager.AddEvent("NewSessionBest", typeof(DataCorePlugin));
             pluginManager.AddEvent("SessionRestarted", typeof(DataCorePlugin));
             pluginManager.AddEvent("SessionStatusChanged", typeof(DataCorePlugin));
             pluginManager.AddEvent("GameStarted", typeof(DataCorePlugin));
@@ -318,6 +321,11 @@ namespace ACHub.Plugins.DataPlugins.DataCore
             if (!testLap)
             {
                 pluginManager.TriggerEvent("NewValidLap", typeof(DataCorePlugin));
+            }
+
+            if (manager.Status.OldData != null && manager.Status.OldData.BestLapTime != manager.Status.NewData.BestLapTime)
+            {
+                pluginManager.TriggerEvent("NewSessionBest", typeof(DataCorePlugin));
             }
         }
 
