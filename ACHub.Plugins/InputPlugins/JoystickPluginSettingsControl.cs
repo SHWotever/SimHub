@@ -38,6 +38,16 @@ namespace ACHub.Plugins.InputPlugins
                 });
             }
         }
+        public void Refresh(string input)
+        {
+            if (this.cbShowStatus.Checked)
+            {
+                this.Invoke((MethodInvoker)delegate
+                {
+                        this.txtSettings.Text += DateTime.Now.ToString() + " : " + DateTime.Now.ToString() + input + "\r\n";
+                });
+            }
+        }
 
         private void label1_Click(object sender, EventArgs e)
         {

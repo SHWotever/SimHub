@@ -76,6 +76,7 @@ namespace ACHub.Plugins.InputPlugins
         void im_LongPress(string input)
         {
             pluginManager.TriggerInput(input, typeof(JoystickPlugin), PressType.LongPress);
+            settingsControl.Refresh(input + " long press");
         }
 
         InputManager im = new InputManager();
@@ -95,16 +96,19 @@ namespace ACHub.Plugins.InputPlugins
             foreach (var i in im.GetShortInputs())
             {
                 pluginManager.TriggerInput(i, typeof(JoystickPlugin), PressType.ShortPress);
+                settingsControl.Refresh(i + " short pressed");
             }
 
             foreach (var i in im.GetNewInputs())
             {
                 pluginManager.TriggerInputPress(i, typeof(JoystickPlugin));
+                settingsControl.Refresh(i + " pressed");
             }
 
             foreach (var i in im.GetReleasedInputs())
             {
                 pluginManager.TriggerInputRelease(i, typeof(JoystickPlugin));
+                settingsControl.Refresh(i + " released");
             }
             //if (settingsControl != null)
             //{
