@@ -24,5 +24,7 @@ namespace ACSharedMemory.Reader
         public string Gear { get; internal set; }
 
         public float SpeedMph { get; internal set; }
+
+        public string SessionTypeName { get; internal set; }
     }
 }

@@ -189,6 +189,8 @@ namespace ACSharedMemory
                 data.NewData.LastSectorTime = TimeSpan.FromMilliseconds(this.data.NewData.Graphics.LastSectorTime);
                 data.NewData.SessionTimeLeft = TimeSpan.FromMilliseconds(this.data.NewData.Graphics.SessionTimeLeft);
                 data.NewData.SpeedMph = this.data.NewData.Physics.SpeedKmh * 0.621371192f;
+                data.NewData.SessionTypeName = this.data.NewData.Graphics.Session.ToString().Replace("AC_", "");
+                data.NewData.StatusName = this.data.NewData.Graphics.Status.ToString().Replace("AC_", "");
             }
         }
 
