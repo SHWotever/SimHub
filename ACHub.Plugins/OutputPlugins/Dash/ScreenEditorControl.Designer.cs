@@ -44,6 +44,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.lblPreview = new System.Windows.Forms.Label();
+            this.display1 = new ACHub.Plugins.OutputPlugins.Dash.DashDisplay();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.panelEdit = new System.Windows.Forms.Panel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
@@ -61,7 +62,6 @@
             this.txtText = new System.Windows.Forms.TextBox();
             this.rbExpression = new System.Windows.Forms.RadioButton();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.display1 = new ACHub.Plugins.OutputPlugins.Dash.DashDisplay();
             this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -255,12 +255,19 @@
             this.lblPreview.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.lblPreview.AutoSize = true;
             this.lblPreview.Font = new System.Drawing.Font("Consolas", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPreview.Location = new System.Drawing.Point(202, 6);
+            this.lblPreview.Location = new System.Drawing.Point(179, 6);
             this.lblPreview.Name = "lblPreview";
             this.lblPreview.Size = new System.Drawing.Size(159, 43);
             this.lblPreview.TabIndex = 0;
             this.lblPreview.Text = "PREVIEW";
             this.lblPreview.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // display1
+            // 
+            this.display1.Location = new System.Drawing.Point(3, 3);
+            this.display1.Name = "display1";
+            this.display1.Size = new System.Drawing.Size(170, 49);
+            this.display1.TabIndex = 1;
             // 
             // groupBox2
             // 
@@ -457,13 +464,6 @@
             // 
             this.timer1.Enabled = true;
             this.timer1.Interval = 50;
-            // 
-            // display1
-            // 
-            this.display1.Location = new System.Drawing.Point(3, 3);
-            this.display1.Name = "display1";
-            this.display1.Size = new System.Drawing.Size(193, 49);
-            this.display1.TabIndex = 1;
             // 
             // ScreenEditorControl
             // 

@@ -156,7 +156,7 @@ namespace ACSharedMemory.Models.Track
                 string MapIniPath = System.IO.Path.Combine(this.trackPath, this.MapPath, "data", "map.ini");
                 string MapImagePath = System.IO.Path.Combine(this.trackPath, this.MapPath, "map.png");
 
-                if (System.IO.File.Exists(MapImagePath))
+                if (System.IO.File.Exists(MapIniPath))
                 {
                     var mapdata = parser.ReadFile(MapIniPath);
 

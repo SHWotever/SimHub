@@ -323,7 +323,7 @@ namespace ACHub.Plugins.DataPlugins.DataCore
                 pluginManager.TriggerEvent("NewValidLap", typeof(DataCorePlugin));
             }
 
-            if (manager.Status.OldData != null && manager.Status.OldData.BestLapTime != manager.Status.NewData.BestLapTime)
+            if (!testLap && manager.Status.OldData != null && manager.Status.OldData.BestLapTime < manager.Status.NewData.BestLapTime && manager.Status.NewData.Graphics.iLastTime > 0)
             {
                 pluginManager.TriggerEvent("NewSessionBest", typeof(DataCorePlugin));
             }

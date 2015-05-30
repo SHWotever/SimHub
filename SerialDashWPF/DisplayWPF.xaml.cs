@@ -41,7 +41,7 @@ namespace SerialDashWPF
 
             for (int i = 0; i < 8; i++)
             {
-            letters[i].SetValue(bytes[i]);
+                letters[i].SetValue(bytes[i]);
             }
 
         }

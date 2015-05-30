@@ -15,7 +15,13 @@ namespace ACHub.Plugins.OutputPlugins.Dash
         public DashDisplay()
         {
             InitializeComponent();
-            this.SetText("             ");
+            if (this.DesignMode)
+            {
+                this.SetText("8.8.8.8.8.8.8.8.");
+            }
+            else {
+                this.SetText("             ");
+            }
         }
 
         public void SetText(string text)
