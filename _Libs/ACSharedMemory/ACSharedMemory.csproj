@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="Logging.cs" />
     <Compile Include="Models\Car\CarInfo.cs" />
+    <Compile Include="Models\Car\Skin.cs" />
     <Compile Include="Models\Car\Specs.cs" />
     <Compile Include="Reader\ACData.cs" />
     <Compile Include="Reader\ACReader.cs" />

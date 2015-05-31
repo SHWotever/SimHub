@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="LauncherLight.SkinItem" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d"
+        xmlns:converters="clr-namespace:LauncherLight.Converters" d:DesignWidth="440" d:DesignHeight="272">
+    <UserControl.Resources>
+        <converters:NullImageConverter x:Key="nullImageConverter" />
+    </UserControl.Resources>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="240" />
+        </Grid.ColumnDefinitions>
+        <Border BorderBrush="Black" BorderThickness="2" Margin="0">
+            <Image RenderOptions.BitmapScalingMode="HighQuality" Height="120" Width="240" Source="{Binding PreviewImage,IsAsync=True, Converter={StaticResource nullImageConverter}}"
+                    VerticalAlignment="Top" Grid.RowSpan="2" Stretch="Fill"></Image>
+        </Border>
+        <TextBlock  Grid.Row="2"  Text="{Binding Name}"></TextBlock>
+    </Grid>
+</UserControl>

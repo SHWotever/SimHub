@@ -11,9 +11,13 @@ namespace ACSharedMemory.Models.Car
 
         public static CarInfo FromFile(string path)
         {
-            var json = System.IO.File.ReadAllText(path);
-            var result = Newtonsoft.Json.JsonConvert.DeserializeObject<CarInfo>(json);
-            return result;
+            if (System.IO.File.Exists(path))
+            {
+                var json = System.IO.File.ReadAllText(path);
+                var result = Newtonsoft.Json.JsonConvert.DeserializeObject<CarInfo>(json);
+                return result;
+            }
+            return new CarInfo();
         }
 
         public string name { get; set; }

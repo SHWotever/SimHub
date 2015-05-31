@@ -1,4 +1,5 @@
-﻿using IniParser;
+﻿using ACToolsUtilities.Serialisation;
+using IniParser;
 using System;
 using System.Globalization;
 using System.IO;
@@ -142,13 +143,20 @@ namespace ACSharedMemory.Models.Track
             return defaultValue;
         }
 
+        public static TrackDesc FromName(string acpath, string trackCode, string trackConfig)
+        {
+            return new TrackDesc(acpath, trackCode, trackConfig);
+        }
+
+        public TrackDesc() { }
+
         public TrackDesc(string acpath, string trackCode, string trackConfig)
         {
             this.Track = trackCode;
             this.TrackConfig = trackConfig;
             this.trackPath = System.IO.Path.Combine(acpath, "content", "tracks");
 
-            var parser = new FileIniDataParser();
+            var parser = new IniFileReader();
             parser.Parser.Configuration.AssigmentSpacer = "";
 
             try

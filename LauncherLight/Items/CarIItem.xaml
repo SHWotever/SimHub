@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="LauncherLight.CarIItem" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300"
+        xmlns:converters="clr-namespace:LauncherLight.Converters">
+    <UserControl.Resources>
+        <converters:NullImageConverter x:Key="nullImageConverter" />
+    </UserControl.Resources>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="240" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Border BorderBrush="Black" BorderThickness="2" Margin="0,0,15,0">
+            <Image RenderOptions.BitmapScalingMode="HighQuality" Height="120" Width="240" Source="{Binding CarPreviewPath,IsAsync=True, Converter={StaticResource nullImageConverter}}"
+                    VerticalAlignment="Top" Grid.RowSpan="2" Stretch="Fill"></Image>
+        </Border>
+        <StackPanel Grid.Column="1">
+            <TextBlock Text="{Binding CarInfo.brand}" FontSize="12" TextWrapping="Wrap" />
+            <TextBlock Text="{Binding CarInfo.name}" FontSize="16" FontWeight="Bold" TextWrapping="Wrap" />
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding CarInfo.class}" FontSize="12" TextWrapping="Wrap" />
+                <TextBlock FontSize="12" Text=" - " TextWrapping="Wrap" />
+                <TextBlock Text="{Binding CarInfo.specs.bhp}" FontSize="12" TextWrapping="Wrap" />
+                <TextBlock FontSize="12" Text="" TextWrapping="Wrap" />
+            </StackPanel>
+        </StackPanel>
+        <!--<ItemsControl ItemsSource="{Binding Skins}" Grid.Column="1">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,3,0">
+                        <Image RenderOptions.BitmapScalingMode="HighQuality" Height="40" Width="70" Source="{Binding PreviewImage, IsAsync=True, Converter={StaticResource nullImageConverter}}"
+                                VerticalAlignment="Top" Grid.RowSpan="2" Stretch="Fill" />
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal" ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>-->
+    </Grid>
+</UserControl>

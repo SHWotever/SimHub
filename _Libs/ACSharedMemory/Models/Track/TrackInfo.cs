@@ -6,8 +6,15 @@ namespace ACSharedMemory.Models.Track
     {
         public static TrackInfo FromFile(string path)
         {
-            var json = System.IO.File.ReadAllText(path);
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<TrackInfo>(json);
+            if (System.IO.File.Exists(path))
+            {
+                var json = System.IO.File.ReadAllText(path);
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<TrackInfo>(json);
+            }
+            else
+            {
+                return new TrackInfo();
+            }
         }
 
         public string name { get; set; }

@@ -1,5 +1,6 @@
 ﻿using IniParser;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace ACSharedMemory.Models.Car
@@ -58,6 +59,26 @@ namespace ACSharedMemory.Models.Car
             return null;
         }
 
+        public IEnumerable<Skin> Skins
+        {
+            get
+            {
+                string skinspath = System.IO.Path.Combine(carPath, "skins");
+
+                if (Directory.Exists(skinspath))
+                {
+                    foreach (var skin in Directory.GetDirectories(skinspath))
+                    {
+                        string path = System.IO.Path.Combine(skin, "preview.jpg");
+                        if (System.IO.File.Exists(path))
+                        {
+                            yield return new Skin { Name = Path.GetFileName(skin), PreviewImage = path };
+                        }
+                    }
+                }
+            }
+        }
+
         public string CarPreviewPath
         {
             get
@@ -85,18 +106,18 @@ namespace ACSharedMemory.Models.Car
                         return path;
                     }
                 }
-
-                foreach (var skin in Directory.GetDirectories(System.IO.Path.Combine(carPath, "skins")))
-                {
-                    foreach (var filename in filenames)
+                if (System.IO.Directory.Exists(System.IO.Path.Combine(carPath, "skins")))
+                    foreach (var skin in Directory.GetDirectories(System.IO.Path.Combine(carPath, "skins")))
                     {
-                        var path = Path.Combine(skin, filename);
-                        if (System.IO.File.Exists(path))
+                        foreach (var filename in filenames)
                         {
-                            return path;
+                            var path = Path.Combine(skin, filename);
+                            if (System.IO.File.Exists(path))
+                            {
+                                return path;
+                            }
                         }
                     }
-                }
 
                 return null;
             }
