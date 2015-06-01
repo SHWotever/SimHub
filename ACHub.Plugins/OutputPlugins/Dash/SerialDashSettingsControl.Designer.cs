@@ -36,6 +36,7 @@
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnNewScreen = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
+            this.btnCopy = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnUp = new System.Windows.Forms.Button();
             this.btnDown = new System.Windows.Forms.Button();
@@ -49,7 +50,6 @@
             this.cbReverseModule2 = new System.Windows.Forms.CheckBox();
             this.cbReverseModule1 = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.ledEditor2 = new ACHub.Plugins.OutputPlugins.Dash.LedEditor();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
@@ -68,9 +68,13 @@
             this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
             this.numLowFuelRepeatInterval = new System.Windows.Forms.NumericUpDown();
             this.label8 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.flowLayoutPanel8 = new System.Windows.Forms.FlowLayoutPanel();
+            this.numAnnounceTime = new System.Windows.Forms.NumericUpDown();
+            this.label11 = new System.Windows.Forms.Label();
             this.detectTimer = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.btnCopy = new System.Windows.Forms.Button();
+            this.ledEditor2 = new ACHub.Plugins.OutputPlugins.Dash.LedEditor();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -89,6 +93,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numLowFuelLaps)).BeginInit();
             this.flowLayoutPanel6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numLowFuelRepeatInterval)).BeginInit();
+            this.flowLayoutPanel8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numAnnounceTime)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -185,6 +191,16 @@
             this.btnEdit.Text = "Edit";
             this.btnEdit.UseVisualStyleBackColor = true;
             this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
+            // 
+            // btnCopy
+            // 
+            this.btnCopy.Location = new System.Drawing.Point(165, 3);
+            this.btnCopy.Name = "btnCopy";
+            this.btnCopy.Size = new System.Drawing.Size(75, 23);
+            this.btnCopy.TabIndex = 8;
+            this.btnCopy.Text = "Copy";
+            this.btnCopy.UseVisualStyleBackColor = true;
+            this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
             // 
             // btnDelete
             // 
@@ -327,14 +343,6 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Leds";
             // 
-            // ledEditor2
-            // 
-            this.ledEditor2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ledEditor2.Location = new System.Drawing.Point(3, 16);
-            this.ledEditor2.Name = "ledEditor2";
-            this.ledEditor2.Size = new System.Drawing.Size(928, 385);
-            this.ledEditor2.TabIndex = 9;
-            // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.flowLayoutPanel2);
@@ -356,6 +364,8 @@
             this.flowLayoutPanel2.Controls.Add(this.flowLayoutPanel3);
             this.flowLayoutPanel2.Controls.Add(this.label7);
             this.flowLayoutPanel2.Controls.Add(this.flowLayoutPanel6);
+            this.flowLayoutPanel2.Controls.Add(this.label10);
+            this.flowLayoutPanel2.Controls.Add(this.flowLayoutPanel8);
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 16);
@@ -535,21 +545,67 @@
             this.label8.TabIndex = 11;
             this.label8.Text = "seconds";
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(3, 180);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(114, 13);
+            this.label10.TabIndex = 16;
+            this.label10.Text = "Screen announce time";
+            // 
+            // flowLayoutPanel8
+            // 
+            this.flowLayoutPanel8.AutoSize = true;
+            this.flowLayoutPanel8.Controls.Add(this.numAnnounceTime);
+            this.flowLayoutPanel8.Controls.Add(this.label11);
+            this.flowLayoutPanel8.Location = new System.Drawing.Point(3, 196);
+            this.flowLayoutPanel8.Name = "flowLayoutPanel8";
+            this.flowLayoutPanel8.Size = new System.Drawing.Size(107, 26);
+            this.flowLayoutPanel8.TabIndex = 17;
+            // 
+            // numAnnounceTime
+            // 
+            this.numAnnounceTime.DecimalPlaces = 1;
+            this.numAnnounceTime.Location = new System.Drawing.Point(3, 3);
+            this.numAnnounceTime.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.numAnnounceTime.Name = "numAnnounceTime";
+            this.numAnnounceTime.Size = new System.Drawing.Size(54, 20);
+            this.numAnnounceTime.TabIndex = 10;
+            this.numAnnounceTime.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label11
+            // 
+            this.label11.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(60, 6);
+            this.label11.Margin = new System.Windows.Forms.Padding(0);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(47, 13);
+            this.label11.TabIndex = 11;
+            this.label11.Text = "seconds";
+            // 
             // detectTimer
             // 
             this.detectTimer.Enabled = true;
             this.detectTimer.Interval = 2000;
             this.detectTimer.Tick += new System.EventHandler(this.detectTimer_Tick);
             // 
-            // btnCopy
+            // ledEditor2
             // 
-            this.btnCopy.Location = new System.Drawing.Point(165, 3);
-            this.btnCopy.Name = "btnCopy";
-            this.btnCopy.Size = new System.Drawing.Size(75, 23);
-            this.btnCopy.TabIndex = 8;
-            this.btnCopy.Text = "Copy";
-            this.btnCopy.UseVisualStyleBackColor = true;
-            this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
+            this.ledEditor2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ledEditor2.Location = new System.Drawing.Point(3, 16);
+            this.ledEditor2.Name = "ledEditor2";
+            this.ledEditor2.Size = new System.Drawing.Size(928, 385);
+            this.ledEditor2.TabIndex = 9;
             // 
             // SerialDashSettingsControl
             // 
@@ -584,6 +640,9 @@
             this.flowLayoutPanel6.ResumeLayout(false);
             this.flowLayoutPanel6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numLowFuelRepeatInterval)).EndInit();
+            this.flowLayoutPanel8.ResumeLayout(false);
+            this.flowLayoutPanel8.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numAnnounceTime)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -632,5 +691,9 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.NumericUpDown numIntensity;
         private System.Windows.Forms.Button btnCopy;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel8;
+        private System.Windows.Forms.NumericUpDown numAnnounceTime;
+        private System.Windows.Forms.Label label11;
     }
 }

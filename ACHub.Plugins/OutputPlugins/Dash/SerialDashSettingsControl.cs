@@ -53,6 +53,7 @@ namespace ACHub.Plugins.OutputPlugins.Dash
             this.numRPMOffset.ValueChanged -= Settings_numValueChanged;
             this.numLowFuelRepeatInterval.ValueChanged -= Settings_numValueChanged;
             this.numIntensity.ValueChanged -= Settings_numValueChanged;
+            this.numAnnounceTime.ValueChanged -= Settings_numValueChanged;
 
             this.cbReverseModule1.CheckedChanged -= this.Settings_cbCheckedChanged;
             this.cbReverseModule2.CheckedChanged -= this.Settings_cbCheckedChanged;
@@ -69,6 +70,8 @@ namespace ACHub.Plugins.OutputPlugins.Dash
             this.numRPMBlink.Value = (decimal)plugin.Settings.RpmBlinkingLevel;
             this.numLowFuelRepeatInterval.Value = (decimal)plugin.Settings.LowFuelLapsAlertInterval;
             this.numIntensity.Value = (decimal)plugin.Settings.Intensity;
+            this.numAnnounceTime.Value = (decimal)plugin.Settings.AnnounceTime;
+
 
             if (!light)
             {
@@ -92,6 +95,7 @@ namespace ACHub.Plugins.OutputPlugins.Dash
             this.numRPMOffset.ValueChanged += Settings_numValueChanged;
             this.numLowFuelRepeatInterval.ValueChanged += Settings_numValueChanged;
             this.numIntensity.ValueChanged += Settings_numValueChanged;
+            this.numAnnounceTime.ValueChanged += Settings_numValueChanged;
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -269,6 +273,7 @@ namespace ACHub.Plugins.OutputPlugins.Dash
             plugin.Settings.RpmBlinkingLevel = (double)numRPMBlink.Value;
             plugin.Settings.LowFuelLapsAlertInterval = (int)numLowFuelRepeatInterval.Value;
             plugin.Settings.Intensity = (int)numIntensity.Value;
+            plugin.Settings.AnnounceTime = (double)numAnnounceTime.Value;
             plugin.ApplySettings();
         }
 

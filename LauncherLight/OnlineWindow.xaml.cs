@@ -3,7 +3,6 @@ using ACSharedMemory.Models.Track;
 using IniParser;
 using IniParser.Model;
 using LauncherLight.Models;
-using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,51 +20,82 @@ namespace LauncherLight
     /// <summary>
     /// Logique d'interaction pour MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : MetroWindow
+    public partial class OnlineWindow : Window
     {
+    
 
         //private string GamePath = @"D:\Program Files (x86)\Assetto Corsa";
         //private string ServerPath = @"D:\Program Files (x86)\Assetto Corsa\Server";
-        public MainWindow()
+        public OnlineWindow()
         {
             InitializeComponent();
-            this.lstCars.SelectionChanged += lstCars_SelectionChanged;
-            this.lstServers.SelectionChanged += lstServer_SelectionChanged;
+
             Task.Factory.StartNew(() =>
             {
                 LoadData();
             });
         }
 
-        void lstServer_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            lstOnlineCars.DataContext = (lstServers.SelectedItem as ACServer).CarDescs.ToList();
-        }
-        void lstCars_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (lstCars.SelectedItem != null)
-            {
-                lstSkins.DataContext = (lstCars.SelectedItem as CarDesc).Skins.ToList();
-                lstSkins.SelectedValue = (lstCars.SelectedItem as CarDesc).Skins.First();
-            }
-        }
-
         private string GamePath { get { return Properties.Settings.Default.GamePath; } }
 
         private string ServerPath { get { return Properties.Settings.Default.ServerPath; } }
 
-        private void LoadData()
+         private void LoadData()
         {
-            List<Assist> TCassists = Helpers.GetTCAssits();
 
-            List<Assist> Stability = Helpers.GetStabilityAssists();
-            List<CarDesc> cars = Helpers.GetCars(GamePath);
-            List<TrackDesc> tracks = Helpers.GetTracks(GamePath);
+            var servers = Helpers.GetOnlineServer("76561197987605830");
+             
+            List<Assist> TCassists = new List<Assist>();
+            TCassists.Add(new Assist { Text = "Off", Value = "0" });
+            TCassists.Add(new Assist { Text = "Factory", Value = "1" });
+            TCassists.Add(new Assist { Text = "User defined", Value = "2" });
 
+            List<Assist> Stability = new List<Assist>();
+            Stability.Add(new Assist { Text = "Off", Value = "0" });
+            Stability.Add(new Assist { Text = "Allowed", Value = "1" });
+
+            List<CarDesc> cars = new List<CarDesc>();
+            try
+            {
+                if (System.IO.Directory.Exists(System.IO.Path.Combine(GamePath, "content", "cars")))
+                    foreach (var car in System.IO.Directory.GetDirectories(System.IO.Path.Combine(GamePath, "content", "cars")))
+                    {
+                        var card = CarDesc.FromModel(GamePath, System.IO.Path.GetFileName(car));
+                        cars.Add(card);
+                    }
+            }
+            catch { }
+
+            List<TrackDesc> tracks = new List<TrackDesc>();
+            try
+            {
+                if (System.IO.Directory.Exists(System.IO.Path.Combine(GamePath, "content", "tracks")))
+                    foreach (var track in System.IO.Directory.GetDirectories(System.IO.Path.Combine(GamePath, "content", "tracks")))
+                    {
+                        if (System.IO.Directory.GetDirectories(System.IO.Path.Combine(track, "ui")).Count() > 0)
+                        {
+                            foreach (var config in System.IO.Directory.GetDirectories(System.IO.Path.Combine(track, "ui")))
+                            {
+                                try
+                                {
+                                    tracks.Add(new TrackDesc(GamePath, System.IO.Path.GetFileName(track), System.IO.Path.GetFileName(config)));
+                                }
+                                catch { }
+                            }
+                        }
+                        else
+                        {
+                            try
+                            {
+                                tracks.Add(new TrackDesc(GamePath, System.IO.Path.GetFileName(track), null));
+                            }
+                            catch { }
+                        }
+                    }
+            }
+            catch { }
             cars = cars.OrderBy(i => i.CarInfo.brand).ThenBy(i => i.CarInfo.name).ToList();
             tracks = tracks.OrderBy(i => i.TrackInfo.name).ToList();
-            var servers = Helpers.GetOnlineServer("76561197987605830");
-
 
             Dispatcher.Invoke(() =>
             {
@@ -119,7 +149,7 @@ namespace LauncherLight
                 catch { }
 
                 this.lstCars.DataContext = cars;
-
+                this.lstServers.DataContext = servers;
                 this.lstTracks.DataContext = tracks;
                 try
                 {
@@ -144,17 +174,8 @@ namespace LauncherLight
                     this.lstPreset.SelectedItem = Properties.Settings.Default.LastPreset;
                 }
                 catch { }
-                Dispatcher.Invoke(() => { lstServers.DataContext = servers; });
             });
-
-            //
-
-
         }
-
-
-
-
 
         public void MergeIniFiles(string src, string target)
         {
@@ -315,9 +336,8 @@ namespace LauncherLight
             data["RACE"]["MODEL"] = car.Model;
             try
             {
-                data["CAR_0"]["SKIN"] = //System.IO.Path.GetFileName(
-                    //System.IO.Directory.GetDirectories(System.IO.Path.Combine(GamePath, "content\\cars", car.Model, "skins")).FirstOrDefault()); ;
-                    (lstSkins.SelectedItem as Skin).Name;
+                data["CAR_0"]["SKIN"] = System.IO.Path.GetFileName(
+                    System.IO.Directory.GetDirectories(System.IO.Path.Combine(GamePath, "content\\cars", car.Model, "skins")).FirstOrDefault()); ;
             }
             catch { }
 
@@ -558,19 +578,15 @@ namespace LauncherLight
             Findtrack(true);
         }
 
-        private void txtServerSearch_PreviewKeyUp(object sender, KeyEventArgs e)
-        {
-
-        }
-
         private void txtServerSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
 
         }
 
-        private void txtServerSearch_TextChanged_1(object sender, TextChangedEventArgs e)
+        private void txtServerSearch_PreviewKeyUp(object sender, KeyEventArgs e)
         {
 
         }
+
     }
 }

@@ -184,7 +184,13 @@ namespace ACHub.Plugins.OutputPlugins.Dash
             this.RpmBlinkingLevel = 96;
             this.LowFuelLapsLevel = 2;
             this.LowFuelLapsAlertInterval = 30;
+            this.AnnounceTime = 0.5;
         }
+
+        /// <summary>
+        /// Announce screen display time (seconds)
+        /// </summary>
+        public double AnnounceTime { get; set; }
 
         /// <summary>
         /// High RPM Binking level

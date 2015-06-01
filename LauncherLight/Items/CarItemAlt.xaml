@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="LauncherLight.CarIItem" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+﻿<UserControl x:Class="LauncherLight.CarItemAlt" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300"
         xmlns:converters="clr-namespace:LauncherLight.Converters">
     <UserControl.Resources>
@@ -9,23 +9,25 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="260" />
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="270" />
+            <ColumnDefinition Width="*" />
+            <!--<ColumnDefinition Width="*" />-->
         </Grid.ColumnDefinitions>
-        <Border BorderBrush="Black" BorderThickness="2" Margin="0,0,15,0">
+        <Border Grid.Column="1"  BorderBrush="Black" BorderThickness="2" HorizontalAlignment="Center">
             <Image RenderOptions.BitmapScalingMode="HighQuality" Height="120" Width="240" Source="{Binding CarPreviewPath,IsAsync=True, Converter={StaticResource nullImageConverter}}"
                     VerticalAlignment="Top" Grid.RowSpan="2" Stretch="Fill"></Image>
         </Border>
-        <StackPanel Grid.Column="1">
-            <TextBlock Text="{Binding CarInfo.brand, Converter={StaticResource trimConverter}}" FontSize="12" TextWrapping="Wrap" />
-            <TextBlock Text="{Binding CarInfo.name, Converter={StaticResource trimConverter}}" FontSize="16" FontWeight="Bold" TextWrapping="Wrap" />
+        <StackPanel Grid.Column="1" Grid.Row="1">
+            <TextBlock Text="{Binding CarInfo.brand,Converter={StaticResource trimConverter}}" FontSize="12" TextWrapping="Wrap" />
+            <TextBlock Text="{Binding CarInfo.name,Converter={StaticResource trimConverter}}" FontSize="16" FontWeight="Bold" TextWrapping="Wrap" />
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding CarInfo.class, Converter={StaticResource trimConverter}}" FontSize="12" TextWrapping="Wrap" />
+                <TextBlock Text="{Binding CarInfo.class,Converter={StaticResource trimConverter}}" FontSize="12" TextWrapping="Wrap" />
                 <TextBlock FontSize="12" Text=" - " TextWrapping="Wrap" />
-                <TextBlock Text="{Binding CarInfo.specs.bhp, Converter={StaticResource trimConverter}}" FontSize="12" TextWrapping="Wrap" />
+                <TextBlock Text="{Binding CarInfo.specs.bhp,Converter={StaticResource trimConverter}}" FontSize="12" TextWrapping="Wrap" />
                 <TextBlock FontSize="12" Text="" TextWrapping="Wrap" />
             </StackPanel>
         </StackPanel>

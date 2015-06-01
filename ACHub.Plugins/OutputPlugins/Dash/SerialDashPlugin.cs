@@ -193,7 +193,7 @@ namespace ACHub.Plugins.OutputPlugins.Dash
                     bool annonce = false;
                     if (LastStaticScreen == currentStaticScreen)
                     {
-                        if (LastStaticScreenFirstDisplayed > DateTime.Now.AddSeconds(-annoncelength))
+                        if (LastStaticScreenFirstDisplayed > DateTime.Now.AddSeconds(-settings.AnnounceTime))
                         {
                             annonce = true;
                         }
@@ -307,7 +307,7 @@ namespace ACHub.Plugins.OutputPlugins.Dash
                 bool annonce = false;
                 if (LastScreen == screen)
                 {
-                    if (LastScreenFirstDisplayed > DateTime.Now.AddSeconds(-annoncelength))
+                    if (LastScreenFirstDisplayed > DateTime.Now.AddSeconds(-settings.AnnounceTime))
                     {
                         annonce = true;
                     }

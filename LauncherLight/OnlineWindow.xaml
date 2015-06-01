@@ -1,0 +1,239 @@
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        x:Class="LauncherLight.OnlineWindow" xmlns:converters="clr-namespace:LauncherLight.Converters" Title="ACLauncher" Height="1015.864" Width="1328.591" Icon="startorb.ico">
+    <Window.Resources>
+        <converters:NullImageConverter x:Key="nullImageConverter" />
+        <Style TargetType="ListBox">
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListBoxItem">
+                        <Style.Resources>
+                            <SolidColorBrush x:Key="{x:Static Member=SystemColors.InactiveSelectionHighlightBrushKey}"
+                                    Color="{DynamicResource ResourceKey={x:Static Member=SystemColors.HighlightColorKey}}" />
+                        </Style.Resources>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="Refresh data" Click="menuReleadData_Click" />
+                <MenuItem Header="Options" Click="menuOptions_Click" />
+                <Separator />
+                <MenuItem Header="_Exit" Click="menuExit_Click" />
+            </MenuItem>
+        </Menu>
+        <TabControl>
+            <TabItem Header="Start">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="287*" />
+                        <RowDefinition Height="150" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="33*" />
+                        <ColumnDefinition Width="33*" />
+                        <ColumnDefinition Width="33*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <xctk:WatermarkTextBox x:Name="txtCarSearch" Watermark="Search car by name or brand" Grid.Row="0" TextChanged="txtCarSearch_TextChanged"
+                                PreviewKeyUp="txtCarSearch_PreviewKeyUp" BorderThickness="1,1,1,0" />
+                        <ListBox x:Name="lstCars" Grid.Row="1" ScrollViewer.CanContentScroll="True" VirtualizingPanel.VirtualizationMode="Recycling" VirtualizingPanel.ScrollUnit="Pixel"
+                                ItemsSource="{Binding}">
+                            <!--Style="{StaticResource MetroListBox}">-->
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="10">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="240" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border BorderBrush="Black" BorderThickness="2" Margin="0,0,15,0">
+                                            <Image RenderOptions.BitmapScalingMode="HighQuality" Height="120" Width="240"
+                                                    Source="{Binding CarPreviewPath, IsAsync=True, Converter={StaticResource nullImageConverter}}" VerticalAlignment="Top" Grid.RowSpan="2"
+                                                    Stretch="Fill" />
+                                        </Border>
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="{Binding CarInfo.brand}" FontSize="12" />
+                                            <TextBlock Text="{Binding CarInfo.name}" FontSize="16" FontWeight="Bold" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding CarInfo.class}" FontSize="12" />
+                                                <TextBlock FontSize="12" Text=" - " />
+                                                <TextBlock Text="{Binding CarInfo.specs.bhp}" FontSize="12" />
+                                                <TextBlock FontSize="12" Text="" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <xctk:WatermarkTextBox Watermark="Search track by name or country" x:Name="txtTrackSearch" Grid.Row="0" TextChanged="txtTrackSearch_TextChanged"
+                                PreviewKeyUp="txtTrackSearch_PreviewKeyUp" BorderThickness="1,1,1,0" />
+                        <ListBox x:Name="lstTracks" Grid.Row="1" ItemsSource="{Binding}" ScrollViewer.CanContentScroll="False" VirtualizingPanel.VirtualizationMode="Recycling"
+                                VirtualizingPanel.ScrollUnit="Pixel">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="10">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="240" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border BorderBrush="Black" Grid.RowSpan="2" BorderThickness="2" Margin="0,0,15,0">
+                                            <Grid>
+                                                <Image RenderOptions.BitmapScalingMode="HighQuality" Height="120" Width="240"
+                                                        Source="{Binding TrackPreviewPath, IsAsync=True, Converter={StaticResource nullImageConverter}}" VerticalAlignment="Top" Grid.RowSpan="2"
+                                                        Stretch="Fill" />
+                                                <Image RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding TrackOutlinePath, IsAsync=True, Converter={StaticResource nullImageConverter}}"
+                                                        Height="120" Width="240" VerticalAlignment="Top" Stretch="Uniform" />
+                                            </Grid>
+                                        </Border>
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="{Binding TrackInfo.name}" FontSize="16" FontWeight="Bold" />
+                                            <TextBlock Text="{Binding TrackInfo.length}" FontSize="14" />
+                                            <TextBlock Text="{Binding Track}" FontSize="10" />
+                                            <TextBlock Text="{Binding TrackConfig}" FontSize="10" />
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                    <Grid Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <xctk:WatermarkTextBox Watermark="Search server by name or country" x:Name="txtServerSearch" Grid.Row="0" TextChanged="txtServerSearch_TextChanged"
+                                PreviewKeyUp="txtServerSearch_PreviewKeyUp" BorderThickness="1,1,1,0" />
+                        <ListBox x:Name="lstServers" Grid.Row="1" ItemsSource="{Binding}" ScrollViewer.CanContentScroll="False" VirtualizingPanel.VirtualizationMode="Recycling"
+                                VirtualizingPanel.ScrollUnit="Pixel">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="10">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="240" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border BorderBrush="Black" Grid.RowSpan="2" BorderThickness="2" Margin="0,0,15,0">
+                                            <Grid>
+                                                <Image RenderOptions.BitmapScalingMode="HighQuality" Height="120" Width="240"
+                                                        Source="{Binding TrackDesc.TrackPreviewPath, IsAsync=True, Converter={StaticResource nullImageConverter}}" VerticalAlignment="Top"
+                                                        Grid.RowSpan="2" Stretch="Fill" />
+                                                <Image RenderOptions.BitmapScalingMode="HighQuality"
+                                                        Source="{Binding TrackDesc.TrackOutlinePath, IsAsync=True, Converter={StaticResource nullImageConverter}}" Height="120" Width="240"
+                                                        VerticalAlignment="Top" Stretch="Uniform" />
+                                            </Grid>
+                                        </Border>
+                                        <ItemsControl ItemsSource="{Binding CarDescs}" Grid.Column="1">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,3,0">
+                                                        <Image RenderOptions.BitmapScalingMode="HighQuality" Height="40" Width="70"
+                                                                Source="{Binding CarPreviewPath, IsAsync=True, Converter={StaticResource nullImageConverter}}" VerticalAlignment="Top" Grid.RowSpan="2"
+                                                                Stretch="Fill" />
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel Orientation="Horizontal" ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                        </ItemsControl>
+                                        <StackPanel Grid.Column="1" HorizontalAlignment="Stretch">
+                                            <TextBlock Text="{Binding name}" FontSize="16" FontWeight="Bold" />
+                                            <TextBlock Text="{Binding TrackDesc.TrackInfo.name}" FontSize="14" FontWeight="Bold" />
+                                           
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                    <GroupBox Header="Server" Grid.Row="1" x:Name="grpServer">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="50*" />
+                                <ColumnDefinition Width="100" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Margin="5">
+                                <TextBlock><Run Text="Practice (minutes)" /></TextBlock>
+                                <xctk:ShortUpDown x:Name="numPractive" Value="3" Height="22" />
+                                <TextBlock><Run Text="Qualify (minutes)" /></TextBlock>
+                                <xctk:ShortUpDown Value="5" x:Name="numQualify" Height="22" />
+                                <TextBlock><Run Text="Race (laps)" /></TextBlock>
+                                <xctk:ShortUpDown Value="5" x:Name="numLaps" Height="22" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Margin="5">
+                                <TextBlock><Run Text="Traction Control" /></TextBlock>
+                                <ComboBox x:Name="cbTC" DisplayMemberPath="Text" Height="22" />
+                                <TextBlock><Run Text="ABS" /></TextBlock>
+                                <ComboBox x:Name="cbABS" DisplayMemberPath="Text" Height="22" />
+                                <TextBlock><Run Text="Stability control" /></TextBlock>
+                                <ComboBox x:Name="cbStability" DisplayMemberPath="Text" Height="22" />
+                            </StackPanel>
+                            <Button x:Name="btnStartServer" Grid.Column="2" HorizontalAlignment="Right" Click="btnStartServer_Click" Margin="10">
+                                <StackPanel>
+                                    <TextBlock TextAlignment="Center"><Run Text="Start Server" /></TextBlock>
+                                    <TextBlock x:Name="txtServerRunning" TextAlignment="Center" Foreground="Red" Margin="0,0,0,0" Visibility="Collapsed"><Run Text="Running" /></TextBlock>
+                                    <Image RenderOptions.BitmapScalingMode="HighQuality" Source="server.png" />
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Grid.Column="1" Header="Quick Race" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100*" />
+                                <ColumnDefinition Width="100" />
+                            </Grid.ColumnDefinitions>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="100*" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0"><Run Text="Presets" /></TextBlock>
+                                <ListBox Grid.Row="1" x:Name="lstPreset" ItemsSource="{Binding}" />
+                            </Grid>
+                            <Button x:Name="btnStart" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Click="btnStart_Click" Margin="10">
+                                <StackPanel>
+                                    <TextBlock TextAlignment="Center"><Run Text="Start Race" /></TextBlock>
+                                    <Image RenderOptions.BitmapScalingMode="HighQuality" Source="startorb.png" />
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Logs">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <TextBlock x:Name="tbServerLogs" Text="rfdg" FontFamily="Consolas" />
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>
