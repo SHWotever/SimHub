@@ -4,7 +4,6 @@
         WindowStartupLocation="CenterOwner">
     <Controls:MetroWindow.Resources>
         <converters:NullImageConverter x:Key="nullImageConverter" />
-        
     </Controls:MetroWindow.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
@@ -15,7 +14,7 @@
                 <MenuItem Header="_Exit" Click="menuExit_Click" />
             </MenuItem>
         </Menu>
-        <TabControl>
+        <TabControl x:Name="tab">
             <TabItem Header="Start">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -35,11 +34,12 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <TextBox x:Name="txtCarSearch" Controls:TextBoxHelper.Watermark="Search car by name or brand" Controls:TextBoxHelper.ClearTextButton="True" Grid.ColumnSpan="2" Grid.Row="0" TextChanged="txtCarSearch_TextChanged"
-                                PreviewKeyUp="txtCarSearch_PreviewKeyUp" />
+                        <TextBox x:Name="txtCarSearch" Controls:TextBoxHelper.Watermark="Search car by name or brand" Controls:TextBoxHelper.ClearTextButton="True" Grid.ColumnSpan="2" Grid.Row="0"
+                                TextChanged="txtCarSearch_TextChanged" PreviewKeyUp="txtCarSearch_PreviewKeyUp" />
                         <Grid Grid.Column="0" Grid.Row="1">
+                            
                             <ListBox x:Name="lstCars" VerticalContentAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Row="1" ScrollViewer.CanContentScroll="True"
-                                    VirtualizingStackPanel.VirtualizationMode="Recycling" VirtualizingPanel.ScrollUnit="Pixel" ItemsSource="{Binding}">
+                                    VirtualizingStackPanel.VirtualizationMode="Recycling" VirtualizingPanel.ScrollUnit="Pixel" ItemsSource="{Binding}" Margin="0,0,0,0">
                                 <ListBox.ItemContainerStyle>
                                     <Style TargetType="ListBoxItem">
                                         <Setter Property="VerticalContentAlignment" Value="Stretch" />
@@ -52,18 +52,27 @@
                                 </ListBox.ItemsPanel>
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <LauncherLight:CarItemAlt DataContext="{Binding}"  />
+                                        <LauncherLight:CarItemAlt DataContext="{Binding}" />
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
+                            <!--<Border Grid.Row="1" BorderThickness="0,20" Height="20" VerticalAlignment="Top">
+                                <Border.BorderBrush>
+                                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                                        <GradientStop Color="#FF252525" Offset="0" />
+                                        <GradientStop Color="#00252525" Offset="1" />
+                                    </LinearGradientBrush>
+                                </Border.BorderBrush>
+                            </Border>-->
                         </Grid>
                         <Grid Grid.Column="1" Grid.Row="1">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
+                           
                             <ListBox x:Name="lstSkins" Grid.Row="1" ScrollViewer.CanContentScroll="True" VirtualizingStackPanel.VirtualizationMode="Recycling" VirtualizingPanel.ScrollUnit="Pixel"
-                                    ItemsSource="{Binding}">
+                                    ItemsSource="{Binding}" Margin="0,0,0,0">
                                 <!--Style="{StaticResource MetroListBox}">-->
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
@@ -78,8 +87,8 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <TextBox Controls:TextBoxHelper.Watermark="Search track by name or country" Controls:TextBoxHelper.ClearTextButton="True"  x:Name="txtTrackSearch" Grid.Row="0" TextChanged="txtTrackSearch_TextChanged"
-                                PreviewKeyUp="txtTrackSearch_PreviewKeyUp"  />
+                        <TextBox Controls:TextBoxHelper.Watermark="Search track by name or country" Controls:TextBoxHelper.ClearTextButton="True" x:Name="txtTrackSearch" Grid.Row="0"
+                                TextChanged="txtTrackSearch_TextChanged" PreviewKeyUp="txtTrackSearch_PreviewKeyUp" />
                         <ListBox x:Name="lstTracks" Grid.Row="1" ItemsSource="{Binding}" ScrollViewer.CanContentScroll="False" VirtualizingPanel.VirtualizationMode="Recycling"
                                 VirtualizingPanel.ScrollUnit="Pixel" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                             <ListBox.ItemTemplate>
@@ -89,30 +98,38 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
                     </Grid>
-                    <GroupBox Header="Server" Grid.Row="1" x:Name="grpServer" >
+                    <GroupBox Header="Server" Grid.Row="1" x:Name="grpServer" HorizontalAlignment="Left">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="50*" />
-                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="150" />
+                                <ColumnDefinition Width="30" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="150" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="100*" />
                             </Grid.ColumnDefinitions>
-                            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Margin="5">
-                                <TextBlock>Practice (minutes)</TextBlock>
-                                <xctk:ShortUpDown x:Name="numPractive" Value="3" Height="22" />
-                                <TextBlock>Qualify (minutes)</TextBlock>
-                                <xctk:ShortUpDown Value="5" x:Name="numQualify" Height="22" />
-                                <TextBlock>Race (laps)</TextBlock>
-                                <xctk:ShortUpDown Value="5" x:Name="numLaps" Height="22" />
-                            </StackPanel>
-                            <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Margin="5">
-                                <TextBlock>Traction Control</TextBlock>
-                                <ComboBox x:Name="cbTC" DisplayMemberPath="Text" Height="22" />
-                                <TextBlock>ABS</TextBlock>
-                                <ComboBox x:Name="cbABS" DisplayMemberPath="Text" Height="22" />
-                                <TextBlock>Stability control</TextBlock>
-                                <ComboBox x:Name="cbStability" DisplayMemberPath="Text" Height="22" />
-                            </StackPanel>
-                            <Button x:Name="btnStartServer" Grid.Column="2" HorizontalAlignment="Right" Click="btnStartServer_Click" Margin="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="28*" />
+                                <RowDefinition Height="28*" />
+                                <RowDefinition Height="28*" />
+                                <!--<RowDefinition Height="28" />-->
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">Practice (minutes)</TextBlock>
+                            <xctk:ShortUpDown Grid.Row="0" Grid.Column="2" x:Name="numPractive" Value="3" Height="22" Foreground="White" />
+                            <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">Qualify (minutes)</TextBlock>
+                            <xctk:ShortUpDown Grid.Row="1" Grid.Column="2" Value="5" x:Name="numQualify" Height="22" Foreground="White" />
+                            <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center">Race (laps)</TextBlock>
+                            <xctk:ShortUpDown Grid.Row="2" Grid.Column="2" Value="5" x:Name="numLaps" Height="22" Foreground="White" />
+                            <TextBlock Grid.Row="0" Grid.Column="4" VerticalAlignment="Center">Traction Control</TextBlock>
+                            <ComboBox Grid.Row="0" Grid.Column="6" x:Name="cbTC" DisplayMemberPath="Text" Height="22" />
+                            <TextBlock Grid.Row="1" Grid.Column="4" VerticalAlignment="Center">ABS</TextBlock>
+                            <ComboBox Grid.Row="1" Grid.Column="6" x:Name="cbABS" DisplayMemberPath="Text" Height="22" />
+                            <TextBlock Grid.Row="2" Grid.Column="4" VerticalAlignment="Center">Stability control</TextBlock>
+                            <ComboBox Grid.Row="2" Grid.Column="6" x:Name="cbStability" DisplayMemberPath="Text" Height="22" />
+                            <Button x:Name="btnStartServer" Grid.Column="7" Grid.RowSpan="3" HorizontalAlignment="Right" Click="btnStartServer_Click" Margin="10,0">
                                 <StackPanel>
                                     <TextBlock TextAlignment="Center">Start Server</TextBlock>
                                     <TextBlock x:Name="txtServerRunning" TextAlignment="Center" Foreground="Red" Margin="0,0,0,0" Visibility="Collapsed">Running</TextBlock>
@@ -185,7 +202,6 @@
                                                         VerticalAlignment="Top" Stretch="Uniform" />
                                             </Grid>
                                         </Border>
-                                        
                                         <StackPanel Grid.Column="1" HorizontalAlignment="Stretch">
                                             <TextBlock Text="{Binding name}" FontSize="16" FontWeight="Bold" />
                                             <StackPanel Orientation="Horizontal">

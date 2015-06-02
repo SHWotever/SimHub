@@ -59,6 +59,19 @@ namespace ACSharedMemory.Models.Car
             return null;
         }
 
+        public string CarBadgePath
+        {
+            get
+            {
+                string path = System.IO.Path.Combine(carPath, "ui", "badge.png");
+                if (System.IO.File.Exists(path))
+                {
+                    return path;
+                }
+                return null;
+            }
+        }
+
         public IEnumerable<Skin> Skins
         {
             get

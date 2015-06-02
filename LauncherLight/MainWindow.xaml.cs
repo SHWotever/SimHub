@@ -34,12 +34,28 @@ namespace LauncherLight
             Task.Factory.StartNew(() =>
             {
                 LoadData();
+            //    this.Dispatcher.Invoke(() =>
+            //                        {
+            //                            for (var i = 0; i < tab.Items.Count; i++)
+            //                            {
+
+            //                                tab.SelectedIndex = i;
+
+            //                                tab.UpdateLayout();
+
+
+            //                            }
+            //                            tab.SelectedIndex = 0;
+            //                        });
             });
         }
 
         void lstServer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            lstOnlineCars.DataContext = (lstServers.SelectedItem as ACServer).CarDescs.ToList();
+            if (lstServers.SelectedItem != null)
+            {
+                lstOnlineCars.DataContext = (lstServers.SelectedItem as ACServer).CarDescs.ToList();
+            }
         }
         void lstCars_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -510,7 +526,7 @@ namespace LauncherLight
 
         private void Findcar(bool fromStart)
         {
-            txtCarSearch.Foreground = new SolidColorBrush(Colors.Black);
+            // txtCarSearch.Foreground = new SolidColorBrush(Colors.Black);
             if (!string.IsNullOrEmpty(txtCarSearch.Text))
             {
                 int baseindex = fromStart ? 0 : lstCars.SelectedIndex;
@@ -524,13 +540,13 @@ namespace LauncherLight
                         return;
                     }
                 }
-                txtCarSearch.Foreground = new SolidColorBrush(Colors.Red);
+                //      txtCarSearch.Foreground = new SolidColorBrush(Colors.Red);
             }
         }
 
         private void Findtrack(bool fromStart)
         {
-            txtTrackSearch.Foreground = new SolidColorBrush(Colors.Black);
+            //txtTrackSearch.Foreground = new SolidColorBrush(Colors.Black);
             if (!string.IsNullOrEmpty(txtTrackSearch.Text))
             {
                 int baseindex = fromStart ? 0 : lstTracks.SelectedIndex;
@@ -544,7 +560,7 @@ namespace LauncherLight
                         return;
                     }
                 }
-                txtTrackSearch.Foreground = new SolidColorBrush(Colors.Red);
+                //txtTrackSearch.Foreground = new SolidColorBrush(Colors.Red);
             }
         }
 
