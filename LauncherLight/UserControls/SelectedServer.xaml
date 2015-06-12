@@ -72,21 +72,30 @@
                 <TextBlock Text="{Binding maxclients}" FontSize="20" FontWeight="Bold" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Column="1" VerticalAlignment="Bottom">
-                <Border BorderBrush="Black" BorderThickness="0" Margin="2,2,2,2" Height="30" Width="60" Visibility="{Binding Booking,Converter={converters:BoolToVisibilityConverter}}"
+                <Border BorderBrush="Black" BorderThickness="0" Margin="2,2,2,2" Height="30" MinWidth="120" Visibility="{Binding Booking,Converter={converters:BoolToVisibilityConverter}}"
                         Background="{Binding IsBooking,Converter={StaticResource booleanToBrushConverter}}">
                     <Label VerticalAlignment="Center" HorizontalAlignment="Center">Booking</Label>
                 </Border>
-                <Border BorderBrush="Black" BorderThickness="0" Margin="2,2,2,2" Height="30" Width="60" Visibility="{Binding Practice,Converter={converters:BoolToVisibilityConverter}}"
+                <Border BorderBrush="Black" BorderThickness="0" Margin="2,2,2,2" Height="30" MinWidth="120" Visibility="{Binding Practice,Converter={converters:BoolToVisibilityConverter}}"
                         Background="{Binding IsPractice,Converter={StaticResource booleanToBrushConverter}}">
-                    <Label VerticalAlignment="Center" HorizontalAlignment="Center">Practice</Label>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Label VerticalAlignment="Center" HorizontalAlignment="Center">Practice</Label>
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Path=PracticeTime,StringFormat={}{0:hh':'mm}}"></TextBlock>
+                    </StackPanel>
                 </Border>
-                <Border BorderBrush="Black" BorderThickness="0" Margin="2,2,2,2" Height="30" Width="60" Visibility="{Binding Qualify,Converter={converters:BoolToVisibilityConverter}}"
+                <Border BorderBrush="Black" BorderThickness="0" Margin="2,2,2,2" Height="30" MinWidth="120" Visibility="{Binding Qualify,Converter={converters:BoolToVisibilityConverter}}"
                         Background="{Binding IsQualify,Converter={StaticResource booleanToBrushConverter}}">
-                    <Label VerticalAlignment="Center" HorizontalAlignment="Center">Qualify</Label>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Label VerticalAlignment="Center" HorizontalAlignment="Center">Qualify</Label>
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Path=QualifyTime,StringFormat={}{0:hh':'mm}}"></TextBlock>
+                    </StackPanel>
                 </Border>
-                <Border BorderBrush="Black" BorderThickness="0" Margin="2,2,2,2" Height="30" Width="60" Visibility="{Binding Race,Converter={converters:BoolToVisibilityConverter}}"
+                <Border BorderBrush="Black" BorderThickness="0" Margin="2,2,2,2" Height="30" MinWidth="120" Visibility="{Binding Race,Converter={converters:BoolToVisibilityConverter}}"
                         Background="{Binding IsRace,Converter={StaticResource booleanToBrushConverter}}">
-                    <Label VerticalAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch">Race</Label>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">Race</TextBlock>
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Path=RaceLaps,StringFormat=' ({0} laps)'}"></TextBlock>
+                    </StackPanel>
                 </Border>
             </StackPanel>
         </StackPanel>

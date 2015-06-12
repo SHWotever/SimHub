@@ -71,7 +71,8 @@
             this.DataSource.Items.AddRange(new object[] {
             "Rpms",
             "FuelLaps",
-            "FuelPercent"});
+            "FuelPercent",
+            "AllTimeBestDelta","SessionBestDelta"});
             this.DataSource.Name = "DataSource";
             this.DataSource.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             // 
@@ -101,11 +102,17 @@
             // 
             this.OnStart.HeaderText = "Start %";
             this.OnStart.Name = "OnStart";
+            this.OnStart.Minimum = -200;
+            this.OnStart.Maximum = 200;
+            this.OnStart.DecimalPlaces = 1;
             // 
             // OnEnd
             // 
             this.OnEnd.HeaderText = "End %";
             this.OnEnd.Name = "OnEnd";
+            this.OnEnd.Minimum = -200;
+            this.OnEnd.Maximum = 200;
+            this.OnEnd.DecimalPlaces = 1;
             // 
             // Blink
             // 

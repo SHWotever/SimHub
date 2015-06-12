@@ -1,6 +1,7 @@
 ﻿using ACSharedMemory.Models.Car;
 using ACSharedMemory.Models.Track;
 using PropertyChanged;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -187,17 +188,44 @@ namespace LauncherLight.Models
             this.MissingContent = mc || mt;
 
             var sess = this.sessiontypes.ToList();
-            //sess.Add(session.ToString());
 
+            string currentsession = session.ToString();
+
+            if (!sess.Contains(currentsession.ToString()))
+            {
+                currentsession = sess.FirstOrDefault();
+            }
+
+            List<KeyValuePair<string, long>> times = new List<KeyValuePair<string, long>>();
+            for (int i = 0; i < sess.Count; i++)
+            {
+                times.Add(new KeyValuePair<string, long>(sess[i], long.Parse(durations[i])));
+            }
+
+            try
+            {
+                this.PracticeTime = TimeSpan.FromMinutes(times.FirstOrDefault(i => i.Key == "1").Value);
+            }
+            catch { this.PracticeTime = TimeSpan.MaxValue; }
+            try
+            {
+                this.QualifyTime = TimeSpan.FromMinutes(times.FirstOrDefault(i => i.Key == "2").Value);
+            }
+            catch { this.QualifyTime = TimeSpan.MaxValue; }
+            try
+            {
+                this.RaceLaps = times.FirstOrDefault(i => i.Key == "3").Value;
+            }
+            catch { }
             this.Booking = sess.Contains("0");
             this.Practice = sess.Contains("1");
             this.Qualify = sess.Contains("2");
             this.Race = sess.Contains("3");
 
-            this.IsBooking = session.ToString() == "0";
-            this.IsPractice = session.ToString() == "1";
-            this.IsQualify = session.ToString() == "2";
-            this.IsRace = session.ToString() == "3";
+            this.IsBooking = currentsession.ToString() == "0";
+            this.IsPractice = currentsession.ToString() == "1";
+            this.IsQualify = currentsession.ToString() == "2";
+            this.IsRace = currentsession.ToString() == "3";
 
             this.IsFull = clients == maxclients;
         }
@@ -224,11 +252,11 @@ namespace LauncherLight.Models
 
         public bool IsRace { get; set; }
 
-        public int RaceLaps { get; set; }
+        public long RaceLaps { get; set; }
 
-        public int QualifyTime { get; set; }
+        public TimeSpan QualifyTime { get; set; }
 
-        public int PracticeTime { get; set; }
+        public TimeSpan PracticeTime { get; set; }
 
         public bool IsFull { get; set; }
     }

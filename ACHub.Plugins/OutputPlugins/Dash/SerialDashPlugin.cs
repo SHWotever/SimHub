@@ -237,6 +237,8 @@ namespace ACHub.Plugins.OutputPlugins.Dash
                         FuelLapsBlink.Started = fuelLapsRemaining <= settings.LowFuelLapsLevel;
 
                         var fuelPercent = Convert.ToDouble(pluginManager.GetPropertyValue("DataCorePlugin.Computed.Fuel_Percent") ?? "100");
+                        var allTimeBestDelta = Convert.ToDouble(pluginManager.GetPropertyValue("PersistantTrackerPlugin.SessionBestLiveDeltaSeconds") ?? "0");
+                        var sessionBestDelta = Convert.ToDouble(pluginManager.GetPropertyValue("PersistantTrackerPlugin.SessionBestLiveDeltaSeconds") ?? "0");
 
                         int ledidx = 0;
 
@@ -262,6 +264,16 @@ namespace ACHub.Plugins.OutputPlugins.Dash
                                 {
                                     currentValue = fuelPercent;
                                     blink = FuelLapsBlink.Blink;
+                                }
+                                else if (led.DataSource == "AllTimeBestDelta")
+                                {
+                                    currentValue = allTimeBestDelta;
+                                    blink = false;
+                                }
+                                else if (led.DataSource == "SessionBestDelta")
+                                {
+                                    currentValue = sessionBestDelta;
+                                    blink = false;
                                 }
 
                                 bool ledon = (currentValue > (double)led.OnRangeStart && currentValue <= (double)led.OnRangeEnd);

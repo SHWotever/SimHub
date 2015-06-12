@@ -44,8 +44,8 @@ namespace ACHub.Plugins.OutputPlugins.Dash
                 ld.DataSource = this.dataGridView1.Rows[i].Cells[1].Value as string;
                 ld.OffColor = this.dataGridView1.Rows[i].Cells[2].Value as string;
                 ld.OnColor = (string)this.dataGridView1.Rows[i].Cells[3].Value as string;
-                ld.OnRangeStart = int.Parse(this.dataGridView1.Rows[i].Cells[4].Value.ToString());
-                ld.OnRangeEnd = int.Parse(this.dataGridView1.Rows[i].Cells[5].Value.ToString());
+                ld.OnRangeStart = decimal.Parse(this.dataGridView1.Rows[i].Cells[4].Value.ToString());
+                ld.OnRangeEnd = decimal.Parse(this.dataGridView1.Rows[i].Cells[5].Value.ToString());
                 ld.BlinkColor = this.dataGridView1.Rows[i].Cells[6].Value as string;
 
                 leds.Add(ld);

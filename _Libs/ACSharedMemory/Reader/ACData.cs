@@ -28,5 +28,21 @@ namespace ACSharedMemory.Reader
         public string SessionTypeName { get; internal set; }
 
         public string StatusName { get; internal set; }
+
+        public float TyreWear1 { get; internal set; }
+
+        public float TyreWear2 { get; internal set; }
+
+        public float TyreWear3 { get; internal set; }
+
+        public float TyreWear4 { get; internal set; }
+
+        public float TyreDirtyLevel1 { get; internal set; }
+
+        public float TyreDirtyLevel2 { get; internal set; }
+
+        public float TyreDirtyLevel3 { get; internal set; }
+
+        public float TyreDirtyLevel4 { get; internal set; }
     }
 }

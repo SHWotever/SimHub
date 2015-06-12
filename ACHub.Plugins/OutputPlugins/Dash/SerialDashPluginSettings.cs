@@ -40,12 +40,12 @@ namespace ACHub.Plugins.OutputPlugins.Dash
         /// <summary>
         /// Range end
         /// </summary>
-        public int OnRangeEnd { get; set; }
+        public decimal OnRangeEnd { get; set; }
 
         /// <summary>
         /// Range start
         /// </summary>
-        public int OnRangeStart { get; set; }
+        public decimal OnRangeStart { get; set; }
     }
 
     /// <summary>

@@ -1,9 +1,9 @@
 ﻿<UserControl x:Class="LauncherLight.UserControls.ServerListItem" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="700"
-        xmlns:interactivity="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:LocalBehaviors="clr-namespace:LauncherLight.Behaviors"
-        xmlns:converters="clr-namespace:LauncherLight.Converters" xmlns:cconverters="clr-namespace:Community.Windows.ValueConverters;assembly=Community.ValueConverters"
-        xmlns:models="clr-namespace:LauncherLight.Models" xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        d:DataContext="{d:DesignInstance Type=models:ACServerSample, IsDesignTimeCreatable=True}">
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="700"
+             xmlns:interactivity="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:LocalBehaviors="clr-namespace:LauncherLight.Behaviors"
+             xmlns:converters="clr-namespace:LauncherLight.Converters" xmlns:cconverters="clr-namespace:Community.Windows.ValueConverters;assembly=Community.ValueConverters"
+             xmlns:models="clr-namespace:LauncherLight.Models" xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             d:DataContext="{d:DesignInstance Type=models:ACServerSample, IsDesignTimeCreatable=True}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -61,28 +61,37 @@
         <Border BorderBrush="Black" Grid.RowSpan="2" Grid.Column="0" BorderThickness="0" HorizontalAlignment="Center" Margin="15">
             <Grid>
                 <Image Height="60" Width="120" Source="{Binding TrackDesc.TrackPreviewPath,IsAsync=False,Converter={converters:NullImageConverter TargetHeight=60,TargetWidth=120,MissingImage=true}}"
-                        VerticalAlignment="Top" Grid.RowSpan="2" Stretch="Fill"></Image>
+                       VerticalAlignment="Top" Grid.RowSpan="2" Stretch="Fill"></Image>
                 <Image RenderOptions.BitmapScalingMode="HighQuality"
-                        Source="{Binding TrackDesc.TrackOutlinePath,IsAsync=false,Converter={converters:NullImageConverter TargetHeight=60,TargetWidth=120}}" Height="60" Width="120"
-                        VerticalAlignment="Top" Stretch="None" />
+                       Source="{Binding TrackDesc.TrackOutlinePath,IsAsync=false,Converter={converters:NullImageConverter TargetHeight=60,TargetWidth=120}}" Height="60" Width="120"
+                       VerticalAlignment="Top" Stretch="None" />
             </Grid>
         </Border>
         <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom">
-            <Border BorderBrush="Black" BorderThickness="0" Margin="2,2,2,2" Height="30" Width="60" Visibility="{Binding Booking,Converter={converters:BoolToVisibilityConverter}}"
+            <Border BorderBrush="Black" BorderThickness="0" Margin="2,2,2,2" Height="30" MinWidth="120" Visibility="{Binding Booking,Converter={converters:BoolToVisibilityConverter}}"
                     Background="{Binding IsBooking,Converter={StaticResource booleanToBrushConverter}}">
                 <Label VerticalAlignment="Center" HorizontalAlignment="Center">Booking</Label>
             </Border>
-            <Border BorderBrush="Black" BorderThickness="0" Margin="2,2,2,2" Height="30" Width="60" Visibility="{Binding Practice,Converter={converters:BoolToVisibilityConverter}}"
+            <Border BorderBrush="Black" BorderThickness="0" Margin="2,2,2,2" Height="30" MinWidth="120" Visibility="{Binding Practice,Converter={converters:BoolToVisibilityConverter}}"
                     Background="{Binding IsPractice,Converter={StaticResource booleanToBrushConverter}}">
-                <Label VerticalAlignment="Center" HorizontalAlignment="Center">Practice</Label>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Label VerticalAlignment="Center" HorizontalAlignment="Center">Practice</Label>
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Path=PracticeTime,StringFormat={}{0:hh':'mm}}"></TextBlock>
+                </StackPanel>
             </Border>
-            <Border BorderBrush="Black" BorderThickness="0" Margin="2,2,2,2" Height="30" Width="60" Visibility="{Binding Qualify,Converter={converters:BoolToVisibilityConverter}}"
+            <Border BorderBrush="Black" BorderThickness="0" Margin="2,2,2,2" Height="30" MinWidth="120" Visibility="{Binding Qualify,Converter={converters:BoolToVisibilityConverter}}"
                     Background="{Binding IsQualify,Converter={StaticResource booleanToBrushConverter}}">
-                <Label VerticalAlignment="Center" HorizontalAlignment="Center">Qualify</Label>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Label VerticalAlignment="Center" HorizontalAlignment="Center">Qualify</Label>
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Path=QualifyTime,StringFormat={}{0:hh':'mm}}"></TextBlock>
+                </StackPanel>
             </Border>
-            <Border BorderBrush="Black" BorderThickness="0" Margin="2,2,2,2" Height="30" Width="60" Visibility="{Binding Race,Converter={converters:BoolToVisibilityConverter}}"
+            <Border BorderBrush="Black" BorderThickness="0" Margin="2,2,2,2" Height="30" MinWidth="120" Visibility="{Binding Race,Converter={converters:BoolToVisibilityConverter}}"
                     Background="{Binding IsRace,Converter={StaticResource booleanToBrushConverter}}">
-                <Label VerticalAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch">Race</Label>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">Race</TextBlock>
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Path=RaceLaps,StringFormat=' ({0} laps)'}"></TextBlock>
+                </StackPanel>
             </Border>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Right">
@@ -132,22 +141,22 @@
                     <Border BorderBrush="Black" BorderThickness="0" Margin="2,2,2,2" Background="#FF323232" CornerRadius="5" Height="30" ToolTipService.InitialShowDelay="100"
                             ToolTipService.Placement="Right">
                         <!--<Border.ToolTip>
-                                                <ToolTip>
-                                                    <Image Source="{Binding CarDesc.CarPreviewPath,IsAsync=True, Converter={converters:NullImageConverter TargetWidth=240,TargetHeight=142}}"
-                                                            VerticalAlignment="Top"></Image>
-                                                </ToolTip>
-                                            </Border.ToolTip>-->
+                             <ToolTip>
+                             <Image Source="{Binding CarDesc.CarPreviewPath,IsAsync=True, Converter={converters:NullImageConverter TargetWidth=240,TargetHeight=142}}"
+                             VerticalAlignment="Top"></Image>
+                             </ToolTip>
+                             </Border.ToolTip>-->
                         <Grid Height="30" HorizontalAlignment="Stretch">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Image Width="60" Height="30" Grid.Column="0"
-                                    Source="{Binding CarDesc.CarPreviewPath,Mode=OneWay,IsAsync=false, Converter={converters:NullImageConverter TargetWidth=60,TargetHeight=35,MissingImage=True}}"
-                                    VerticalAlignment="Top" Margin="-5,0,0,0"></Image>
+                                   Source="{Binding CarDesc.CarPreviewPath,Mode=OneWay,IsAsync=false, Converter={converters:NullImageConverter TargetWidth=60,TargetHeight=35,MissingImage=True}}"
+                                   VerticalAlignment="Top" Margin="-5,0,0,0"></Image>
                             <TextBlock Text="{Binding CarDesc.Model}" Grid.Column="1" HorizontalAlignment="Left" Margin="5,5,5,5"></TextBlock>
                             <StackPanel Visibility="{Binding IsPickup,Converter={converters:BoolToVisibilityConverter}}" Grid.Column="1" HorizontalAlignment="Right" Margin="5,5,5,5"
-                                    Orientation="Horizontal">
+                                        Orientation="Horizontal">
                                 <TextBlock Text="(" FontSize="10" />
                                 <TextBlock Text="{Binding ConnectedEntries}" FontSize="10" />
                                 <TextBlock Text="/" FontSize="10" />

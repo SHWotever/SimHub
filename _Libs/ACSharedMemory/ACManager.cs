@@ -188,6 +188,22 @@ namespace ACSharedMemory
                 data.NewData.SpeedMph = this.data.NewData.Physics.SpeedKmh * 0.621371192f;
                 data.NewData.SessionTypeName = this.data.NewData.Graphics.Session.ToString().Replace("AC_", "");
                 data.NewData.StatusName = this.data.NewData.Graphics.Status.ToString().Replace("AC_", "");
+
+                if (data.NewData.Physics.TyreWear != null && data.NewData.Physics.TyreWear.Length == 4)
+                {
+                    data.NewData.TyreWear1 = this.data.NewData.Physics.TyreWear[0];
+                    data.NewData.TyreWear2 = this.data.NewData.Physics.TyreWear[1];
+                    data.NewData.TyreWear3 = this.data.NewData.Physics.TyreWear[2];
+                    data.NewData.TyreWear4 = this.data.NewData.Physics.TyreWear[3];
+                }
+
+                if (data.NewData.Physics.TyreDirtyLevel != null && data.NewData.Physics.TyreDirtyLevel.Length == 4)
+                {
+                    data.NewData.TyreDirtyLevel1 = this.data.NewData.Physics.TyreDirtyLevel[0];
+                    data.NewData.TyreDirtyLevel2 = this.data.NewData.Physics.TyreDirtyLevel[1];
+                    data.NewData.TyreDirtyLevel3 = this.data.NewData.Physics.TyreDirtyLevel[2];
+                    data.NewData.TyreDirtyLevel4 = this.data.NewData.Physics.TyreDirtyLevel[3];
+                }
             }
         }
 
