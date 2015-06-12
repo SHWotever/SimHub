@@ -1,13 +1,12 @@
 ﻿using System;
-using System.IO.Ports;
-using System.Threading;
 using System.Drawing;
+using System.IO.Ports;
 
 namespace ConsoleApplication1
 {
     internal class Program
     {
-        static int delta = 0;
+        private static int delta = 0;
 
         private static void Main(string[] args)
         {
@@ -29,7 +28,6 @@ namespace ConsoleApplication1
 
             while (1 == 1)
             {
-
                 dash.SetLedsColor(0, SerialDash.LedColor.Red);
                 dash.SetLedsColor(1, SerialDash.LedColor.Red);
 
@@ -40,7 +38,6 @@ namespace ConsoleApplication1
                 dash.SetText(0, "--------");
                 //Thread.Sleep(10);
                 dash.Send();
-
 
                 //for (double i = 0; i < 16; i += 1)
                 //{
@@ -65,7 +62,6 @@ namespace ConsoleApplication1
                     }
                 }
             }
-
         }
 
         public struct ColorRGB
@@ -73,12 +69,14 @@ namespace ConsoleApplication1
             public byte R;
             public byte G;
             public byte B;
+
             public ColorRGB(Color value)
             {
                 this.R = value.R;
                 this.G = value.G;
                 this.B = value.B;
             }
+
             public static implicit operator Color(ColorRGB rgb)
             {
                 Color c = Color.FromArgb(rgb.R, rgb.G, rgb.B);
@@ -91,12 +89,12 @@ namespace ConsoleApplication1
                 return c;
             }
 
-
             public static explicit operator ColorRGB(Color c)
             {
                 return new ColorRGB(c);
             }
         }
+
         public static ColorRGB HSL2RGB(double h, double sl, double l)
         {
             double v;
@@ -128,26 +126,31 @@ namespace ConsoleApplication1
                         g = mid1;
                         b = m;
                         break;
+
                     case 1:
                         r = mid2;
                         g = v;
                         b = m;
                         break;
+
                     case 2:
                         r = m;
                         g = v;
                         b = mid1;
                         break;
+
                     case 3:
                         r = m;
                         g = mid2;
                         b = v;
                         break;
+
                     case 4:
                         r = mid1;
                         g = m;
                         b = v;
                         break;
+
                     case 5:
                         r = v;
                         g = m;
@@ -161,7 +164,5 @@ namespace ConsoleApplication1
             rgb.B = Convert.ToByte(b * 255.0f);
             return rgb;
         }
-
-
     }
 }

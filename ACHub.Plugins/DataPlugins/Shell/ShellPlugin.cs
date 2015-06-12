@@ -44,8 +44,8 @@ namespace ACHub.Plugins.DataPlugins.Shell
                     {
                         try
                         {
-                            if(a.Status.GameRunning)
-                            Process.Start(file);
+                            if (a.Status.GameRunning)
+                                Process.Start(file);
                         }
                         catch { }
                     });

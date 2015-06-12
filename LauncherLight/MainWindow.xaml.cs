@@ -3,18 +3,19 @@ using ACSharedMemory.Models.Track;
 using IniParser;
 using IniParser.Model;
 using LauncherLight.Models;
+using LauncherLight.UserControls;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace LauncherLight
 {
@@ -23,65 +24,102 @@ namespace LauncherLight
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-
         //private string GamePath = @"D:\Program Files (x86)\Assetto Corsa";
         //private string ServerPath = @"D:\Program Files (x86)\Assetto Corsa\Server";
+
+        private OnlineTab onlineContext = new OnlineTab();
+
         public MainWindow()
         {
+            this.Closing += MainWindow_Closing;
+
             InitializeComponent();
+
+            this.onlineTab.DataContext = onlineContext;
+
             this.lstCars.SelectionChanged += lstCars_SelectionChanged;
-            this.lstServers.SelectionChanged += lstServer_SelectionChanged;
+            btnSettings.Click += btnSettings_Click;
+            btnChangeServer.Click += btnChangeServer_Click;
+            btnOpenInfoServer.Click += btnOpenInfoServer_Click;
             Task.Factory.StartNew(() =>
             {
                 LoadData();
-            //    this.Dispatcher.Invoke(() =>
-            //                        {
-            //                            for (var i = 0; i < tab.Items.Count; i++)
-            //                            {
+                //    this.Dispatcher.Invoke(() =>
+                //                        {
+                //                            for (var i = 0; i < tab.Items.Count; i++)
+                //                            {
+                //                                tab.SelectedIndex = i;
 
-            //                                tab.SelectedIndex = i;
+                //                                tab.UpdateLayout();
 
-            //                                tab.UpdateLayout();
-
-
-            //                            }
-            //                            tab.SelectedIndex = 0;
-            //                        });
+                //                            }
+                //                            tab.SelectedIndex = 0;
+                //                        });
             });
         }
 
-        void lstServer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void btnOpenInfoServer_Click(object sender, RoutedEventArgs e)
         {
-            if (lstServers.SelectedItem != null)
-            {
-                lstOnlineCars.DataContext = (lstServers.SelectedItem as ACServer).CarDescs.ToList();
-            }
+            Process.Start(onlineContext.CurrentServer.AdressInfo);
         }
-        void lstCars_SelectionChanged(object sender, SelectionChangedEventArgs e)
+
+        private void btnChangeServer_Click(object sender, RoutedEventArgs e)
         {
-            if (lstCars.SelectedItem != null)
-            {
-                lstSkins.DataContext = (lstCars.SelectedItem as CarDesc).Skins.ToList();
-                lstSkins.SelectedValue = (lstCars.SelectedItem as CarDesc).Skins.First();
-            }
+            SelectServer();
+        }
+
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Helpers.AbortRefresh();
+            Properties.Settings.Default.LastServer = Newtonsoft.Json.JsonConvert.SerializeObject(onlineContext.CurrentServer);
+            Properties.Settings.Default.Save();
+        }
+
+        private void btnSettings_Click(object sender, RoutedEventArgs e)
+        {
+            (new Settings()).ShowDialog();
+            LoadData();
+        }
+
+        private void lstCars_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //if (lstCars.SelectedItem != null)
+            //{
+            //    var items = (lstCars.SelectedItem as CarDesc).GetSkins().ToList();
+            //    lstSkins.DataContext = items;
+            //    lstSkins.SelectedValue = items.FirstOrDefault();
+            //}
         }
 
         private string GamePath { get { return Properties.Settings.Default.GamePath; } }
 
         private string ServerPath { get { return Properties.Settings.Default.ServerPath; } }
 
+        private List<CarDesc> cars;
+        private List<TrackDesc> tracks;
+
         private void LoadData()
         {
+            Dispatcher.Invoke(() =>
+        {
+            this.IsEnabled = false;
+            this.grpServer.Visibility = Properties.Settings.Default.EnableServerFeature ? Visibility.Visible : System.Windows.Visibility.Collapsed;
+            //Grid.SetRowSpan(this.grdCars, Properties.Settings.Default.EnableServerFeature ? 1 : 2);
+        });
+
+            string GamePath = this.GamePath;
+
             List<Assist> TCassists = Helpers.GetTCAssits();
 
             List<Assist> Stability = Helpers.GetStabilityAssists();
-            List<CarDesc> cars = Helpers.GetCars(GamePath);
-            List<TrackDesc> tracks = Helpers.GetTracks(GamePath);
+            cars = Helpers.GetCars(GamePath);
+            tracks = Helpers.GetTracks(GamePath);
+
+            AvailableRessources.Tracks = tracks.ToDictionary(i => i.TrackCode);
+            AvailableRessources.Cars = cars.ToDictionary(i => i.Model);
 
             cars = cars.OrderBy(i => i.CarInfo.brand).ThenBy(i => i.CarInfo.name).ToList();
             tracks = tracks.OrderBy(i => i.TrackInfo.name).ToList();
-            var servers = Helpers.GetOnlineServer("76561197987605830");
-
 
             Dispatcher.Invoke(() =>
             {
@@ -160,17 +198,20 @@ namespace LauncherLight
                     this.lstPreset.SelectedItem = Properties.Settings.Default.LastPreset;
                 }
                 catch { }
-                Dispatcher.Invoke(() => { lstServers.DataContext = servers; });
+
+                try
+                {
+                    var tmp = Newtonsoft.Json.JsonConvert.DeserializeObject<ACServer>(Properties.Settings.Default.LastServer);
+                    if (tmp != null)
+                    {
+                        tmp.fill(true);
+                    }
+                    this.onlineContext.CurrentServer = tmp;
+                }
+                catch { }
+                this.IsEnabled = true;
             });
-
-            //
-
-
         }
-
-
-
-
 
         public void MergeIniFiles(string src, string target)
         {
@@ -285,11 +326,11 @@ namespace LauncherLight
             {
                 process.Kill();
             }
-
-            foreach (var process in Process.GetProcessesByName("AssettoCorsa"))
-            {
-                process.Kill();
-            }
+            if (Properties.Settings.Default.UseRename)
+                foreach (var process in Process.GetProcessesByName("AssettoCorsa"))
+                {
+                    process.Kill();
+                }
 
             try
             {
@@ -320,6 +361,11 @@ namespace LauncherLight
             var data = parser.ReadFile(raceIniPath);
 
             var track = lstTracks.SelectedItem as TrackDesc;
+            if (cars == null || track == null)
+            {
+                btnStart.IsEnabled = true;
+                return;
+            }
             data["RACE"]["TRACK"] = track.Track;
             data["RACE"].RemoveKey("CONFIG_TRACK");
             if (!string.IsNullOrEmpty(track.TrackConfig))
@@ -333,12 +379,19 @@ namespace LauncherLight
             {
                 data["CAR_0"]["SKIN"] = //System.IO.Path.GetFileName(
                     //System.IO.Directory.GetDirectories(System.IO.Path.Combine(GamePath, "content\\cars", car.Model, "skins")).FirstOrDefault()); ;
-                    (lstSkins.SelectedItem as Skin).Name;
+                    car.CurrentSkin.Name;
             }
             catch { }
 
             parser.WriteFile(raceIniPath, data, new System.Text.UTF8Encoding(false));
 
+            await StartGame();
+
+            btnStart.IsEnabled = true;
+        }
+
+        private async Task StartGame()
+        {
             Properties.Settings.Default.LastPreset = lstPreset.SelectedItem.ToString();
             Properties.Settings.Default.Save();
 #if DEBUG
@@ -372,13 +425,9 @@ namespace LauncherLight
             }
 #endif
 
-
             if (Properties.Settings.Default.UseRename)
             {
-
             }
-
-            btnStart.IsEnabled = true;
         }
 
         private Process p;
@@ -576,17 +625,291 @@ namespace LauncherLight
 
         private void txtServerSearch_PreviewKeyUp(object sender, KeyEventArgs e)
         {
-
         }
 
         private void txtServerSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-
         }
 
         private void txtServerSearch_TextChanged_1(object sender, TextChangedEventArgs e)
         {
+        }
 
+        private ACServer currentServer = null;
+
+        private DialogHost GetDialog(FrameworkElement control)
+        {
+            DialogHost dialog = new DialogHost();
+            dialog.ContentControl = control;
+            return dialog;
+        }
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            SelectServer();
+        }
+
+        private bool closed = false;
+
+        private async void SelectServer(Action oncloseDelegate = null)
+        {
+            closed = false;
+            ServerList serverListControl = new ServerList();
+            DialogHost dialog = GetDialog(serverListControl);
+
+            serverListControl.ServerSelected = (a) =>
+            {
+                closed = true;
+                Task.Factory.StartNew(() =>
+                Helpers.RefreshServer(a, Properties.Settings.Default.SteamID, false));
+                onlineContext.CurrentServer = a;
+
+                Properties.Settings.Default.LastServer = Newtonsoft.Json.JsonConvert.SerializeObject(a);
+                Properties.Settings.Default.Save();
+                this.HideMetroDialogAsync(dialog);
+                if (oncloseDelegate != null)
+                {
+                    oncloseDelegate();
+                }
+                Helpers.AbortRefresh();
+            };
+
+            serverListControl.Cancel = () =>
+            {
+                this.HideMetroDialogAsync(dialog);
+                closed = true;
+                if (oncloseDelegate != null)
+                {
+                    oncloseDelegate();
+                }
+                Helpers.AbortRefresh();
+            };
+
+            this.ShowMetroDialogAsync(dialog).ContinueWith((a) =>
+            {
+                var servers = Helpers.GetOnlineServers(Properties.Settings.Default.SteamID);
+                foreach (var server in servers)
+                {
+                    server.fill(false);
+                }
+
+                Helpers.RefreshServers(servers, Properties.Settings.Default.SteamID);
+                serverListControl.SetSevers(servers);
+                var LANservers = Helpers.GetLanServers(Properties.Settings.Default.SteamID);
+
+                foreach (var server in LANservers)
+                {
+                    server.fill(true);
+                    Helpers.RefreshServer(server, Properties.Settings.Default.SteamID, false);
+                }
+                //Helpers.RefreshServers(LANservers, Properties.Settings.Default.SteamID);
+                serverListControl.SetLanServers(LANservers);
+            });
+
+            //while (!closed)
+            //{
+            //    try
+            //    {
+            //        DoEvents();
+            //    }
+            //    catch { }
+
+            //}
+        }
+
+        public void DoEvents()
+        {
+            try
+            {
+                DispatcherFrame frame = new DispatcherFrame();
+                Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background,
+                    new DispatcherOperationCallback(ExitFrame), frame);
+                Dispatcher.PushFrame(frame);
+            }
+            catch { }
+        }
+
+        public object ExitFrame(object f)
+        {
+            ((DispatcherFrame)f).Continue = false;
+
+            return null;
+        }
+
+        private void btnSkinChoice_Click(object sender, RoutedEventArgs e)
+        {
+            SkinChoice skinChoiceControl = new SkinChoice();
+            DialogHost dialog = GetDialog(skinChoiceControl);
+
+            var currentCar = this.lstCars.SelectedItem as CarDesc;
+
+            skinChoiceControl.SkinSelected = (a) =>
+            {
+                currentCar.CurrentSkin = a;
+                this.HideMetroDialogAsync(dialog);
+            };
+            skinChoiceControl.Cancel = () =>
+            {
+                this.HideMetroDialogAsync(dialog);
+            };
+
+            this.ShowMetroDialogAsync(dialog).ContinueWith((a) =>
+            {
+                skinChoiceControl.SetSkins(currentCar.Skins);
+            });
+        }
+
+        private void btnOnlineSkinChoice_Click(object sender, RoutedEventArgs e)
+        {
+            SkinChoice skinChoiceControl = new SkinChoice();
+            DialogHost dialog = GetDialog(skinChoiceControl);
+
+            if (onlineContext.CurrentServer != null && onlineContext.CurrentServer.SelectedCar != null)
+            {
+                var currentCar = this.onlineContext.CurrentServer.SelectedCar.CarDesc;
+
+                skinChoiceControl.SkinSelected = (a) =>
+                {
+                    currentCar.CurrentSkin = a;
+                    this.HideMetroDialogAsync(dialog);
+                };
+                skinChoiceControl.Cancel = () =>
+                {
+                    this.HideMetroDialogAsync(dialog);
+                };
+
+                this.ShowMetroDialogAsync(dialog).ContinueWith((a) =>
+                {
+                    skinChoiceControl.SetSkins(currentCar.Skins);
+                });
+            }
+        }
+
+        private async void tab_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (tab.SelectedItem == onlineTab)
+            {
+                if (onlineContext.CurrentServer == null)
+                {
+                    e.Handled = true;
+                    SelectServer(() =>
+                    {
+                        if (onlineContext.CurrentServer == null)
+                        {
+                            tab.SelectedIndex = 0;
+                        }
+                    });
+
+                    //if (onlineContext.CurrentServer == null)
+                    //{
+                    //    tab.SelectedIndex = 0;
+                    //}
+                }
+            }
+        }
+
+        private async void btnStartOnline_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var file in System.IO.Directory.GetFiles("OnlineTemplate\\"))
+            {
+                if (!file.ToLower().EndsWith(".merge"))
+                {
+                    string newpath = System.IO.Path.Combine(Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments), "Assetto Corsa", "cfg", System.IO.Path.GetFileName(file));
+                    System.IO.File.Copy(file, newpath, true);
+                }
+            }
+            foreach (var file in System.IO.Directory.GetFiles("OnlineTemplate\\"))
+            {
+                if (file.EndsWith(".merge"))
+                {
+                    string newpath = System.IO.Path.Combine(Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments), "Assetto Corsa", "cfg", System.IO.Path.GetFileNameWithoutExtension(file));
+                    //System.IO.File.Copy(file, newpath, true);
+                    MergeIniFiles(file, newpath);
+                }
+            }
+
+            var parser = new FileIniDataParser();
+            parser.Parser.Configuration.AssigmentSpacer = "";
+
+            var raceIniPath = System.IO.Path.Combine(Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments), "Assetto Corsa", "cfg", "race.ini");
+            var data = parser.ReadFile(raceIniPath);
+
+            data["REMOTE"]["SERVER_IP"] = onlineContext.CurrentServer.ip;
+            data["REMOTE"]["SERVER_PORT"] = onlineContext.CurrentServer.tport.ToString();
+            data["REMOTE"]["REQUESTED_CAR"] = onlineContext.CurrentServer.SelectedCar.CarDesc.Model;
+            data["REMOTE"]["NAME"] = Properties.Settings.Default.PlayerName;
+            data["REMOTE"]["PASSWORD"] = onlineContext.CurrentServer.pass ? onlineContext.CurrentServer.CurrentPassword : "";
+            data["REMOTE"]["GUID"] = Properties.Settings.Default.SteamID;
+            data["REMOTE"]["GUID"] = Properties.Settings.Default.SteamID;
+
+            data["CAR_0"]["SKIN"] = onlineContext.CurrentServer.SelectedCar.CarDesc.CurrentSkin.Name;
+            data["CAR_0"]["DRIVER_NAME"] = Properties.Settings.Default.PlayerName;
+
+            parser.WriteFile(raceIniPath, data, new System.Text.UTF8Encoding(false));
+
+            await StartGame();
         }
     }
+
+    //public static class DialogHelper
+    //{
+    //    ///
+    //    /// Recursively processes a given dependency object and all its
+    //    /// children, and updates sources of all objects that use a
+    //    /// binding expression on a given property.
+    //    ///
+    //    /// The dependency object that marks a starting
+    //    /// point. This could be a dialog window or a panel control that
+    //    /// hosts bound controls.
+    //    /// The properties to be updated if
+    //    ///  or one of its childs provide it along
+    //    /// with a binding expression.
+    //    public static void UpdateBindingSources(DependencyObject obj)
+    //    {
+    //        IEnumerable props = obj.EnumerateDependencyProperties();
+    //        foreach (DependencyProperty p in props)
+    //        {
+    //            Binding b = BindingOperations.GetBinding(obj, p);
+    //            //if (b.UpdateSourceTrigger == UpdateSourceTrigger.Explicit)
+    //            {
+    //                //check whether the submitted object provides a bound property
+    //                //that matches the property parameters
+    //                BindingExpression be =
+    //                  BindingOperations.GetBindingExpression(obj, p);
+    //                if (be != null) be.UpdateSource();
+    //            }
+    //        }
+
+    //        int count = VisualTreeHelper.GetChildrenCount(obj);
+    //        for (int i = 0; i < count; i++)
+    //        {
+    //            //process child items recursively
+    //            DependencyObject childObject = VisualTreeHelper.GetChild(obj, i);
+    //            UpdateBindingSources(childObject);
+    //        }
+    //    }
+
+    //    public static void UpdateAllSources(this FrameworkElement w)
+    //    {
+    //        UpdateBindingSources(w);
+    //    }
+    //}
+
+    //public static class DependencyObjectExtensions
+    //{
+    //    public static IEnumerable EnumerateDependencyProperties(this DependencyObject element)
+    //    {
+    //        LocalValueEnumerator lve = element.GetLocalValueEnumerator();
+
+    //        while (lve.MoveNext())
+    //        {
+    //            LocalValueEntry entry = lve.Current;
+    //            if (BindingOperations.IsDataBound(element, entry.Property))
+    //            {
+    //                yield return entry.Property;
+    //            }
+    //        }
+    //    }
+
+    //}
 }

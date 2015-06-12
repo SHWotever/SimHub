@@ -1,14 +1,13 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Diagnostics;
 
 namespace ACToolsUtilities.UI.DataGridViewExtension
 {
     /// <summary>
     /// Defines the editing control for the DataGridViewNumericUpDownCell custom cell type.
     /// </summary>
-    class DataGridViewNumericUpDownEditingControl : NumericUpDown, IDataGridViewEditingControl
+    internal class DataGridViewNumericUpDownEditingControl : NumericUpDown, IDataGridViewEditingControl
     {
         // Needed to forward keyboard messages to the child TextBox control.
         [System.Runtime.InteropServices.DllImport("USER32.DLL", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
@@ -16,8 +15,10 @@ namespace ACToolsUtilities.UI.DataGridViewExtension
 
         // The grid that owns this editing control
         private DataGridView dataGridView;
+
         // Stores whether the editing control's value has changed or not
         private bool valueChanged;
+
         // Stores the row index in which the editing control resides
         private int rowIndex;
 
@@ -58,7 +59,7 @@ namespace ACToolsUtilities.UI.DataGridViewExtension
             }
             set
             {
-                this.Text = (string) value;
+                this.Text = (string)value;
             }
         }
 
@@ -105,7 +106,7 @@ namespace ACToolsUtilities.UI.DataGridViewExtension
         }
 
         /// <summary>
-        /// Property which indicates whether the editing control needs to be repositioned 
+        /// Property which indicates whether the editing control needs to be repositioned
         /// when its value changes.
         /// </summary>
         public virtual bool RepositionEditingControlOnValueChange
@@ -117,7 +118,7 @@ namespace ACToolsUtilities.UI.DataGridViewExtension
         }
 
         /// <summary>
-        /// Method called by the grid before the editing control is shown so it can adapt to the 
+        /// Method called by the grid before the editing control is shown so it can adapt to the
         /// provided cell style.
         /// </summary>
         public virtual void ApplyCellStyleToEditingControl(DataGridViewCellStyle dataGridViewCellStyle)
@@ -147,37 +148,37 @@ namespace ACToolsUtilities.UI.DataGridViewExtension
             switch (keyData & Keys.KeyCode)
             {
                 case Keys.Right:
-                {
-                    TextBox textBox = this.Controls[1] as TextBox;
-                    if (textBox != null)
                     {
-                        // If the end of the selection is at the end of the string,
-                        // let the DataGridView treat the key message
-                        if ((this.RightToLeft == RightToLeft.No && !(textBox.SelectionLength == 0 && textBox.SelectionStart == textBox.Text.Length)) ||
-                            (this.RightToLeft == RightToLeft.Yes && !(textBox.SelectionLength == 0 && textBox.SelectionStart == 0)))
+                        TextBox textBox = this.Controls[1] as TextBox;
+                        if (textBox != null)
                         {
-                            return true;
+                            // If the end of the selection is at the end of the string,
+                            // let the DataGridView treat the key message
+                            if ((this.RightToLeft == RightToLeft.No && !(textBox.SelectionLength == 0 && textBox.SelectionStart == textBox.Text.Length)) ||
+                                (this.RightToLeft == RightToLeft.Yes && !(textBox.SelectionLength == 0 && textBox.SelectionStart == 0)))
+                            {
+                                return true;
+                            }
                         }
+                        break;
                     }
-                    break;
-                }
 
                 case Keys.Left:
-                {
-                    TextBox textBox = this.Controls[1] as TextBox;
-                    if (textBox != null)
                     {
-                        // If the end of the selection is at the begining of the string
-                        // or if the entire text is selected and we did not start editing,
-                        // send this character to the dataGridView, else process the key message
-                        if ((this.RightToLeft == RightToLeft.No && !(textBox.SelectionLength == 0 && textBox.SelectionStart == 0)) ||
-                            (this.RightToLeft == RightToLeft.Yes && !(textBox.SelectionLength == 0 && textBox.SelectionStart == textBox.Text.Length)))
+                        TextBox textBox = this.Controls[1] as TextBox;
+                        if (textBox != null)
                         {
-                            return true;
+                            // If the end of the selection is at the begining of the string
+                            // or if the entire text is selected and we did not start editing,
+                            // send this character to the dataGridView, else process the key message
+                            if ((this.RightToLeft == RightToLeft.No && !(textBox.SelectionLength == 0 && textBox.SelectionStart == 0)) ||
+                                (this.RightToLeft == RightToLeft.Yes && !(textBox.SelectionLength == 0 && textBox.SelectionStart == textBox.Text.Length)))
+                            {
+                                return true;
+                            }
                         }
+                        break;
                     }
-                    break;
-                }
 
                 case Keys.Down:
                     // If the current value hasn't reached its minimum yet, handle the key. Otherwise let
@@ -199,33 +200,33 @@ namespace ACToolsUtilities.UI.DataGridViewExtension
 
                 case Keys.Home:
                 case Keys.End:
-                {
-                    // Let the grid handle the key if the entire text is selected.
-                    TextBox textBox = this.Controls[1] as TextBox;
-                    if (textBox != null)
                     {
-                        if (textBox.SelectionLength != textBox.Text.Length)
+                        // Let the grid handle the key if the entire text is selected.
+                        TextBox textBox = this.Controls[1] as TextBox;
+                        if (textBox != null)
                         {
-                            return true;
+                            if (textBox.SelectionLength != textBox.Text.Length)
+                            {
+                                return true;
+                            }
                         }
+                        break;
                     }
-                    break;
-                }
 
                 case Keys.Delete:
-                {
-                    // Let the grid handle the key if the carret is at the end of the text.
-                    TextBox textBox = this.Controls[1] as TextBox;
-                    if (textBox != null)
                     {
-                        if (textBox.SelectionLength > 0 ||
-                            textBox.SelectionStart < textBox.Text.Length)
+                        // Let the grid handle the key if the carret is at the end of the text.
+                        TextBox textBox = this.Controls[1] as TextBox;
+                        if (textBox != null)
                         {
-                            return true;
+                            if (textBox.SelectionLength > 0 ||
+                                textBox.SelectionStart < textBox.Text.Length)
+                            {
+                                return true;
+                            }
                         }
+                        break;
                     }
-                    break;
-                }
             }
             return !dataGridViewWantsInputKey;
         }
@@ -237,7 +238,7 @@ namespace ACToolsUtilities.UI.DataGridViewExtension
         {
             bool userEdit = this.UserEdit;
             try
-            {   
+            {
                 // Prevent the Value from being set to Maximum or Minimum when the cell is being painted.
                 this.UserEdit = (context & DataGridViewDataErrorContexts.Display) == 0;
                 return this.Value.ToString((this.ThousandsSeparator ? "N" : "F") + this.DecimalPlaces.ToString());
@@ -273,7 +274,7 @@ namespace ACToolsUtilities.UI.DataGridViewExtension
         // End of the IDataGridViewEditingControl interface implementation
 
         /// <summary>
-        /// Small utility function that updates the local dirty state and 
+        /// Small utility function that updates the local dirty state and
         /// notifies the grid of the value change.
         /// </summary>
         private void NotifyDataGridViewOfValueChange()
@@ -286,7 +287,7 @@ namespace ACToolsUtilities.UI.DataGridViewExtension
         }
 
         /// <summary>
-        /// Listen to the KeyPress notification to know when the value changed, and 
+        /// Listen to the KeyPress notification to know when the value changed, and
         /// notify the grid of the change.
         /// </summary>
         protected override void OnKeyPress(KeyPressEventArgs e)

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO.Ports;
 using System.Linq;
@@ -12,8 +11,8 @@ namespace SerialDash
     public class ModuleButton
     {
         public int Screen { get; set; }
-        public Buttons PressedButton { get; set; }
 
+        public Buttons PressedButton { get; set; }
     }
 
     [Flags]
@@ -37,9 +36,8 @@ namespace SerialDash
         None
     }
 
-    class CRC8 : List<byte>
+    internal class CRC8 : List<byte>
     {
-
         public List<Byte> getDataWithCrc()
         {
             var result = new List<byte>();
@@ -47,7 +45,6 @@ namespace SerialDash
             result.Add(ComputeAdditionChecksum(this));
             this.Clear();
             return result;
-
         }
 
         public Byte getDataCrc()
@@ -70,7 +67,6 @@ namespace SerialDash
             }
             return sum;
         }
-
     }
 
     public class SerialDashController
@@ -444,7 +440,6 @@ namespace SerialDash
                     }
                 }
             }
-
         }
 
         private void Send_MODELA()
@@ -505,7 +500,6 @@ namespace SerialDash
                     currentPos = Send(bytes, currentPos);
                 }
 
-
                 //Thread.Sleep(10);
 
                 // LEDS
@@ -529,12 +523,10 @@ namespace SerialDash
                 currentPos = Send(bytes, currentPos);
             }
             catch { }
-
         }
 
         private int Send(List<byte> bytes, int currentPos)
         {
-
             try
             {
                 var buffer = bytes.ToArray();
@@ -547,8 +539,6 @@ namespace SerialDash
                 throw;
             }
         }
-
-
 
         public void SetIntensity(int screenIndex, int intensity)
         {
@@ -693,7 +683,6 @@ namespace SerialDash
                 {
                     DetectComPortTask = null;
                 }
-
             });
         }
 
@@ -808,7 +797,6 @@ namespace SerialDash
                 char s = (char)com.ReadChar();
                 if (s == 'a' || s == 'b')
                 {
-
                     com.WriteTimeout = 100;
 
                     com.Write(new byte[] { PROTOCOL_COMMAND_MODULECOUNT }, 0, 1);

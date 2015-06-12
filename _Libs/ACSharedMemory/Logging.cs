@@ -1,10 +1,5 @@
 ﻿using log4net;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ACSharedMemory
 {
@@ -14,5 +9,4 @@ namespace ACSharedMemory
 
         public static ILog Current { get { return Log; } }
     }
-
 }

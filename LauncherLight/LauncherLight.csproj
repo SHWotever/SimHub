@@ -16,6 +16,7 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <ExpressionBlendVersion>12.0.51020.0</ExpressionBlendVersion>
+    <NuGetPackageImportStamp>ab3e8c7b</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -26,6 +27,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -40,6 +42,9 @@
     <ApplicationIcon>startorb.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Community.ValueConverters">
+      <HintPath>..\packages\Community.Windows.ValueConverters.0.2.0\lib\net45\Community.ValueConverters.dll</HintPath>
+    </Reference>
     <Reference Include="INIFileParser, Version=2.0.4.0, Culture=neutral, PublicKeyToken=79af7b307b65cf3c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ini-parser.2.1.1\lib\INIFileParser.dll</HintPath>
@@ -51,8 +56,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PropertyChanged">
+      <HintPath>..\packages\PropertyChanged.Fody.1.50.1\Lib\portable-net4+sl4+wp8+win8+wpa81+MonoAndroid16+MonoTouch40\PropertyChanged.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.1.2.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -91,45 +102,95 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Behaviors\CustomToolTipPlacementBehavior.cs" />
+    <Compile Include="Behaviors\CustomToolTipPrioritizedPlacementBehavior.cs" />
+    <Compile Include="Behaviors\DesignModeTool.cs" />
+    <Compile Include="Behaviors\HtmlTextBoxProperties.cs" />
+    <Compile Include="Converters\BindableRichTextBox.cs" />
+    <Compile Include="Converters\BooleanToBrushConverter.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\HtmlToRichConverter.cs" />
+    <Compile Include="Converters\ChartSerieConverter.cs" />
+    <Compile Include="Converters\IsNullConverter.cs" />
+    <Compile Include="Converters\Proxy.cs" />
+    <Compile Include="Converters\UniformGridColConverter.cs" />
     <Compile Include="Converters\TrimConverter.cs" />
-    <Compile Include="Items\CarIItem.xaml.cs">
-      <DependentUpon>CarIItem.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Enums\ToolTipEnums.cs" />
     <Compile Include="Converters\NullImageConverter.cs" />
     <Compile Include="Helpers.cs" />
-    <Compile Include="Items\CarItemAlt.xaml.cs">
-      <DependentUpon>CarItemAlt.xaml</DependentUpon>
+    <Compile Include="Models\ServerListModel.cs" />
+    <Compile Include="UserControls\CarItem.xaml.cs">
+      <DependentUpon>CarItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Items\SkinItem.xaml.cs">
+    <Compile Include="UserControls\SelectedServer.xaml.cs">
+      <DependentUpon>SelectedServer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ServerCarItem.xaml.cs">
+      <DependentUpon>ServerCarItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ServerListItem.xaml.cs">
+      <DependentUpon>ServerListItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\SkinChoice.xaml.cs">
+      <DependentUpon>SkinChoice.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ServerList.xaml.cs">
+      <DependentUpon>ServerList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\SkinItem.xaml.cs">
       <DependentUpon>SkinItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MarkupConverter\htmlcssparser.cs" />
+    <Compile Include="MarkupConverter\htmlfromxamlconverter.cs" />
+    <Compile Include="MarkupConverter\htmllexicalanalyzer.cs" />
+    <Compile Include="MarkupConverter\htmlparser.cs" />
+    <Compile Include="MarkupConverter\htmlschema.cs" />
+    <Compile Include="MarkupConverter\htmltokentype.cs" />
+    <Compile Include="MarkupConverter\HtmlToRtfConverter.cs" />
+    <Compile Include="MarkupConverter\htmltoxamlconverter.cs" />
+    <Compile Include="MarkupConverter\MarkupConverter.cs" />
+    <Compile Include="MarkupConverter\RtfToHtmlConverter.cs" />
     <Compile Include="Models\Assists.cs" />
-    <Compile Include="OnlineWindow.xaml.cs">
-      <DependentUpon>OnlineWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Models\ACServer.cs" />
+    <Compile Include="UserControls\DialogHost.xaml.cs">
+      <DependentUpon>DialogHost.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OnlineTab.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Items\TrackItem.xaml.cs">
+    <Compile Include="UserControls\TextPath.cs" />
+    <Compile Include="UserControls\TrackItem.xaml.cs">
       <DependentUpon>TrackItem.xaml</DependentUpon>
     </Compile>
-    <Page Include="Items\CarItemAlt.xaml">
+    <Page Include="UserControls\CarItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Items\CarIItem.xaml">
+    <Page Include="UserControls\SelectedServer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Items\SkinItem.xaml">
+    <Page Include="UserControls\ServerCarItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="OnlineWindow.xaml">
+    <Page Include="UserControls\ServerListItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\SkinChoice.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\ServerList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\SkinItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -143,6 +204,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Resources\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Resources\ScrollViewerStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -151,11 +216,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="UserControls\DialogHost.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Items\TrackItem.xaml">
+    <Page Include="UserControls\TrackItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -178,13 +247,16 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="LICENSE" />
+    <None Include="OnlineTemplate\race.ini.merge">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <Resource Include="Resources\Entypo.ttf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -211,10 +283,29 @@
   <ItemGroup>
     <Folder Include="Presets\RaceMode\Hotlap\" />
     <Folder Include="Presets\RaceMode\Practice\" />
-    <Folder Include="SampleData\CarDescSample\" />
+    <Folder Include="SampleData\SampleDataSource\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="server.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="FodyWeavers.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\WindowsIcons-license.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Entypo-license.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="MarkupConverter\MarkupConverter.csproj" />
+    <Resource Include="Resources\MissingContent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <DesignData Include="SampleData\ServerCar.xaml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
@@ -223,7 +314,9 @@
       <ErrorText>Ce projet fait référence à des packages NuGet qui sont manquants sur cet ordinateur. Activez l'option de restauration des packages NuGet pour les télécharger. Pour plus d'informations, consultez http://go.microsoft.com/fwlink/?LinkID=322105. Le fichier manquant est le suivant : {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+    <Error Condition="!Exists('..\packages\Fody.1.28.3\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.1.28.3\build\Fody.targets'))" />
   </Target>
+  <Import Project="..\packages\Fody.1.28.3\build\Fody.targets" Condition="Exists('..\packages\Fody.1.28.3\build\Fody.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

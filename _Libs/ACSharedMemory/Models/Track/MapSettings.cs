@@ -1,5 +1,8 @@
-﻿namespace ACSharedMemory.Models.Track
+﻿using PropertyChanged;
+
+namespace ACSharedMemory.Models.Track
 {
+    [ImplementPropertyChanged]
     public class MapSettings
     {
         public double WIDTH { get; set; }

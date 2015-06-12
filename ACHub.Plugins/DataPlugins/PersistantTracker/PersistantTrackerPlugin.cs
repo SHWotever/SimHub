@@ -2,7 +2,6 @@
 using ACToolsUtilities.Serialisation;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -13,8 +12,7 @@ namespace ACHub.Plugins.DataPlugins.PersistantTracker
     /// </summary>
     public class PersistantTrackerPlugin : IDataPlugin
     {
-        Guid sessionId = new Guid();
-
+        private Guid sessionId = new Guid();
 
         private PluginManager pluginManager;
 
@@ -63,7 +61,6 @@ namespace ACHub.Plugins.DataPlugins.PersistantTracker
             pluginManager.SetPropertyValue("AllTimeBest", typeof(PersistantTrackerPlugin), TimeSpan.FromSeconds(0));
             pluginManager.SetPropertyValue("AllTimeBestLastLapDelta", typeof(PersistantTrackerPlugin), 0);
 
-
             pluginManager.SetPropertyValue("SessionBestLiveDelta", typeof(PersistantTrackerPlugin), TimeSpan.Zero);
             pluginManager.SetPropertyValue("SessionBestLiveDeltaSeconds", typeof(PersistantTrackerPlugin), 0);
             pluginManager.SetPropertyValue("SessionBest", typeof(PersistantTrackerPlugin), TimeSpan.Zero);
@@ -83,7 +80,7 @@ namespace ACHub.Plugins.DataPlugins.PersistantTracker
             pluginManager.GameStateChanged += pluginManager_GameStateChanged;
         }
 
-        void pluginManager_GameStateChanged(bool running, PluginManager manager)
+        private void pluginManager_GameStateChanged(bool running, PluginManager manager)
         {
             SavePartial();
 
@@ -93,7 +90,6 @@ namespace ACHub.Plugins.DataPlugins.PersistantTracker
 
         private void manager_GameStatusChanged(AC_STATUS status, PluginManager manager)
         {
-
         }
 
         private void SavePartial()
@@ -187,10 +183,8 @@ namespace ACHub.Plugins.DataPlugins.PersistantTracker
             {
                 if (sessionBest == null)
                 {
-
                     sessionBest = record;
                     pluginManager.SetPropertyValue("SessionBestLastLapDelta", typeof(PersistantTrackerPlugin), 0);
-
                 }
                 else
                 {
@@ -200,7 +194,6 @@ namespace ACHub.Plugins.DataPlugins.PersistantTracker
                         sessionBest = record;
                         newSessionBestEvent = true;
                         Logging.Current.Info("New session best");
-
                     }
                 }
             }
@@ -267,7 +260,6 @@ namespace ACHub.Plugins.DataPlugins.PersistantTracker
 
             if (data.GameRunning)
             {
-
                 if (data.OldData != null && data.OldData.Graphics.CurrentSectorIndex != data.NewData.Graphics.CurrentSectorIndex)
                 {
                     if (record.SectorsTime.ContainsKey(data.OldData.Graphics.CurrentSectorIndex))
@@ -299,8 +291,6 @@ namespace ACHub.Plugins.DataPlugins.PersistantTracker
                 }
                 if (sessionBest == null)
                 {
-
-
                     pluginManager.SetPropertyValue("SessionBestLiveDelta", typeof(PersistantTrackerPlugin), TimeSpan.Zero);
                     pluginManager.SetPropertyValue("SessionBestLiveDeltaSeconds", typeof(PersistantTrackerPlugin), 0);
                     pluginManager.SetPropertyValue("SessionBest", typeof(PersistantTrackerPlugin), TimeSpan.Zero);

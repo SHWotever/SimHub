@@ -1,9 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ACHub.Plugins.DataPlugins.DataCore
 {
@@ -19,6 +15,7 @@ namespace ACHub.Plugins.DataPlugins.DataCore
         {
             this.Assemblies = new List<string>();
         }
+
         /// <summary>
         /// Referenced assemblies
         /// </summary>
@@ -58,6 +55,5 @@ namespace ACHub.Plugins.DataPlugins.DataCore
         /// </summary>
         [JsonIgnore]
         public List<Expression> Expressions { get; set; }
-
     }
 }

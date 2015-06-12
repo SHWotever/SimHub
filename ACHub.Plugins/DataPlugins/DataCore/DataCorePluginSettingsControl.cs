@@ -1,23 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ACHub.Plugins.DataPlugins.DataCore
 {
-
-	/// <summary>
-	/// Date Core plugin settings control
-	/// </summary>
+    /// <summary>
+    /// Date Core plugin settings control
+    /// </summary>
     public partial class DataCorePluginSettingsControl : UserControl
     {
-        DataCorePlugin plugin;
-        PluginManager manager;
+        private DataCorePlugin plugin;
+        private PluginManager manager;
 
         /// <summary>
         /// CTor
@@ -33,9 +26,9 @@ namespace ACHub.Plugins.DataPlugins.DataCore
             this.lstExpressions.DisplayMember = "Name";
         }
 
-		/// <summary>
-		/// CTor
-		/// </summary>
+        /// <summary>
+        /// CTor
+        /// </summary>
         public DataCorePluginSettingsControl()
         {
             InitializeComponent();
@@ -58,7 +51,6 @@ namespace ACHub.Plugins.DataPlugins.DataCore
         {
             if (this.lstExpressions.SelectedItem != null)
             {
-
                 Expression exp = this.lstExpressions.SelectedItem as Expression;
                 var result = EditExpression(exp);
                 if (result != null)
@@ -78,7 +70,6 @@ namespace ACHub.Plugins.DataPlugins.DataCore
             var result = editor.ShowDialog(current ?? new Expression() { Name = "NewExpression" }, manager);
             if (result != null)
             {
-
                 bool ok = false;
                 while (!ok)
                 {
@@ -104,8 +95,6 @@ namespace ACHub.Plugins.DataPlugins.DataCore
                 }
             }
             return result;
-
-
         }
 
         private void btnRemoveExpression_Click(object sender, EventArgs e)

@@ -5,16 +5,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ACToolsUtilities
 {
     public class EvalResult
     {
         public string GeneratedClass { get; set; }
-        public CompilerResults CompilerResults { get; set; }
-        public Delegate Method { get; set; }
 
+        public CompilerResults CompilerResults { get; set; }
+
+        public Delegate Method { get; set; }
     }
 
     public class EvalResult<T, TResult> : EvalResult
@@ -28,6 +28,7 @@ namespace ACToolsUtilities
     public static class EvalProvider
     {
         private static Dictionary<string, object> EvalCache = new Dictionary<string, object>();
+
         public static object Eval(object value, string code, string[] usingStatements = null, string[] assemblies = null)
         {
             if (value == null)
@@ -42,8 +43,6 @@ namespace ACToolsUtilities
 
         public static EvalResult<T, TResult> EvalCode<T, TResult>(T value, string code, string[] usingStatements = null, string[] assemblies = null)
         {
-
-
             var method = CreateEvalMethod<T, TResult>("var value=(global::" + typeof(T).FullName + ")arg;\r\n" + code, usingStatements, assemblies);
 
             return method;
@@ -57,7 +56,6 @@ namespace ACToolsUtilities
             var includeUsings = new HashSet<string>(new[] { "System", "System.Linq", "System.Collections.Generic", "System.Text" });
             includeUsings.Add(returnType.Namespace);
             includeUsings.Add(inputType.Namespace);
-
 
             if (usingStatements != null)
                 foreach (var usingStatement in usingStatements)
@@ -101,7 +99,6 @@ namespace {1}
 
                             var compilerResult = compiler.CompileAssemblyFromSource(parameters, source);
 
-
                             Type type = null;
                             MethodInfo method = null;
                             Func<T, TResult> function = null;
@@ -128,8 +125,6 @@ namespace {1}
             return (EvalResult<T, TResult>)EvalCache[cacheKey];
         }
 
-
-
         private static string GetUsing(HashSet<string> usingStatements)
         {
             StringBuilder result = new StringBuilder();
@@ -141,4 +136,3 @@ namespace {1}
         }
     }
 }
-

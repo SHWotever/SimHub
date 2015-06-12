@@ -16,6 +16,7 @@ namespace ACHub.Plugins.OutputPlugins.Dash
         {
             DataSource = "Rpms";
         }
+
         /// <summary>
         /// Color when blinking
         /// </summary>
@@ -35,6 +36,7 @@ namespace ACHub.Plugins.OutputPlugins.Dash
         /// Color when  in range
         /// </summary>
         public string OnColor { get; set; }
+
         /// <summary>
         /// Range end
         /// </summary>
@@ -77,6 +79,7 @@ namespace ACHub.Plugins.OutputPlugins.Dash
         /// Name
         /// </summary>
         public string ScreenName { get; set; }
+
         /// <summary>
         /// Parts
         /// </summary>
@@ -84,16 +87,15 @@ namespace ACHub.Plugins.OutputPlugins.Dash
 
         public List<ScreenAnnouncePart> ScrenAnnounce { get; set; }
 
-
         /// <summary>
         /// Blink Frequency
         /// </summary>
         public int BlinkFrequency { get; set; }
     }
 
-    public class ScreenAnnouncePart {
+    public class ScreenAnnouncePart
+    {
         public string AnnounceText { get; set; }
-    
     }
 
     public class ScreenItem : List<ScreenPart>
@@ -109,7 +111,10 @@ namespace ACHub.Plugins.OutputPlugins.Dash
         /// CTOR
         /// </summary>
         /// <param name="collection"></param>
-        public ScreenItem(IEnumerable<ScreenPart> collection) : base(collection) { }
+        public ScreenItem(IEnumerable<ScreenPart> collection)
+            : base(collection)
+        {
+        }
 
         /// <summary>
         /// Text shown when screen is activated
@@ -158,7 +163,6 @@ namespace ACHub.Plugins.OutputPlugins.Dash
         /// Text
         /// </summary>
         public string Text { get; set; }
-
 
         /// <summary>
         ///

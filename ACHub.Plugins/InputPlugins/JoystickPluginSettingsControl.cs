@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ACHub.Plugins.InputPlugins
@@ -38,20 +32,20 @@ namespace ACHub.Plugins.InputPlugins
                 });
             }
         }
+
         public void Refresh(string input)
         {
             if (this.cbShowStatus.Checked)
             {
                 this.Invoke((MethodInvoker)delegate
                 {
-                        this.txtSettings.Text += DateTime.Now.ToString() + " : " + DateTime.Now.ToString() + input + "\r\n";
+                    this.txtSettings.Text += DateTime.Now.ToString() + " : " + DateTime.Now.ToString() + input + "\r\n";
                 });
             }
         }
 
         private void label1_Click(object sender, EventArgs e)
         {
-
         }
     }
 }

@@ -3,7 +3,6 @@ using ACSharedMemory.Models.Track;
 using ACSharedMemory.Reader;
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Timers;
 
 namespace ACSharedMemory
@@ -28,6 +27,7 @@ namespace ACSharedMemory
 
         //public string CurrentGearChanged { get; internal set; }
     }
+
     [Serializable]
     public class GameData
     {
@@ -44,8 +44,6 @@ namespace ACSharedMemory
         public CarDesc Car { get; internal set; }
 
         public Events Events { get; internal set; }
-
-
     }
 
     public class ACManager
@@ -91,6 +89,7 @@ namespace ACSharedMemory
         {
             get { return data; }
         }
+
         //public override object InitializeLifetimeService()
         //{
         //    return null;
@@ -111,7 +110,6 @@ namespace ACSharedMemory
             timer.Elapsed += timer_Elapsed;
             ac = new ACReader();
             ac.Start();
-
         }
 
         public ISynchronizeInvoke SynchronizingObject
@@ -147,7 +145,6 @@ namespace ACSharedMemory
 
                         if (data.NewData.Graphics.Status == AC_STATUS.AC_LIVE)
                         {
-
                             PreParseData();
                             CheckSessionRestart();
                             CheckGameSessionTypeChanged();

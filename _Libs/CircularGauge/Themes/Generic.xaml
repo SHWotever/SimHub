@@ -20,11 +20,7 @@ GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWE
 LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 
 DAMAGE.-->
-
-<ResourceDictionary
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:CircularGauge">
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:CircularGauge">
     <!-- Type converters-->
     <local:ImageOffsetConverter x:Key="imageOffsetConverter" />
     <local:RadiusToDiameterConverter x:Key="radiusToDiameterConverter" />
@@ -34,7 +30,6 @@ DAMAGE.-->
     <local:BackgroundColorConverter x:Key="backgroundColorConverter" />
     <local:GlassEffectWidthConverter x:Key="glassEffectWidthConverter" />
     <local:ColorToSolidColorBrushConverter x:Key="colorToSolidColorBrushConverter" />
-
     <Style TargetType="local:CircularGaugeControl">
         <Setter Property="ResetPointerOnStartUp" Value="True" />
         <Setter Property="ScaleValuePrecision" Value="5" />
@@ -55,20 +50,16 @@ DAMAGE.-->
         <Setter Property="AboveOptimalRangeColor" Value="Red" />
         <Setter Property="DialTextColor" Value="White" />
         <Setter Property="DialTextFontSize" Value="8" />
-
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:CircularGaugeControl">
                     <!-- Root Grid-->
-                    <Grid x:Name="LayoutRoot"
-                          Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Radius, Converter={StaticResource radiusToDiameterConverter}}"
-                          Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Radius, Converter={StaticResource radiusToDiameterConverter}}">
-
+                    <Grid x:Name="LayoutRoot" Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Radius, Converter={StaticResource radiusToDiameterConverter}}"
+                            Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Radius, Converter={StaticResource radiusToDiameterConverter}}">
                         <Ellipse x:Name="OuterFrame" StrokeThickness="16"
-                                 Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Radius, Converter={StaticResource radiusToDiameterConverter}}"
-                                 Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Radius, Converter={StaticResource radiusToDiameterConverter}}"
-                                 Fill="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=GaugeBackgroundColor, Converter={StaticResource backgroundColorConverter}}">
-
+                                Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Radius, Converter={StaticResource radiusToDiameterConverter}}"
+                                Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Radius, Converter={StaticResource radiusToDiameterConverter}}"
+                                Fill="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=GaugeBackgroundColor, Converter={StaticResource backgroundColorConverter}}">
                             <Ellipse.Stroke>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="#FF636060" Offset="1" />
@@ -78,37 +69,18 @@ DAMAGE.-->
                                 </LinearGradientBrush>
                             </Ellipse.Stroke>
                         </Ellipse>
-
                         <!-- Gauge Image -->
-                        <Image Source="{TemplateBinding ImageSource}"
-                               Width="{Binding RelativeSource={RelativeSource TemplatedParent},
-                            Path=ImageSize, Converter={StaticResource sizeConverter}, ConverterParameter=Width }"
-
-                               Height="{Binding RelativeSource={RelativeSource TemplatedParent},
-                            Path=ImageSize, Converter={StaticResource sizeConverter}, ConverterParameter=Height }"
-
-                               RenderTransform="{Binding RelativeSource={RelativeSource TemplatedParent},
-                            Path=ImageOffset, Converter={StaticResource imageOffsetConverter}}">
-                        </Image>
-
+                        <Image Source="{TemplateBinding ImageSource}" Width="{Binding RelativeSource={RelativeSource TemplatedParent},
+                            Path=ImageSize, Converter={StaticResource sizeConverter}, ConverterParameter=Width }" Height="{Binding RelativeSource={RelativeSource TemplatedParent},
+                            Path=ImageSize, Converter={StaticResource sizeConverter}, ConverterParameter=Height }" RenderTransform="{Binding RelativeSource={RelativeSource TemplatedParent},
+                            Path=ImageOffset, Converter={StaticResource imageOffsetConverter}}"></Image>
                         <!-- Dial Text -->
-                        <TextBlock Text="{TemplateBinding DialText}"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   Foreground="{Binding RelativeSource={RelativeSource TemplatedParent},
-                            Path=DialTextColor, Converter={StaticResource colorToSolidColorBrushConverter}}"
-                                   FontSize="{TemplateBinding DialTextFontSize}"
-                                   FontWeight="Bold"
-
-                              RenderTransform="{Binding RelativeSource={RelativeSource TemplatedParent},
-                            Path=DialTextOffset, Converter={StaticResource rangeIndicatorLightPositionConverter}}">
-                        </TextBlock>
-
+                        <TextBlock Text="{TemplateBinding DialText}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{Binding RelativeSource={RelativeSource TemplatedParent},
+                            Path=DialTextColor, Converter={StaticResource colorToSolidColorBrushConverter}}" FontSize="{TemplateBinding DialTextFontSize}" FontWeight="Bold" RenderTransform="{Binding RelativeSource={RelativeSource TemplatedParent},
+                            Path=DialTextOffset, Converter={StaticResource rangeIndicatorLightPositionConverter}}"></TextBlock>
                         <!-- Pointer -->
-                        <Path x:Name="Pointer" Stroke="#FFE91C1C" StrokeThickness="2"
-                              Width="{TemplateBinding PointerLength}"
-                              Height="{TemplateBinding PointerThickness}" HorizontalAlignment="Center"
-                              Data="M1,1 L1,10 L156,6 z" Stretch="Fill"  RenderTransformOrigin="0,0.5"
-                              RenderTransform="{Binding RelativeSource={RelativeSource TemplatedParent},
+                        <Path x:Name="Pointer" Stroke="#FFE91C1C" StrokeThickness="2" Width="{TemplateBinding PointerLength}" Height="{TemplateBinding PointerThickness}" HorizontalAlignment="Center"
+                                Data="M1,1 L1,10 L156,6 z" Stretch="Fill" RenderTransformOrigin="0,0.5" RenderTransform="{Binding RelativeSource={RelativeSource TemplatedParent},
                             Path=PointerLength, Converter={StaticResource pointerCenterConverter}}">
                             <Path.Fill>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -118,7 +90,6 @@ DAMAGE.-->
                                 </LinearGradientBrush>
                             </Path.Fill>
                         </Path>
-
                         <!--Pointer Cap-->
                         <Ellipse x:Name="PointerCap" Height="{TemplateBinding PointerCapRadius}" Width="{TemplateBinding PointerCapRadius}" StrokeThickness="4" Opacity="1">
                             <Ellipse.Stroke>
@@ -134,13 +105,10 @@ DAMAGE.-->
                                 </LinearGradientBrush>
                             </Ellipse.Fill>
                         </Ellipse>
-
                         <!--Range indicator light-->
                         <Ellipse x:Name="RangeIndicatorLight"
-                                  Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=RangeIndicatorLightRadius, Converter={StaticResource radiusToDiameterConverter}}"
-                                  Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=RangeIndicatorLightRadius, Converter={StaticResource radiusToDiameterConverter}}"
-
-                                RenderTransform="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=RangeIndicatorLightRadius, Converter={StaticResource radiusToDiameterConverter}}"
+                                Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=RangeIndicatorLightRadius, Converter={StaticResource radiusToDiameterConverter}}" RenderTransform="{Binding RelativeSource={RelativeSource TemplatedParent},
                                 Path=RangeIndicatorLightOffset, Converter={StaticResource rangeIndicatorLightPositionConverter}}">
                             <!--Range indicator light off position effect-->
                             <Ellipse.Fill>
@@ -151,12 +119,10 @@ DAMAGE.-->
                                 </LinearGradientBrush>
                             </Ellipse.Fill>
                         </Ellipse>
-
                         <!--Glass effect ellipse-->
-                        <Path x:Name="GlassEffect" StrokeThickness="1" Stretch="Fill" VerticalAlignment="Bottom"
-                              Height="{TemplateBinding Radius}"
-                              Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Radius, Converter={StaticResource glassEffectWidthConverter}}"
-                              Opacity="0.18" Data="M265.99997,151.00005 C263.99994,194.00003 209.55908,259 135.00064,259 C60.442207,259 11,200.00003 5.9999995,157.00005 C5.0181994,148.55656 73.000877,112.00006 137.00053,112.00007 C199.00887,112.00008 266.72015,135.5164 265.99997,151.00005 z">
+                        <Path x:Name="GlassEffect" StrokeThickness="1" Stretch="Fill" VerticalAlignment="Bottom" Height="{TemplateBinding Radius}"
+                                Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Radius, Converter={StaticResource glassEffectWidthConverter}}" Opacity="0.18"
+                                Data="M265.99997,151.00005 C263.99994,194.00003 209.55908,259 135.00064,259 C60.442207,259 11,200.00003 5.9999995,157.00005 C5.0181994,148.55656 73.000877,112.00006 137.00053,112.00007 C199.00887,112.00008 266.72015,135.5164 265.99997,151.00005 z">
                             <Path.Fill>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="#68FCFCFC" />

@@ -60,7 +60,7 @@ namespace ACHub.Plugins.InputPlugins
         {
             this.pluginManager = pluginManager;
             this.timer = new Timer();
-            
+
             this.timer.Interval = 2;
             this.timer.Elapsed += timer_Elapsed;
             this.timer.Enabled = true;
@@ -73,13 +73,13 @@ namespace ACHub.Plugins.InputPlugins
             im.LongPress += im_LongPress;
         }
 
-        void im_LongPress(string input)
+        private void im_LongPress(string input)
         {
             pluginManager.TriggerInput(input, typeof(JoystickPlugin), PressType.LongPress);
             settingsControl.Refresh(input + " long press");
         }
 
-        InputManager im = new InputManager();
+        private InputManager im = new InputManager();
 
         private void timer_Elapsed(object sender, ElapsedEventArgs e)
         {
@@ -87,7 +87,6 @@ namespace ACHub.Plugins.InputPlugins
             var inputs = joystickManager.GetState();
             //foreach (var input in inputs)
             //{
-
             //    this.pluginManager.TriggerInput(input, typeof(JoystickPlugin),0);
             //}
 

@@ -200,17 +200,13 @@ namespace ACHub.Plugins.UI
                     manager.SaveSettings();
                     this.lstInputMappings.SelectedItem = exp;
                 }
-
             }
         }
 
         private void btnDownInput_Click(object sender, EventArgs e)
         {
-
             if (this.lstInputMappings.SelectedItem != null)
             {
-
-
                 InputMapping exp = this.lstInputMappings.SelectedItem as InputMapping;
                 var oldidx = manager.Settings.InputActionMapping.IndexOf(exp);
                 if (oldidx < manager.Settings.InputActionMapping.Count - 1)
@@ -221,7 +217,6 @@ namespace ACHub.Plugins.UI
                     manager.SaveSettings();
                     this.lstInputMappings.SelectedItem = exp;
                 }
-
             }
         }
 
@@ -239,7 +234,6 @@ namespace ACHub.Plugins.UI
                     manager.SaveSettings();
                     this.lstEventMapping.SelectedItem = exp;
                 }
-
             }
         }
 
@@ -247,7 +241,6 @@ namespace ACHub.Plugins.UI
         {
             if (this.lstEventMapping.SelectedItem != null)
             {
-
                 Mapping exp = this.lstEventMapping.SelectedItem as Mapping;
                 var oldidx = manager.Settings.EventActionMapping.IndexOf(exp);
                 if (oldidx < manager.Settings.EventActionMapping.Count - 1)
@@ -258,7 +251,6 @@ namespace ACHub.Plugins.UI
                     manager.SaveSettings();
                     this.lstEventMapping.SelectedItem = exp;
                 }
-
             }
         }
     }

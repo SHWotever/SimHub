@@ -4,11 +4,7 @@ using ACSharedMemory.Models.Track;
 using ACToolsUtilities.Serialisation;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.Remoting;
-using System.Runtime.Remoting.Channels;
-using System.Runtime.Remoting.Channels.Tcp;
 using System.Threading.Tasks;
 
 namespace ACHub.Plugins
@@ -19,93 +15,108 @@ namespace ACHub.Plugins
     [Serializable]
     public class PluginManager
     {
-
         public class GeneratedAction
         {
             public Action<PluginManager, string> ActionStart { get; set; }
+
             public Action<PluginManager, string> ActionEnd { get; set; }
 
             public Task RepeatTask { get; set; }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="running"></param>
         /// <param name="manager"></param>
         public delegate void GameRunningChangedDelegate(bool running, PluginManager manager);
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public event GameRunningChangedDelegate GameStateChanged;
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="status"></param>
         /// <param name="manager"></param>
         public delegate void GameStatusChangedDelegate(AC_STATUS status, PluginManager manager);
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public event GameStatusChangedDelegate GameStatusChanged;
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="completedLapNumber"></param>
         /// <param name="testLap"></param>
         /// <param name="manager"></param>
         public delegate void NewLapDelegate(int completedLapNumber, bool testLap, PluginManager manager);
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public event NewLapDelegate NewLap;
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="sessionType"></param>
         /// <param name="manager"></param>
         public delegate void SessionTypeChangedDelegate(AC_SESSION_TYPE sessionType, PluginManager manager);
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public event SessionTypeChangedDelegate SessionTypeChanged;
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="manager"></param>
         public delegate void SessionRestartDelegate(PluginManager manager);
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public event SessionRestartDelegate SessionRestart;
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="newCar"></param>
         /// <param name="manager"></param>
         public delegate void CarChangedDelegate(CarDesc newCar, PluginManager manager);
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public event CarChangedDelegate CarChanged;
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="newTrack"></param>
         /// <param name="manager"></param>
         public delegate void TrackChangedDelegate(TrackDesc newTrack, PluginManager manager);
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public event TrackChangedDelegate TrackChanged;
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="data"></param>
         /// <param name="manager"></param>
         public delegate void DataUpdatedDelegate(GameData data, PluginManager manager);
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public event DataUpdatedDelegate DataUpdated;
 
@@ -162,7 +173,6 @@ namespace ACHub.Plugins
         /// <param name="manager"></param>
         public PluginManager(ACManager manager)
         {
-
             this.ACManager = manager;
             this.settings = JsonExtensions.FromJsonFile<PluginManagerSettings>(SettingsPath);
             LoadSettings();
@@ -174,9 +184,8 @@ namespace ACHub.Plugins
             this.outputPlugins.Add(new OutputPlugins.Dash.SerialDashPlugin());
 
             PluginAction(i => i.Init(this));
-
-
         }
+
         /// <summary>
         /// DTor
         /// </summary>
@@ -217,7 +226,6 @@ namespace ACHub.Plugins
             private get { return _manager; }
             set
             {
-
                 value.GameStateChanged += manager_GameStateChanged;
                 value.GameStatusChanged += manager_GameStatusChanged;
                 value.NewLap += manager_NewLap;
@@ -230,37 +238,37 @@ namespace ACHub.Plugins
             }
         }
 
-        void manager_TrackChanged(ACSharedMemory.Models.Track.TrackDesc newTrack, ACManager manager)
+        private void manager_TrackChanged(ACSharedMemory.Models.Track.TrackDesc newTrack, ACManager manager)
         {
             if (this.TrackChanged != null) { this.TrackChanged(newTrack, this); }
         }
 
-        void manager_CarChanged(ACSharedMemory.Models.Car.CarDesc newCar, ACManager manager)
+        private void manager_CarChanged(ACSharedMemory.Models.Car.CarDesc newCar, ACManager manager)
         {
             if (this.CarChanged != null) { this.CarChanged(newCar, this); }
         }
 
-        void manager_SessionRestart(ACManager manager)
+        private void manager_SessionRestart(ACManager manager)
         {
             if (this.SessionRestart != null) { this.SessionRestart(this); }
         }
 
-        void manager_SessionTypeChanged(AC_SESSION_TYPE sessionType, ACManager manager)
+        private void manager_SessionTypeChanged(AC_SESSION_TYPE sessionType, ACManager manager)
         {
             if (this.SessionTypeChanged != null) { this.SessionTypeChanged(sessionType, this); }
         }
 
-        void manager_NewLap(int completedLapNumber, bool testLap, ACManager manager)
+        private void manager_NewLap(int completedLapNumber, bool testLap, ACManager manager)
         {
             if (this.NewLap != null) { this.NewLap(completedLapNumber, testLap, this); }
         }
 
-        void manager_GameStatusChanged(AC_STATUS status, ACManager manager)
+        private void manager_GameStatusChanged(AC_STATUS status, ACManager manager)
         {
             if (this.GameStatusChanged != null) { this.GameStatusChanged(status, this); }
         }
 
-        void manager_GameStateChanged(bool running, ACManager manager)
+        private void manager_GameStateChanged(bool running, ACManager manager)
         {
             if (this.GameStateChanged != null) { this.GameStateChanged(running, this); }
         }
@@ -359,6 +367,7 @@ namespace ACHub.Plugins
                 GeneratedProperties.Remove(key);
             }
         }
+
         /// <summary>
         /// Get property value
         /// </summary>
@@ -416,6 +425,7 @@ namespace ACHub.Plugins
                 }
             }
         }
+
         /// <summary>
         /// Trigger input for all plugins
         /// </summary>
@@ -475,7 +485,6 @@ namespace ACHub.Plugins
                 }
             });
 
-
             foreach (var mapping in settings.InputActionMapping)
             {
                 if (mapping.Trigger == inputName && mapping.PressType == pressType)
@@ -492,7 +501,6 @@ namespace ACHub.Plugins
                 }
             }
         }
-
 
         /// <summary>
         /// Trigger input
@@ -514,7 +522,6 @@ namespace ACHub.Plugins
                     {
                         lock (action)
                         {
-
                             Logging.Current.InfoFormat("Action start '{0}' triggered after input pressed : {0}, {1}", mapping.Target, inputName);
                             if (action != null)
                             {

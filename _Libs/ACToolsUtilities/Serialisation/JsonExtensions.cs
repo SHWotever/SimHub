@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace ACToolsUtilities.Serialisation
@@ -14,12 +15,15 @@ namespace ACToolsUtilities.Serialisation
             System.IO.File.WriteAllText(path, Newtonsoft.Json.JsonConvert.SerializeObject(item, Newtonsoft.Json.Formatting.Indented));
         }
 
+        public static string ToJson(this object item)
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(item, Newtonsoft.Json.Formatting.Indented);
+        }
+
         public static T JsonClone<T>(this T objectInstance)
         {
-
             var tmp = Newtonsoft.Json.JsonConvert.SerializeObject(objectInstance);
             return (T)(T)Newtonsoft.Json.JsonConvert.DeserializeObject<T>(tmp);
-
         }
 
         public static T FromJsonFile<T>(string path)
@@ -29,6 +33,15 @@ namespace ACToolsUtilities.Serialisation
                 return default(T);
             }
             return (T)Newtonsoft.Json.JsonConvert.DeserializeObject<T>(System.IO.File.ReadAllText(path));
+        }
+
+        public static T FromJsonFile<T>(string path, Func<string, string> textHandler)
+        {
+            if (!File.Exists(path))
+            {
+                return default(T);
+            }
+            return (T)Newtonsoft.Json.JsonConvert.DeserializeObject<T>(textHandler(System.IO.File.ReadAllText(path)));
         }
 
         public static void CleanFolder(string directory)
@@ -49,7 +62,6 @@ namespace ACToolsUtilities.Serialisation
             {
                 return new string[0];
             }
-
         }
     }
 }

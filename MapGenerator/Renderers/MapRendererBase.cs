@@ -30,7 +30,10 @@ namespace MapGenerator.Renderers
 
         public decimal Scale { get; set; }
 
-        public virtual int GetTrackLenght() { return 0; }
+        public virtual int GetTrackLenght()
+        {
+            return 0;
+        }
 
         public int Margin { get; protected set; }
 

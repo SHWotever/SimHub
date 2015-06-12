@@ -1,12 +1,18 @@
-﻿using IniParser;
+﻿using ACToolsUtilities.Serialisation;
+using IniParser;
+using PropertyChanged;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace ACSharedMemory.Models.Car
 {
+    [ImplementPropertyChanged]
     public class CarDesc
     {
+        public bool IsMissing { get; set; }
+
         public CarInfo CarInfo { get; set; }
 
         private string carPath;
@@ -19,7 +25,7 @@ namespace ACSharedMemory.Models.Car
         public string Model
         {
             get;
-            private set;
+            set;
         }
 
         public static CarDesc FromModel(string ACPAth, string model)
@@ -38,7 +44,7 @@ namespace ACSharedMemory.Models.Car
 
             var raceIniPath = System.IO.Path.Combine(Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments), "Assetto Corsa", "cfg", "race.ini");
 
-            if (!File.Exists(raceIniPath))
+            if (!ACToolsUtilities.FileOP.Exists(raceIniPath))
             {
                 return null;
             }
@@ -52,7 +58,7 @@ namespace ACSharedMemory.Models.Car
         public byte[] GetCarBadge()
         {
             string path = System.IO.Path.Combine(carPath, "ui", "badge.png");
-            if (System.IO.File.Exists(path))
+            if (ACToolsUtilities.FileOP.Exists(path))
             {
                 return System.IO.File.ReadAllBytes(path);
             }
@@ -63,8 +69,9 @@ namespace ACSharedMemory.Models.Car
         {
             get
             {
+                if (carPath == null) { return null; }
                 string path = System.IO.Path.Combine(carPath, "ui", "badge.png");
-                if (System.IO.File.Exists(path))
+                if (ACToolsUtilities.FileOP.Exists(path))
                 {
                     return path;
                 }
@@ -76,16 +83,70 @@ namespace ACSharedMemory.Models.Car
         {
             get
             {
-                string skinspath = System.IO.Path.Combine(carPath, "skins");
+                return GetSkins();
+            }
+        }
 
-                if (Directory.Exists(skinspath))
+        private Skin _CurrentSkin = null;
+
+        public Skin CurrentSkin
+        {
+            get
+            {
+                if (_CurrentSkin == null)
                 {
-                    foreach (var skin in Directory.GetDirectories(skinspath))
+                    _CurrentSkin = Skins.FirstOrDefault();
+                }
+                return _CurrentSkin;
+            }
+            set
+            {
+                _CurrentSkin = value;
+            }
+        }
+
+        public IEnumerable<Skin> GetSkins()
+        {
+            //get
+            {
+                if (carPath != null)
+                {
+                    string skinspath = System.IO.Path.Combine(carPath, "skins");
+
+                    if (Directory.Exists(skinspath))
                     {
-                        string path = System.IO.Path.Combine(skin, "preview.jpg");
-                        if (System.IO.File.Exists(path))
+                        foreach (var skin in Directory.EnumerateDirectories(skinspath))
                         {
-                            yield return new Skin { Name = Path.GetFileName(skin), PreviewImage = path };
+                            string path = System.IO.Path.Combine(skin, "preview.jpg");
+                            if (ACToolsUtilities.FileOP.Exists(path))
+                            {
+                                Skin result;
+                                try
+                                {
+                                    var skinobject = JsonExtensions.FromJsonFile<Skin>(System.IO.Path.Combine(skin, "ui_skin.json"), a =>
+                                    {
+                                        string[] lines = a.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
+                                        for (int i = 0; i < lines.Length; i++)
+                                        {
+                                            if (lines[i].ToLower().Contains("number"))
+                                            {
+                                                lines[i] = "";
+                                                return string.Join("\r", lines);
+                                            }
+                                        }
+                                        return a;
+                                    });
+                                    skinobject = skinobject ?? new Skin();
+                                    skinobject.Name = Path.GetFileName(skin);
+                                    skinobject.PreviewImage = path;
+                                    result = skinobject;
+                                }
+                                catch
+                                {
+                                    result = new Skin { Name = Path.GetFileName(skin), PreviewImage = path };
+                                }
+                                yield return result;
+                            }
                         }
                     }
                 }
@@ -96,13 +157,15 @@ namespace ACSharedMemory.Models.Car
         {
             get
             {
+                if (carPath == null) { return null; }
                 string skinspath = System.IO.Path.Combine(carPath, "skins");
+
                 if (Directory.Exists(skinspath))
                 {
-                    foreach (var skin in Directory.GetDirectories(skinspath))
+                    foreach (var skin in Directory.EnumerateDirectories(skinspath))
                     {
                         string path = System.IO.Path.Combine(skin, "preview.jpg");
-                        if (System.IO.File.Exists(path))
+                        if (ACToolsUtilities.FileOP.Exists(path))
                         {
                             return path;
                         }
@@ -114,7 +177,7 @@ namespace ACSharedMemory.Models.Car
                 foreach (var filename in filenames)
                 {
                     string path = System.IO.Path.Combine(carPath, "ui", filename);
-                    if (System.IO.File.Exists(path))
+                    if (ACToolsUtilities.FileOP.Exists(path))
                     {
                         return path;
                     }
@@ -125,7 +188,7 @@ namespace ACSharedMemory.Models.Car
                         foreach (var filename in filenames)
                         {
                             var path = Path.Combine(skin, filename);
-                            if (System.IO.File.Exists(path))
+                            if (ACToolsUtilities.FileOP.Exists(path))
                             {
                                 return path;
                             }
@@ -139,7 +202,7 @@ namespace ACSharedMemory.Models.Car
         public byte[] GetCarPreview()
         {
             var path = CarPreviewPath;
-            if (System.IO.File.Exists(path))
+            if (ACToolsUtilities.FileOP.Exists(path))
             {
                 return System.IO.File.ReadAllBytes(path);
             }

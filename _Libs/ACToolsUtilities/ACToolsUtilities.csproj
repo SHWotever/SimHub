@@ -70,6 +70,7 @@
   <ItemGroup>
     <Compile Include="Automation\AHKMacroRunner.cs" />
     <Compile Include="EvalProvider.cs" />
+    <Compile Include="FileOP.cs" />
     <Compile Include="Input\InputManager.cs" />
     <Compile Include="Input\JoystickManager.cs" />
     <Compile Include="Input\SendKeys.cs" />

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace ACHub.Plugins.DataPlugins.PersistantTracker
 {
     /// <summary>
-    /// Lap record 
+    /// Lap record
     /// </summary>
     public class DataRecord
     {
@@ -27,7 +27,7 @@ namespace ACHub.Plugins.DataPlugins.PersistantTracker
         public DateTime RecordDate { get; set; }
 
         /// <summary>
-        /// Lap time 
+        /// Lap time
         /// </summary>
         public TimeSpan LapTime { get; set; }
 
@@ -47,7 +47,7 @@ namespace ACHub.Plugins.DataPlugins.PersistantTracker
         public Guid SessionId { get; set; }
 
         /// <summary>
-        /// Positions 
+        /// Positions
         /// </summary>
         public List<KeyValuePair<TimeSpan, float>> CarPositions { get; set; }
 
@@ -59,6 +59,6 @@ namespace ACHub.Plugins.DataPlugins.PersistantTracker
         /// <summary>
         /// Sectors time
         /// </summary>
-        public Dictionary<int, TimeSpan> SectorsTime{ get; set; }
+        public Dictionary<int, TimeSpan> SectorsTime { get; set; }
     }
 }

@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ACHub.Plugins.UI
@@ -23,6 +17,7 @@ namespace ACHub.Plugins.UI
         {
             InitializeComponent();
         }
+
         /// <summary>
         /// Show ui
         /// </summary>
@@ -126,7 +121,6 @@ namespace ACHub.Plugins.UI
 
             manager.InputTriggered += manager_InputTriggered;
 
-
             if (this.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 if (listBox1.SelectedItem != null && listBox2.SelectedItem != null)
@@ -149,8 +143,7 @@ namespace ACHub.Plugins.UI
             return null;
         }
 
-
-        bool manager_InputTriggered(string input)
+        private bool manager_InputTriggered(string input)
         {
             if (this.Visible)
             {
@@ -174,7 +167,6 @@ namespace ACHub.Plugins.UI
 
         private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
         {
-
         }
     }
 }

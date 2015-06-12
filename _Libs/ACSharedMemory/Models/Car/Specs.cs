@@ -1,5 +1,8 @@
-﻿namespace ACSharedMemory.Models.Car
+﻿using PropertyChanged;
+
+namespace ACSharedMemory.Models.Car
 {
+    [ImplementPropertyChanged]
     public class Specs
     {
         public string bhp { get; set; }

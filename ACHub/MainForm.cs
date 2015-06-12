@@ -1,8 +1,8 @@
-﻿using ACSharedMemory;
+﻿using ACHub.Plugins;
+using ACSharedMemory;
 using System;
 using System.Collections;
 using System.Windows.Forms;
-using ACHub.Plugins;
 
 namespace ACHub
 {
@@ -15,8 +15,6 @@ namespace ACHub
 
         public MainForm()
         {
-
-            
             Hashtable props = new Hashtable();
             props["port"] = 8080;
             props["name"] = "ACManager";

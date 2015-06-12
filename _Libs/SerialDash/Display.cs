@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Windows.Forms;
 
 namespace SerialDash
@@ -25,7 +18,6 @@ namespace SerialDash
             {
                 (this.Controls.Find("displayLetter" + (i + 1).ToString(), true).First() as DisplayLetter).SetValue(bytes[i]);
             }
-
         }
     }
 }

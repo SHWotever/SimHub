@@ -3,7 +3,7 @@
 namespace ACSharedMemory.Reader
 {
     [Serializable]
-    public class ACData 
+    public class ACData
     {
         public Graphics Graphics { get; set; }
 
@@ -11,7 +11,7 @@ namespace ACSharedMemory.Reader
 
         public StaticInfo StaticInfo { get; set; }
 
-        public TimeSpan CurrentLapTime{ get; set; }
+        public TimeSpan CurrentLapTime { get; set; }
 
         public TimeSpan LastLapTime { get; set; }
 
@@ -28,6 +28,5 @@ namespace ACSharedMemory.Reader
         public string SessionTypeName { get; internal set; }
 
         public string StatusName { get; internal set; }
-        
     }
 }

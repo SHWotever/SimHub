@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Data;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -97,7 +96,6 @@ namespace ACHub.Plugins.OutputPlugins.Dash
             }
         }
 
-
         private void UpdateEditing(ScreenPart part)
         {
             this.editing = null;
@@ -126,13 +124,11 @@ namespace ACHub.Plugins.OutputPlugins.Dash
                     this.rbExpression.Checked = part.Expression != null;
                     this.rbText.Checked = part.Expression == null;
                     this.txtCustomFormat.Text = part.FormatString ?? "";
-
                 }
                 this.editing = part;
                 SetPartSourceStatus();
             }
         }
-
 
         private void RefreshDisplay()
         {
@@ -278,7 +274,6 @@ namespace ACHub.Plugins.OutputPlugins.Dash
         {
             if (this.lstParts.SelectedItem != null)
             {
-
                 {
                     ScreenPart exp = this.lstParts.SelectedItem as ScreenPart;
                     var oldidx = parts.IndexOf(exp);
@@ -296,7 +291,6 @@ namespace ACHub.Plugins.OutputPlugins.Dash
         {
             if (this.lstParts.SelectedItem != null)
             {
-
                 {
                     ScreenPart exp = this.lstParts.SelectedItem as ScreenPart;
                     var oldidx = parts.IndexOf(exp);

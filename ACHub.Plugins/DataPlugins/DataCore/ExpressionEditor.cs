@@ -20,6 +20,7 @@ namespace ACHub.Plugins.DataPlugins.DataCore
         {
             InitializeComponent();
         }
+
         /// <summary>
         /// Edit expression
         /// </summary>
@@ -85,6 +86,7 @@ namespace ACHub.Plugins.DataPlugins.DataCore
                 this.txtDump.Text += string.Format("{0}\t{2} [{1}]\r\n", prop.Key, prop.Value.Key, prop.Value.Value);
             }
         }
+
         private void txtName_KeyPress(object sender, KeyPressEventArgs e)
         {
             var i = e.KeyChar;

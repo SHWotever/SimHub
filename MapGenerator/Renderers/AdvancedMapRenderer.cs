@@ -292,6 +292,10 @@ namespace MapGenerator.Renderers
                 }
             }
         }
-        public override int GetTrackLenght() { return (int)data.Data.Max(i => i.Graphics.DistanceTraveled) - (int)data.Data.Min(i => i.Graphics.DistanceTraveled); }
+
+        public override int GetTrackLenght()
+        {
+            return (int)data.Data.Max(i => i.Graphics.DistanceTraveled) - (int)data.Data.Min(i => i.Graphics.DistanceTraveled);
+        }
     }
 }

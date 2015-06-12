@@ -1,7 +1,7 @@
-﻿using log4net.Config;
+﻿using ACHub.Plugins;
+using log4net.Config;
 using System;
 using System.Windows.Forms;
-using ACHub.Plugins;
 
 namespace ACHub
 {
@@ -29,9 +29,9 @@ namespace ACHub
             Logging.Current.Info("ACHub exit");
         }
 
-        static void CurrentDomain_FirstChanceException(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
+        private static void CurrentDomain_FirstChanceException(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
         {
-         //   Logging.Current.Warn("First chance exception catched", e.Exception);
+            //   Logging.Current.Warn("First chance exception catched", e.Exception);
         }
     }
 }

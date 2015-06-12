@@ -126,18 +126,13 @@ namespace ACSharedMemory
                 var bestLapTime = lapData[bestidx];
                 var idx = bestidx;
 
-
                 if (bestidx < lapData.Count - 2 && bestidx > 1)
                 {
-
                     var pointA = lapData[bestidx];
                     var pointB = lapData[bestidx + 1];
 
                     var pointADistance = Distance(pointA.Value, g.CarCoordinates);
                     var pointBDistance = Distance(pointB.Value, g.CarCoordinates);
-
-
-
 
                     var referenceTimeMs = pointA.Key.TotalMilliseconds
                         + ((pointB.Key.TotalMilliseconds - pointA.Key.TotalMilliseconds) * pointADistance) / (pointADistance + pointBDistance);
@@ -150,7 +145,6 @@ namespace ACSharedMemory
                 {
                     return (currentTime - lapData[bestidx].Key);
                 }
-
             }
             return timedeltaResult;
         }
@@ -175,7 +169,6 @@ namespace ACSharedMemory
                 }
                 var bestLapTime = lapData[bestidx];
                 var idx = bestidx;
-
 
                 // Interpolate
                 if (idx > 0 && idx < lapData.Count - 1)

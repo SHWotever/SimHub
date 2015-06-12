@@ -169,8 +169,8 @@ namespace MapGenerator
                     {
                         // Convert to telemetry
                         var filedata = Newtonsoft.Json.JsonConvert.DeserializeObject<DataRecord>(File.ReadAllText(of.FileName));
-                        var newFile = System.IO.Path.GetFileName( System.IO.Path.ChangeExtension(of.FileName, ".tracktelemetry"));
-                        newFile = Path.Combine(System.IO.Path.GetTempPath(),newFile);
+                        var newFile = System.IO.Path.GetFileName(System.IO.Path.ChangeExtension(of.FileName, ".tracktelemetry"));
+                        newFile = Path.Combine(System.IO.Path.GetTempPath(), newFile);
 
                         TelemetryWriter tw = new TelemetryWriter(newFile);
 
@@ -194,7 +194,8 @@ namespace MapGenerator
                 }
             }
         }
-        class DataRecord
+
+        private class DataRecord
         {
             /// <summary>
             /// CTOr
@@ -215,7 +216,7 @@ namespace MapGenerator
             public DateTime RecordDate { get; set; }
 
             /// <summary>
-            /// Lap time 
+            /// Lap time
             /// </summary>
             public TimeSpan LapTime { get; set; }
 
@@ -235,7 +236,7 @@ namespace MapGenerator
             public Guid SessionId { get; set; }
 
             /// <summary>
-            /// Positions 
+            /// Positions
             /// </summary>
             public List<KeyValuePair<TimeSpan, float>> CarPositions { get; set; }
 
@@ -243,6 +244,7 @@ namespace MapGenerator
 
             public Dictionary<int, TimeSpan> SectorsTime { get; set; }
         }
+
         private void tbZoom_ValueChanged(object sender, EventArgs e)
         {
             SetImageZoom();

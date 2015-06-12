@@ -1,434 +1,306 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                    mc:Ignorable="d">
-	<Color x:Key="BackgroundColor">#003D3D3D</Color>
-	<Color x:Key="StandardColor">#FF1DACE9</Color>
-	<Color x:Key="HoverColor">#FF3EC2F9</Color>
-	<Color x:Key="PressedColor">#FF00AADE</Color>
-	<Style x:Key="ScrollBarStyle" TargetType="ScrollBar">
-		<Setter Property="MinWidth" Value="17" />
-		<Setter Property="MinHeight" Value="17" />
-		<Setter Property="IsTabStop" Value="False" />
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="ScrollBar">
-					<Grid x:Name="Root">
-						<Grid.Resources>
-							<ControlTemplate x:Key="RepeatButtonTemplate" TargetType="RepeatButton">
-								<Grid x:Name="Root" Background="Transparent">
-									<VisualStateManager.VisualStateGroups>
-										<VisualStateGroup x:Name="CommonStates">
-											<VisualState x:Name="Normal" />
-										</VisualStateGroup>
-									</VisualStateManager.VisualStateGroups>
-								</Grid>
-							</ControlTemplate>
-							<ControlTemplate x:Key="HorizontalIncrementTemplate" TargetType="RepeatButton">
-								<Grid x:Name="Root">
-									<VisualStateManager.VisualStateGroups>
-										<VisualStateGroup x:Name="CommonStates">
-											<VisualState x:Name="Normal" />
-											<VisualState x:Name="MouseOver">
-												<Storyboard>
-													<ColorAnimation d:IsOptimized="True"
-													                Duration="0"
-													                Storyboard.TargetName="Arrow"
-													                Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
-													                To="{StaticResource HoverColor}" />
-												</Storyboard>
-											</VisualState>
-											<VisualState x:Name="Pressed">
-												<Storyboard>
-													<ColorAnimation d:IsOptimized="True"
-													                Duration="0"
-													                Storyboard.TargetName="Arrow"
-													                Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
-													                To="{StaticResource PressedColor}" />
-												</Storyboard>
-											</VisualState>
-											<VisualState x:Name="Disabled" />
-										</VisualStateGroup>
-									</VisualStateManager.VisualStateGroups>
-									<Rectangle>
-										<Rectangle.Fill>
-											<SolidColorBrush Color="{StaticResource BackgroundColor}" />
-										</Rectangle.Fill>
-									</Rectangle>
-									<Path x:Name="Arrow"
-									      HorizontalAlignment="Center"
-									      VerticalAlignment="Center"
-									      Data="M0,0 L0,7 L7,4 z">
-										<Path.Fill>
-											<SolidColorBrush Color="{StaticResource StandardColor}" />
-										</Path.Fill>
-									</Path>
-								</Grid>
-							</ControlTemplate>
-							<ControlTemplate x:Key="HorizontalDecrementTemplate" TargetType="RepeatButton">
-								<Grid x:Name="Root">
-									<VisualStateManager.VisualStateGroups>
-										<VisualStateGroup x:Name="CommonStates">
-											<VisualState x:Name="Normal" />
-											<VisualState x:Name="MouseOver">
-												<Storyboard>
-													<ColorAnimation d:IsOptimized="True"
-													                Duration="0"
-													                Storyboard.TargetName="Arrow"
-													                Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
-													                To="{StaticResource HoverColor}" />
-												</Storyboard>
-											</VisualState>
-											<VisualState x:Name="Pressed">
-												<Storyboard>
-													<ColorAnimation d:IsOptimized="True"
-													                Duration="0"
-													                Storyboard.TargetName="Arrow"
-													                Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
-													                To="{StaticResource PressedColor}" />
-												</Storyboard>
-											</VisualState>
-											<VisualState x:Name="Disabled" />
-										</VisualStateGroup>
-									</VisualStateManager.VisualStateGroups>
-									<Rectangle>
-										<Rectangle.Fill>
-											<SolidColorBrush Color="{StaticResource BackgroundColor}" />
-										</Rectangle.Fill>
-									</Rectangle>
-									<Path x:Name="Arrow"
-									      HorizontalAlignment="Center"
-									      VerticalAlignment="Center"
-									      Data="M0,4 L7,7 L7,0 z">
-										<Path.Fill>
-											<SolidColorBrush Color="{StaticResource StandardColor}" />
-										</Path.Fill>
-									</Path>
-								</Grid>
-							</ControlTemplate>
-							<ControlTemplate x:Key="VerticalIncrementTemplate" TargetType="RepeatButton">
-								<Grid x:Name="Root">
-									<VisualStateManager.VisualStateGroups>
-										<VisualStateGroup x:Name="CommonStates">
-											<VisualState x:Name="Normal" />
-											<VisualState x:Name="MouseOver">
-												<Storyboard>
-													<ColorAnimation d:IsOptimized="True"
-													                Duration="0"
-													                Storyboard.TargetName="Arrow"
-													                Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
-													                To="{StaticResource HoverColor}" />
-												</Storyboard>
-											</VisualState>
-											<VisualState x:Name="Pressed">
-												<Storyboard>
-													<ColorAnimation d:IsOptimized="True"
-													                Duration="0"
-													                Storyboard.TargetName="Arrow"
-													                Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
-													                To="{StaticResource PressedColor}" />
-												</Storyboard>
-											</VisualState>
-											<VisualState x:Name="Disabled" />
-										</VisualStateGroup>
-									</VisualStateManager.VisualStateGroups>
-									<Rectangle>
-										<Rectangle.Fill>
-											<SolidColorBrush Color="{StaticResource BackgroundColor}" />
-										</Rectangle.Fill>
-									</Rectangle>
-									<Path x:Name="Arrow"
-									      HorizontalAlignment="Center"
-									      VerticalAlignment="Center"
-									      Data="M0,0 L4,7 L7,0 z">
-										<Path.Fill>
-											<SolidColorBrush Color="{StaticResource StandardColor}" />
-										</Path.Fill>
-									</Path>
-								</Grid>
-							</ControlTemplate>
-							<ControlTemplate x:Key="VerticalDecrementTemplate" TargetType="RepeatButton">
-								<Grid x:Name="Root">
-									<VisualStateManager.VisualStateGroups>
-										<VisualStateGroup x:Name="CommonStates">
-											<VisualState x:Name="Normal" />
-											<VisualState x:Name="MouseOver">
-												<Storyboard>
-													<ColorAnimation d:IsOptimized="True"
-													                Duration="0"
-													                Storyboard.TargetName="Arrow"
-													                Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
-													                To="{StaticResource HoverColor}" />
-												</Storyboard>
-											</VisualState>
-											<VisualState x:Name="Pressed">
-												<Storyboard>
-													<ColorAnimation d:IsOptimized="True"
-													                Duration="0"
-													                Storyboard.TargetName="Arrow"
-													                Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
-													                To="{StaticResource PressedColor}" />
-												</Storyboard>
-											</VisualState>
-											<VisualState x:Name="Disabled" />
-										</VisualStateGroup>
-									</VisualStateManager.VisualStateGroups>
-									<Rectangle>
-										<Rectangle.Fill>
-											<SolidColorBrush Color="{StaticResource BackgroundColor}" />
-										</Rectangle.Fill>
-									</Rectangle>
-									<Path x:Name="Arrow"
-									      HorizontalAlignment="Center"
-									      VerticalAlignment="Center"
-									      Data="M0,7 L7,7 L4,0 z">
-										<Path.Fill>
-											<SolidColorBrush Color="{StaticResource StandardColor}" />
-										</Path.Fill>
-									</Path>
-								</Grid>
-							</ControlTemplate>
-							<ControlTemplate x:Key="VerticalThumbTemplate" TargetType="Thumb">
-								<Grid>
-									<VisualStateManager.VisualStateGroups>
-										<VisualStateGroup x:Name="CommonStates">
-											<VisualState x:Name="Normal" />
-											<VisualState x:Name="MouseOver">
-												<Storyboard>
-													<ColorAnimation d:IsOptimized="True"
-													                Duration="0"
-													                Storyboard.TargetName="VisualThumb"
-													                Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
-													                To="{StaticResource HoverColor}" />
-												</Storyboard>
-											</VisualState>
-											<VisualState x:Name="Pressed">
-												<Storyboard>
-													<ColorAnimation d:IsOptimized="True"
-													                Duration="0"
-													                Storyboard.TargetName="VisualThumb"
-													                Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
-													                To="{StaticResource PressedColor}" />
-												</Storyboard>
-											</VisualState>
-											<VisualState x:Name="Disabled" />
-										</VisualStateGroup>
-									</VisualStateManager.VisualStateGroups>
-									<Rectangle>
-										<Rectangle.Fill>
-											<SolidColorBrush Color="{StaticResource BackgroundColor}" />
-										</Rectangle.Fill>
-									</Rectangle>
-									<Rectangle x:Name="VisualThumb"
-									           Width="7"
-									           RadiusX="4.5"
-									           RadiusY="4.5">
-										<Rectangle.Fill>
-											<SolidColorBrush Color="{StaticResource StandardColor}" />
-										</Rectangle.Fill>
-									</Rectangle>
-								</Grid>
-							</ControlTemplate>
-							<ControlTemplate x:Key="HorizontalThumbTemplate" TargetType="Thumb">
-								<Grid>
-									<VisualStateManager.VisualStateGroups>
-										<VisualStateGroup x:Name="CommonStates">
-											<VisualState x:Name="Normal" />
-											<VisualState x:Name="MouseOver">
-												<Storyboard>
-													<ColorAnimation d:IsOptimized="True"
-													                Duration="0"
-													                Storyboard.TargetName="VisualThumb"
-													                Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
-													                To="{StaticResource HoverColor}" />
-												</Storyboard>
-											</VisualState>
-											<VisualState x:Name="Pressed">
-												<Storyboard>
-													<ColorAnimation d:IsOptimized="True"
-													                Duration="0"
-													                Storyboard.TargetName="VisualThumb"
-													                Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
-													                To="{StaticResource PressedColor}" />
-												</Storyboard>
-											</VisualState>
-											<VisualState x:Name="Disabled" />
-										</VisualStateGroup>
-									</VisualStateManager.VisualStateGroups>
-									<Rectangle>
-										<Rectangle.Fill>
-											<SolidColorBrush Color="{StaticResource BackgroundColor}" />
-										</Rectangle.Fill>
-									</Rectangle>
-									<Rectangle x:Name="VisualThumb"
-									           Height="7"
-									           RadiusX="4.5"
-									           RadiusY="4.5">
-										<Rectangle.Fill>
-											<SolidColorBrush Color="{StaticResource StandardColor}" />
-										</Rectangle.Fill>
-									</Rectangle>
-								</Grid>
-							</ControlTemplate>
-						</Grid.Resources>
-						<VisualStateManager.VisualStateGroups>
-							<VisualStateGroup x:Name="CommonStates">
-								<VisualState x:Name="Normal" />
-								<VisualState x:Name="MouseOver" />
-								<VisualState x:Name="Disabled" />
-							</VisualStateGroup>
-						</VisualStateManager.VisualStateGroups>
-						<Grid x:Name="HorizontalRoot">
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="Auto" />
-							</Grid.ColumnDefinitions>
-							<Rectangle Grid.ColumnSpan="5">
-								<Rectangle.Fill>
-									<SolidColorBrush Color="{StaticResource BackgroundColor}" />
-								</Rectangle.Fill>
-							</Rectangle>
-							<RepeatButton x:Name="HorizontalSmallDecrease"
-							              Grid.Column="0"
-							              Width="16"
-							              Margin="1"
-							              Interval="50"
-							              IsTabStop="False"
-							              Template="{StaticResource HorizontalDecrementTemplate}" />
-							<RepeatButton x:Name="HorizontalLargeDecrease"
-							              Grid.Column="1"
-							              Width="0"
-							              Interval="50"
-							              IsTabStop="False"
-							              Template="{StaticResource RepeatButtonTemplate}" />
-							<Thumb x:Name="HorizontalThumb"
-							       Grid.Column="2"
-							       Width="18"
-							       MinWidth="18"
-							       Background="{TemplateBinding Background}"
-							       Template="{StaticResource HorizontalThumbTemplate}" />
-							<RepeatButton x:Name="HorizontalLargeIncrease"
-							              Grid.Column="3"
-							              Interval="50"
-							              IsTabStop="False"
-							              Template="{StaticResource RepeatButtonTemplate}" />
-							<RepeatButton x:Name="HorizontalSmallIncrease"
-							              Grid.Column="4"
-							              Width="16"
-							              Margin="1"
-							              Interval="50"
-							              IsTabStop="False"
-							              Template="{StaticResource HorizontalIncrementTemplate}" />
-						</Grid>
-						<Grid x:Name="VerticalRoot" Visibility="Collapsed">
-							<Grid.RowDefinitions>
-								<RowDefinition Height="Auto" />
-								<RowDefinition Height="Auto" />
-								<RowDefinition Height="Auto" />
-								<RowDefinition Height="*" />
-								<RowDefinition Height="Auto" />
-							</Grid.RowDefinitions>
-							<Rectangle Grid.RowSpan="5">
-								<Rectangle.Fill>
-									<SolidColorBrush Color="{StaticResource BackgroundColor}" />
-								</Rectangle.Fill>
-							</Rectangle>
-							<RepeatButton x:Name="VerticalSmallDecrease"
-							              Grid.Row="0"
-							              Height="16"
-							              Margin="1"
-							              Interval="50"
-							              IsTabStop="False"
-							              Template="{StaticResource VerticalDecrementTemplate}" />
-							<RepeatButton x:Name="VerticalLargeDecrease"
-							              Grid.Row="1"
-							              Height="0"
-							              Interval="50"
-							              IsTabStop="False"
-							              Template="{StaticResource RepeatButtonTemplate}" />
-							<Thumb x:Name="VerticalThumb"
-							       Grid.Row="2"
-							       Height="18"
-							       MinHeight="18"
-							       Template="{StaticResource VerticalThumbTemplate}" />
-							<RepeatButton x:Name="VerticalLargeIncrease"
-							              Grid.Row="3"
-							              Interval="50"
-							              IsTabStop="False"
-							              Template="{StaticResource RepeatButtonTemplate}" />
-							<RepeatButton x:Name="VerticalSmallIncrease"
-							              Grid.Row="4"
-							              Height="16"
-							              Margin="1"
-							              Interval="50"
-							              IsTabStop="False"
-							              Template="{StaticResource VerticalIncrementTemplate}" />
-						</Grid>
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
-	<Style TargetType="ScrollViewer">
-		<Setter Property="HorizontalContentAlignment" Value="Left" />
-		<Setter Property="VerticalContentAlignment" Value="Top" />
-		<Setter Property="VerticalScrollBarVisibility" Value="Visible" />
-		<Setter Property="Padding" Value="4" />
-		<Setter Property="BorderThickness" Value="1" />
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="ScrollViewer">
-					<Border BorderThickness="{TemplateBinding BorderThickness}">
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="Auto" />
-							</Grid.ColumnDefinitions>
-							<Grid.RowDefinitions>
-								<RowDefinition Height="*" />
-								<RowDefinition Height="Auto" />
-							</Grid.RowDefinitions>
-							<ScrollContentPresenter x:Name="ScrollContentPresenter"
-							                        Margin="{TemplateBinding Padding}"
-							                        ContentTemplate="{TemplateBinding ContentTemplate}"
-							                        Cursor="{TemplateBinding Cursor}" />
-							<Rectangle Grid.Row="1" Grid.Column="1">
-								<Rectangle.Fill>
-									<SolidColorBrush Color="{StaticResource BackgroundColor}" />
-								</Rectangle.Fill>
-							</Rectangle>
-							<ScrollBar x:Name="VerticalScrollBar"
-							           Grid.Row="0"
-							           Grid.Column="1"
-							           Width="18"
-							           IsTabStop="False"
-							           Maximum="{TemplateBinding ScrollableHeight}"
-							           Minimum="0"
-							           Orientation="Vertical"
-							           Style="{StaticResource ScrollBarStyle}"
-							           ViewportSize="{TemplateBinding ViewportHeight}"
-							           Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
-							           Value="{TemplateBinding VerticalOffset}" />
-							<ScrollBar x:Name="HorizontalScrollBar"
-							           Grid.Row="1"
-							           Grid.Column="0"
-							           Height="18"
-							           IsTabStop="False"
-							           Maximum="{TemplateBinding ScrollableWidth}"
-							           Minimum="0"
-							           Orientation="Horizontal"
-							           Style="{StaticResource ScrollBarStyle}"
-							           ViewportSize="{TemplateBinding ViewportWidth}"
-							           Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
-							           Value="{TemplateBinding HorizontalOffset}" />
-						</Grid>
-					</Border>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
+    <Color x:Key="BackgroundColor">#003D3D3D</Color>
+    <Color x:Key="StandardColor">#FF1DACE9</Color>
+    <Color x:Key="HoverColor">#FF3EC2F9</Color>
+    <Color x:Key="PressedColor">#FF00AADE</Color>
+    <Style x:Key="ScrollBarStyle" TargetType="ScrollBar">
+        <Setter Property="MinWidth" Value="17" />
+        <Setter Property="MinHeight" Value="17" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ScrollBar">
+                    <Grid x:Name="Root">
+                        <Grid.Resources>
+                            <ControlTemplate x:Key="RepeatButtonTemplate" TargetType="RepeatButton">
+                                <Grid x:Name="Root" Background="Transparent">
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroup x:Name="CommonStates">
+                                            <VisualState x:Name="Normal" />
+                                        </VisualStateGroup>
+                                    </VisualStateManager.VisualStateGroups>
+                                </Grid>
+                            </ControlTemplate>
+                            <ControlTemplate x:Key="HorizontalIncrementTemplate" TargetType="RepeatButton">
+                                <Grid x:Name="Root">
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroup x:Name="CommonStates">
+                                            <VisualState x:Name="Normal" />
+                                            <VisualState x:Name="MouseOver">
+                                                <Storyboard>
+                                                    <ColorAnimation d:IsOptimized="True" Duration="0" Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                                                            To="{StaticResource HoverColor}" />
+                                                </Storyboard>
+                                            </VisualState>
+                                            <VisualState x:Name="Pressed">
+                                                <Storyboard>
+                                                    <ColorAnimation d:IsOptimized="True" Duration="0" Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                                                            To="{StaticResource PressedColor}" />
+                                                </Storyboard>
+                                            </VisualState>
+                                            <VisualState x:Name="Disabled" />
+                                        </VisualStateGroup>
+                                    </VisualStateManager.VisualStateGroups>
+                                    <Rectangle>
+                                        <Rectangle.Fill>
+                                            <SolidColorBrush Color="{StaticResource BackgroundColor}" />
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                    <Path x:Name="Arrow" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M0,0 L0,7 L7,4 z">
+                                        <Path.Fill>
+                                            <SolidColorBrush Color="{StaticResource StandardColor}" />
+                                        </Path.Fill>
+                                    </Path>
+                                </Grid>
+                            </ControlTemplate>
+                            <ControlTemplate x:Key="HorizontalDecrementTemplate" TargetType="RepeatButton">
+                                <Grid x:Name="Root">
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroup x:Name="CommonStates">
+                                            <VisualState x:Name="Normal" />
+                                            <VisualState x:Name="MouseOver">
+                                                <Storyboard>
+                                                    <ColorAnimation d:IsOptimized="True" Duration="0" Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                                                            To="{StaticResource HoverColor}" />
+                                                </Storyboard>
+                                            </VisualState>
+                                            <VisualState x:Name="Pressed">
+                                                <Storyboard>
+                                                    <ColorAnimation d:IsOptimized="True" Duration="0" Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                                                            To="{StaticResource PressedColor}" />
+                                                </Storyboard>
+                                            </VisualState>
+                                            <VisualState x:Name="Disabled" />
+                                        </VisualStateGroup>
+                                    </VisualStateManager.VisualStateGroups>
+                                    <Rectangle>
+                                        <Rectangle.Fill>
+                                            <SolidColorBrush Color="{StaticResource BackgroundColor}" />
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                    <Path x:Name="Arrow" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M0,4 L7,7 L7,0 z">
+                                        <Path.Fill>
+                                            <SolidColorBrush Color="{StaticResource StandardColor}" />
+                                        </Path.Fill>
+                                    </Path>
+                                </Grid>
+                            </ControlTemplate>
+                            <ControlTemplate x:Key="VerticalIncrementTemplate" TargetType="RepeatButton">
+                                <Grid x:Name="Root">
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroup x:Name="CommonStates">
+                                            <VisualState x:Name="Normal" />
+                                            <VisualState x:Name="MouseOver">
+                                                <Storyboard>
+                                                    <ColorAnimation d:IsOptimized="True" Duration="0" Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                                                            To="{StaticResource HoverColor}" />
+                                                </Storyboard>
+                                            </VisualState>
+                                            <VisualState x:Name="Pressed">
+                                                <Storyboard>
+                                                    <ColorAnimation d:IsOptimized="True" Duration="0" Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                                                            To="{StaticResource PressedColor}" />
+                                                </Storyboard>
+                                            </VisualState>
+                                            <VisualState x:Name="Disabled" />
+                                        </VisualStateGroup>
+                                    </VisualStateManager.VisualStateGroups>
+                                    <Rectangle>
+                                        <Rectangle.Fill>
+                                            <SolidColorBrush Color="{StaticResource BackgroundColor}" />
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                    <Path x:Name="Arrow" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M0,0 L4,7 L7,0 z">
+                                        <Path.Fill>
+                                            <SolidColorBrush Color="{StaticResource StandardColor}" />
+                                        </Path.Fill>
+                                    </Path>
+                                </Grid>
+                            </ControlTemplate>
+                            <ControlTemplate x:Key="VerticalDecrementTemplate" TargetType="RepeatButton">
+                                <Grid x:Name="Root">
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroup x:Name="CommonStates">
+                                            <VisualState x:Name="Normal" />
+                                            <VisualState x:Name="MouseOver">
+                                                <Storyboard>
+                                                    <ColorAnimation d:IsOptimized="True" Duration="0" Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                                                            To="{StaticResource HoverColor}" />
+                                                </Storyboard>
+                                            </VisualState>
+                                            <VisualState x:Name="Pressed">
+                                                <Storyboard>
+                                                    <ColorAnimation d:IsOptimized="True" Duration="0" Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                                                            To="{StaticResource PressedColor}" />
+                                                </Storyboard>
+                                            </VisualState>
+                                            <VisualState x:Name="Disabled" />
+                                        </VisualStateGroup>
+                                    </VisualStateManager.VisualStateGroups>
+                                    <Rectangle>
+                                        <Rectangle.Fill>
+                                            <SolidColorBrush Color="{StaticResource BackgroundColor}" />
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                    <Path x:Name="Arrow" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M0,7 L7,7 L4,0 z">
+                                        <Path.Fill>
+                                            <SolidColorBrush Color="{StaticResource StandardColor}" />
+                                        </Path.Fill>
+                                    </Path>
+                                </Grid>
+                            </ControlTemplate>
+                            <ControlTemplate x:Key="VerticalThumbTemplate" TargetType="Thumb">
+                                <Grid>
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroup x:Name="CommonStates">
+                                            <VisualState x:Name="Normal" />
+                                            <VisualState x:Name="MouseOver">
+                                                <Storyboard>
+                                                    <ColorAnimation d:IsOptimized="True" Duration="0" Storyboard.TargetName="VisualThumb"
+                                                            Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" To="{StaticResource HoverColor}" />
+                                                </Storyboard>
+                                            </VisualState>
+                                            <VisualState x:Name="Pressed">
+                                                <Storyboard>
+                                                    <ColorAnimation d:IsOptimized="True" Duration="0" Storyboard.TargetName="VisualThumb"
+                                                            Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" To="{StaticResource PressedColor}" />
+                                                </Storyboard>
+                                            </VisualState>
+                                            <VisualState x:Name="Disabled" />
+                                        </VisualStateGroup>
+                                    </VisualStateManager.VisualStateGroups>
+                                    <Rectangle>
+                                        <Rectangle.Fill>
+                                            <SolidColorBrush Color="{StaticResource BackgroundColor}" />
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                    <Rectangle x:Name="VisualThumb" Width="7" RadiusX="4.5" RadiusY="4.5">
+                                        <Rectangle.Fill>
+                                            <SolidColorBrush Color="{StaticResource StandardColor}" />
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                </Grid>
+                            </ControlTemplate>
+                            <ControlTemplate x:Key="HorizontalThumbTemplate" TargetType="Thumb">
+                                <Grid>
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroup x:Name="CommonStates">
+                                            <VisualState x:Name="Normal" />
+                                            <VisualState x:Name="MouseOver">
+                                                <Storyboard>
+                                                    <ColorAnimation d:IsOptimized="True" Duration="0" Storyboard.TargetName="VisualThumb"
+                                                            Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" To="{StaticResource HoverColor}" />
+                                                </Storyboard>
+                                            </VisualState>
+                                            <VisualState x:Name="Pressed">
+                                                <Storyboard>
+                                                    <ColorAnimation d:IsOptimized="True" Duration="0" Storyboard.TargetName="VisualThumb"
+                                                            Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" To="{StaticResource PressedColor}" />
+                                                </Storyboard>
+                                            </VisualState>
+                                            <VisualState x:Name="Disabled" />
+                                        </VisualStateGroup>
+                                    </VisualStateManager.VisualStateGroups>
+                                    <Rectangle>
+                                        <Rectangle.Fill>
+                                            <SolidColorBrush Color="{StaticResource BackgroundColor}" />
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                    <Rectangle x:Name="VisualThumb" Height="7" RadiusX="4.5" RadiusY="4.5">
+                                        <Rectangle.Fill>
+                                            <SolidColorBrush Color="{StaticResource StandardColor}" />
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                </Grid>
+                            </ControlTemplate>
+                        </Grid.Resources>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver" />
+                                <VisualState x:Name="Disabled" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Grid x:Name="HorizontalRoot">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Rectangle Grid.ColumnSpan="5">
+                                <Rectangle.Fill>
+                                    <SolidColorBrush Color="{StaticResource BackgroundColor}" />
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <RepeatButton x:Name="HorizontalSmallDecrease" Grid.Column="0" Width="16" Margin="1" Interval="50" IsTabStop="False" Template="{StaticResource HorizontalDecrementTemplate}" />
+                            <RepeatButton x:Name="HorizontalLargeDecrease" Grid.Column="1" Width="0" Interval="50" IsTabStop="False" Template="{StaticResource RepeatButtonTemplate}" />
+                            <Thumb x:Name="HorizontalThumb" Grid.Column="2" Width="18" MinWidth="18" Background="{TemplateBinding Background}" Template="{StaticResource HorizontalThumbTemplate}" />
+                            <RepeatButton x:Name="HorizontalLargeIncrease" Grid.Column="3" Interval="50" IsTabStop="False" Template="{StaticResource RepeatButtonTemplate}" />
+                            <RepeatButton x:Name="HorizontalSmallIncrease" Grid.Column="4" Width="16" Margin="1" Interval="50" IsTabStop="False" Template="{StaticResource HorizontalIncrementTemplate}" />
+                        </Grid>
+                        <Grid x:Name="VerticalRoot" Visibility="Collapsed">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Rectangle Grid.RowSpan="5">
+                                <Rectangle.Fill>
+                                    <SolidColorBrush Color="{StaticResource BackgroundColor}" />
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <RepeatButton x:Name="VerticalSmallDecrease" Grid.Row="0" Height="16" Margin="1" Interval="50" IsTabStop="False" Template="{StaticResource VerticalDecrementTemplate}" />
+                            <RepeatButton x:Name="VerticalLargeDecrease" Grid.Row="1" Height="0" Interval="50" IsTabStop="False" Template="{StaticResource RepeatButtonTemplate}" />
+                            <Thumb x:Name="VerticalThumb" Grid.Row="2" Height="18" MinHeight="18" Template="{StaticResource VerticalThumbTemplate}" />
+                            <RepeatButton x:Name="VerticalLargeIncrease" Grid.Row="3" Interval="50" IsTabStop="False" Template="{StaticResource RepeatButtonTemplate}" />
+                            <RepeatButton x:Name="VerticalSmallIncrease" Grid.Row="4" Height="16" Margin="1" Interval="50" IsTabStop="False" Template="{StaticResource VerticalIncrementTemplate}" />
+                        </Grid>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="ScrollViewer">
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Top" />
+        <Setter Property="VerticalScrollBarVisibility" Value="Visible" />
+        <Setter Property="Padding" Value="4" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ScrollViewer">
+                    <Border BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ScrollContentPresenter x:Name="ScrollContentPresenter" Margin="{TemplateBinding Padding}" ContentTemplate="{TemplateBinding ContentTemplate}"
+                                    Cursor="{TemplateBinding Cursor}" />
+                            <Rectangle Grid.Row="1" Grid.Column="1">
+                                <Rectangle.Fill>
+                                    <SolidColorBrush Color="{StaticResource BackgroundColor}" />
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <ScrollBar x:Name="VerticalScrollBar" Grid.Row="0" Grid.Column="1" Width="18" IsTabStop="False" Maximum="{TemplateBinding ScrollableHeight}" Minimum="0"
+                                    Orientation="Vertical" Style="{StaticResource ScrollBarStyle}" ViewportSize="{TemplateBinding ViewportHeight}"
+                                    Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" Value="{TemplateBinding VerticalOffset}" />
+                            <ScrollBar x:Name="HorizontalScrollBar" Grid.Row="1" Grid.Column="0" Height="18" IsTabStop="False" Maximum="{TemplateBinding ScrollableWidth}" Minimum="0"
+                                    Orientation="Horizontal" Style="{StaticResource ScrollBarStyle}" ViewportSize="{TemplateBinding ViewportWidth}"
+                                    Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" Value="{TemplateBinding HorizontalOffset}" />
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

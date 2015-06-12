@@ -1,7 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using PropertyChanged;
+using System.Collections.Generic;
+using System.IO;
 
 namespace ACSharedMemory.Models.Car
 {
+    [ImplementPropertyChanged]
     public class CarInfo
     {
         public static CarInfo FromModel(string ACPAth, string model)
@@ -11,11 +15,25 @@ namespace ACSharedMemory.Models.Car
 
         public static CarInfo FromFile(string path)
         {
-            if (System.IO.File.Exists(path))
+            if (ACToolsUtilities.FileOP.Exists(path))
             {
-                var json = System.IO.File.ReadAllText(path);
-                var result = Newtonsoft.Json.JsonConvert.DeserializeObject<CarInfo>(json);
-                return result;
+                using (var s = new StreamReader(path))
+                {
+                    using (JsonReader reader = new JsonTextReader(s))
+                    {
+                        JsonSerializer serializer = new JsonSerializer();
+                        // read the json from a stream
+                        // json size doesn't matter because only a small piece is read at a time from the HTTP request
+                        return serializer.Deserialize<CarInfo>(reader);
+                    }
+
+                    //return  (new System.Text.Json.JsonParser()).Parse<CarInfo>(s);
+                }
+
+                //    var json = System.IO.File.ReadAllText(path);
+                //    var result = Newtonsoft.Json.JsonConvert.DeserializeObject<CarInfo>();
+                //}
+                //return result;
             }
             return new CarInfo();
         }

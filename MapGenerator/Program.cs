@@ -25,7 +25,6 @@ namespace MapGenerator
             System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
 
             Application.Run(new MapPreview());
-         
 
             //string dataFile = args[0];
             //Console.WriteLine("Map Scale ? ie 1 or 10");

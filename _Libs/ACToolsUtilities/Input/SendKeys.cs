@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 
 namespace ACToolsUtilities.Input
 {
     public class SendKeys
     {
-
         [DllImport("user32.dll", SetLastError = true)]
         private static extern uint SendInput(uint numberOfInputs, INPUT[] inputs, int sizeOfInputStructure);
-
 
         /// <summary>
         /// http://msdn.microsoft.com/en-us/library/windows/desktop/ms646270(v=vs.85).aspx
@@ -29,8 +26,10 @@ namespace ACToolsUtilities.Input
         {
             [FieldOffset(0)]
             public HARDWAREINPUT Hardware;
+
             [FieldOffset(0)]
             public KEYBDINPUT Keyboard;
+
             [FieldOffset(0)]
             public MOUSEINPUT Mouse;
         }
@@ -97,12 +96,13 @@ namespace ACToolsUtilities.Input
             /// </summary>
             MEDIA_STOP = 0xb2,
 
-            #endregion
+            #endregion Media
 
             #region math
 
             /// <summary>Key "+"</summary>
             ADD = 0x6b,
+
             /// <summary>
             /// "*" key
             /// </summary>
@@ -118,393 +118,485 @@ namespace ACToolsUtilities.Input
             /// </summary>
             SUBTRACT = 0x6d,
 
-            #endregion
+            #endregion math
 
             #region Browser
+
             /// <summary>
             /// Go Back
             /// </summary>
             BROWSER_BACK = 0xa6,
+
             /// <summary>
             /// Favorites
             /// </summary>
             BROWSER_FAVORITES = 0xab,
+
             /// <summary>
             /// Forward
             /// </summary>
             BROWSER_FORWARD = 0xa7,
+
             /// <summary>
             /// Home
             /// </summary>
             BROWSER_HOME = 0xac,
+
             /// <summary>
             /// Refresh
             /// </summary>
             BROWSER_REFRESH = 0xa8,
+
             /// <summary>
             /// browser search
             /// </summary>
             BROWSER_SEARCH = 170,
+
             /// <summary>
             /// Stop
             /// </summary>
             BROWSER_STOP = 0xa9,
-            #endregion
+
+            #endregion Browser
 
             #region Numpad numbers
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             NUMPAD0 = 0x60,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             NUMPAD1 = 0x61,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             NUMPAD2 = 0x62,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             NUMPAD3 = 0x63,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             NUMPAD4 = 100,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             NUMPAD5 = 0x65,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             NUMPAD6 = 0x66,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             NUMPAD7 = 0x67,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             NUMPAD8 = 0x68,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             NUMPAD9 = 0x69,
 
-            #endregion
+            #endregion Numpad numbers
 
             #region Fkeys
+
             /// <summary>
             /// F1
             /// </summary>
             F1 = 0x70,
+
             /// <summary>
             /// F10
             /// </summary>
             F10 = 0x79,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             F11 = 0x7a,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             F12 = 0x7b,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             F13 = 0x7c,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             F14 = 0x7d,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             F15 = 0x7e,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             F16 = 0x7f,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             F17 = 0x80,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             F18 = 0x81,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             F19 = 130,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             F2 = 0x71,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             F20 = 0x83,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             F21 = 0x84,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             F22 = 0x85,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             F23 = 0x86,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             F24 = 0x87,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             F3 = 0x72,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             F4 = 0x73,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             F5 = 0x74,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             F6 = 0x75,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             F7 = 0x76,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             F8 = 0x77,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             F9 = 120,
 
-            #endregion
+            #endregion Fkeys
 
             #region Other
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             OEM_1 = 0xba,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             OEM_102 = 0xe2,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             OEM_2 = 0xbf,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             OEM_3 = 0xc0,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             OEM_4 = 0xdb,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             OEM_5 = 220,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             OEM_6 = 0xdd,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             OEM_7 = 0xde,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             OEM_8 = 0xdf,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             OEM_CLEAR = 0xfe,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             OEM_COMMA = 0xbc,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             OEM_MINUS = 0xbd,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             OEM_PERIOD = 190,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             OEM_PLUS = 0xbb,
 
-            #endregion
+            #endregion Other
 
             #region KEYS
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_0 = 0x30,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_1 = 0x31,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_2 = 50,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_3 = 0x33,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_4 = 0x34,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_5 = 0x35,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_6 = 0x36,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_7 = 0x37,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_8 = 0x38,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_9 = 0x39,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_A = 0x41,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_B = 0x42,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_C = 0x43,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_D = 0x44,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_E = 0x45,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_F = 70,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_G = 0x47,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_H = 0x48,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_I = 0x49,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_J = 0x4a,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_K = 0x4b,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_L = 0x4c,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_M = 0x4d,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_N = 0x4e,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_O = 0x4f,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_P = 80,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_Q = 0x51,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_R = 0x52,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_S = 0x53,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_T = 0x54,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_U = 0x55,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_V = 0x56,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_W = 0x57,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_X = 0x58,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_Y = 0x59,
+
             /// <summary>
-            /// 
+            ///
             /// </summary>
             KEY_Z = 90,
 
-            #endregion
+            #endregion KEYS
 
             #region volume
+
             /// <summary>
             /// Decrese volume
             /// </summary>
@@ -520,8 +612,7 @@ namespace ACToolsUtilities.Input
             /// </summary>
             VOLUME_UP = 0xaf,
 
-            #endregion
-
+            #endregion volume
 
             /// <summary>
             /// Take snapshot of the screen and place it on the clipboard
@@ -540,10 +631,12 @@ namespace ACToolsUtilities.Input
             /// Control + Break "When debuging if you step into an infinite loop this will stop debug"
             /// </summary>
             CANCEL = 3,
+
             /// <summary>
             /// Caps lock key to send cappital letters
             /// </summary>
             CAPS_LOCK = 20,
+
             /// <summary>
             /// Ctlr key
             /// </summary>
@@ -563,7 +656,6 @@ namespace ACToolsUtilities.Input
             /// Delete Key
             /// </summary>
             DELETE = 0x2e,
-
 
             /// <summary>
             /// Arrow down key
@@ -594,6 +686,7 @@ namespace ACToolsUtilities.Input
             /// Open my computer
             /// </summary>
             LAUNCH_APP1 = 0xb6,
+
             /// <summary>
             /// Open calculator
             /// </summary>
@@ -628,7 +721,6 @@ namespace ACToolsUtilities.Input
             /// left windows key
             /// </summary>
             LWIN = 0x5b,
-
 
             /// <summary>
             /// Next "page down"
@@ -689,7 +781,6 @@ namespace ACToolsUtilities.Input
             /// Up arrow key
             /// </summary>
             UP = 0x26,
-
         }
     }
 }

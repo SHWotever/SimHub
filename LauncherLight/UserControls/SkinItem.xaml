@@ -4,7 +4,7 @@
     <UserControl.Resources>
         <converters:NullImageConverter x:Key="nullImageConverter" />
     </UserControl.Resources>
-    <Grid Margin="10">
+    <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -12,10 +12,10 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="240" />
         </Grid.ColumnDefinitions>
-        <Border BorderBrush="Black" BorderThickness="2" Margin="0">
-            <Image RenderOptions.BitmapScalingMode="HighQuality" Height="120" Width="240" Source="{Binding PreviewImage,IsAsync=True, Converter={StaticResource nullImageConverter}}"
-                    VerticalAlignment="Top" Grid.RowSpan="2" Stretch="Fill"></Image>
+        <Border BorderBrush="Black" BorderThickness="0" Margin="0">
+            <Image RenderOptions.BitmapScalingMode="HighQuality" Height="120" Source="{Binding PreviewImage,IsAsync=True, Converter={StaticResource nullImageConverter}}" VerticalAlignment="Top"
+                    Grid.RowSpan="2"></Image>
         </Border>
-        <TextBlock  Grid.Row="2"  Text="{Binding Name}"></TextBlock>
+        <TextBlock Grid.Row="2" Text="{Binding skinname}" HorizontalAlignment="Center"></TextBlock>
     </Grid>
 </UserControl>

@@ -2,7 +2,6 @@
 
 namespace ACToolsUtilities.UI
 {
-
     public class AlertManager
     {
         private int alertRecurency = 100;
@@ -44,7 +43,6 @@ namespace ACToolsUtilities.UI
                 this.start = DateTime.Now;
             }
         }
-
     }
 
     public class Blinker

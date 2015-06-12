@@ -36,9 +36,9 @@ namespace ACHub.Plugins.DataPlugins.DataCore
                 {
                     Logging.Current.Info("Fuel stats tracking resetted");
                 }
-
             }
         }
+
         private float fuel_LastLapFuel = 0;
         private PluginManager pluginManager;
         private DataCorePluginSettings settings = new DataCorePluginSettings();
@@ -89,14 +89,12 @@ namespace ACHub.Plugins.DataPlugins.DataCore
                 //{
                 //    if (data.NewData.Physics.SpeedKmh > 2)
                 //    {
-
                 //        //float triggerdelta  = data.NewData.Physics.SpeedKmh * 50/100
 
                 //        if (data.NewData.Physics.WheelSlip.Any(i => i > 0.2))
                 //        {
                 //            pluginManager.TriggerEvent("WheelSlip", typeof(DataCorePlugin));
                 //        }
-
 
                 //    }
                 //}
@@ -130,7 +128,6 @@ namespace ACHub.Plugins.DataPlugins.DataCore
                         {
                             fuel_AverageConsumptionPerLap = fueldata.Consumption.Take(5).Average();
                         }
-
                     }
                     catch { }
                 }
@@ -149,14 +146,12 @@ namespace ACHub.Plugins.DataPlugins.DataCore
                     if (data.NewData.Graphics.IsInPit > 0) { fuel_InvalidLap = true; }
                 }
 
-
                 if (fuel_AverageConsumptionPerLap > 0)
                 {
                     pluginManager.SetPropertyValue("Computed.Fuel_RemainingLaps", typeof(DataCorePlugin), data.NewData.Physics.Fuel / fuel_AverageConsumptionPerLap);
                     pluginManager.SetPropertyValue("Computed.Fuel_LitersPerLap", typeof(DataCorePlugin), fuel_AverageConsumptionPerLap);
                 }
             }
-
 
             UpdateData(pluginManager, "GameData", data);
             foreach (var expr in settings.Expressions)
@@ -395,8 +390,6 @@ namespace ACHub.Plugins.DataPlugins.DataCore
             this.settings = JsonExtensions.FromJsonFile<DataCorePluginSettings>(SettingsPath) ?? new DataCorePluginSettings();
             this.settings.Expressions = new List<Expression>();
 
-
-
             foreach (var expressionfile in JsonExtensions.GetFiles(SettingsUserExpressionsPath, "*.json"))
             {
                 var exp = JsonExtensions.FromJsonFile<Expression>(expressionfile);
@@ -460,6 +453,11 @@ namespace ACHub.Plugins.DataPlugins.DataCore
 
         private void UpdateData(PluginManager pluginManager, string currentName, object value)
         {
+            if (currentName.Contains("Skin"))
+            {
+                return;
+            }
+
             if (value == null)
                 return;
 

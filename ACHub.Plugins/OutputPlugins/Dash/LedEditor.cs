@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace ACHub.Plugins.OutputPlugins.Dash
@@ -15,8 +8,9 @@ namespace ACHub.Plugins.OutputPlugins.Dash
     /// </summary>
     public partial class LedEditor : UserControl
     {
-      private  bool loading = false;
+        private bool loading = false;
         private SerialDashPlugin plugin;
+
         /// <summary>
         /// CTor
         /// </summary>
@@ -30,7 +24,6 @@ namespace ACHub.Plugins.OutputPlugins.Dash
                 this.dataGridView1.Rows[i].Cells[0].Value = "Screen " + ((int)(i / 8) + 1).ToString() + "  led " + (i % 8 + 1).ToString();
             }
             dataGridView1.DataError += DataGridView1_DataError;
-
         }
 
         private void DataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
@@ -75,7 +68,6 @@ namespace ACHub.Plugins.OutputPlugins.Dash
                 this.dataGridView1.Rows.Add();
                 this.dataGridView1.Rows[i].Cells[0].Value = "Screen " + ((int)(i / 8) + 1).ToString() + "  led " + (i % 8 + 1).ToString();
 
-
                 this.dataGridView1.Rows[i].Cells[4].Value = 0;
                 this.dataGridView1.Rows[i].Cells[5].Value = 0;
 
@@ -93,11 +85,9 @@ namespace ACHub.Plugins.OutputPlugins.Dash
                     this.dataGridView1.Rows[i].Cells[4].Value = leds[i].OnRangeStart;
 
                     this.dataGridView1.Rows[i].Cells[5].Value = leds[i].OnRangeEnd;
-
                 }
             }
             loading = false;
-
         }
 
         private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)

@@ -1,9 +1,8 @@
 using System;
-using System.Text;
-using System.Diagnostics;
-using System.Globalization;
-using System.Windows.Forms;
 using System.ComponentModel;
+using System.Globalization;
+using System.Text;
+using System.Windows.Forms;
 
 namespace ACToolsUtilities.UI.DataGridViewExtension
 {
@@ -15,7 +14,8 @@ namespace ACToolsUtilities.UI.DataGridViewExtension
         /// <summary>
         /// Constructor for the DataGridViewNumericUpDownColumn class.
         /// </summary>
-        public DataGridViewNumericUpDownColumn() : base(new DataGridViewNumericUpDownCell())
+        public DataGridViewNumericUpDownColumn()
+            : base(new DataGridViewNumericUpDownCell())
         {
         }
 
@@ -76,13 +76,13 @@ namespace ACToolsUtilities.UI.DataGridViewExtension
                     int rowCount = dataGridViewRows.Count;
                     for (int rowIndex = 0; rowIndex < rowCount; rowIndex++)
                     {
-                        // Be careful not to unshare rows unnecessarily. 
+                        // Be careful not to unshare rows unnecessarily.
                         // This could have severe performance repercussions.
                         DataGridViewRow dataGridViewRow = dataGridViewRows.SharedRow(rowIndex);
                         DataGridViewNumericUpDownCell dataGridViewCell = dataGridViewRow.Cells[this.Index] as DataGridViewNumericUpDownCell;
                         if (dataGridViewCell != null)
                         {
-                            // Call the internal SetDecimalPlaces method instead of the property to avoid invalidation 
+                            // Call the internal SetDecimalPlaces method instead of the property to avoid invalidation
                             // of each cell. The whole column is invalidated later in a single operation for better performance.
                             dataGridViewCell.SetDecimalPlaces(rowIndex, value);
                         }
@@ -180,7 +180,7 @@ namespace ACToolsUtilities.UI.DataGridViewExtension
                     }
                     this.DataGridView.InvalidateColumn(this.Index);
                     // TODO: This column and/or grid rows may need to be autosized depending on their
-                    //       autosize settings. Call the autosizing methods to autosize the column, rows, 
+                    //       autosize settings. Call the autosizing methods to autosize the column, rows,
                     //       column headers / row headers as needed.
                 }
             }
@@ -232,7 +232,7 @@ namespace ACToolsUtilities.UI.DataGridViewExtension
                     }
                     this.DataGridView.InvalidateColumn(this.Index);
                     // TODO: This column and/or grid rows may need to be autosized depending on their
-                    //       autosize settings. Call the autosizing methods to autosize the column, rows, 
+                    //       autosize settings. Call the autosizing methods to autosize the column, rows,
                     //       column headers / row headers as needed.
                 }
             }
@@ -284,7 +284,7 @@ namespace ACToolsUtilities.UI.DataGridViewExtension
                     }
                     this.DataGridView.InvalidateColumn(this.Index);
                     // TODO: This column and/or grid rows may need to be autosized depending on their
-                    //       autosize settings. Call the autosizing methods to autosize the column, rows, 
+                    //       autosize settings. Call the autosizing methods to autosize the column, rows,
                     //       column headers / row headers as needed.
                 }
             }

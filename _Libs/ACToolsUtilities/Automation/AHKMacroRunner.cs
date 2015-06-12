@@ -60,7 +60,6 @@ namespace ACToolsUtilities.Automation
                         (new InputSimulator()).Keyboard.KeyUp(WindowsInput.Native.VirtualKeyCode.VK_O);
                         (new InputSimulator()).Keyboard.KeyUp(WindowsInput.Native.VirtualKeyCode.CONTROL);
                     }
-
                 }
                 catch { }
             }

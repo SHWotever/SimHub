@@ -33,12 +33,11 @@ namespace ACHub.Plugins
     {
         ShortPress = 1,
         LongPress = 2,
-        During = 3, 
+        During = 3,
     }
 
     public class InputMapping : Mapping
     {
-
         public InputMapping()
         {
             PressType = PressType.ShortPress;
@@ -56,15 +55,17 @@ namespace ACHub.Plugins
             {
                 case Plugins.PressType.ShortPress:
                     return string.Format("When [{0}] pressed then [{1}]", Trigger, Target);
+
                 case Plugins.PressType.LongPress:
                     return string.Format("When [{0}] long pressed then [{1}]", Trigger, Target);
+
                 case Plugins.PressType.During:
                     return string.Format("While [{0}] is pressed then [{1}]", Trigger, Target);
+
                 default:
                     return "";
             }
         }
-
     }
 
     /// <summary>

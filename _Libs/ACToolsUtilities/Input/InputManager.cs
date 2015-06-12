@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ACToolsUtilities.Input
 {
     public class InputManager
     {
-        class InputTracking
+        private class InputTracking
         {
             public DateTime Date { get; set; }
+
             public bool Invalidated { get; set; }
         }
 
@@ -22,7 +22,6 @@ namespace ACToolsUtilities.Input
         private List<string> ReleasedInputs = new List<string>();
         private List<string> LongInputs = new List<string>();
         private List<string> ShortInputs = new List<string>();
-
 
         public List<string> GetNewInputs()
         {
@@ -40,6 +39,7 @@ namespace ACToolsUtilities.Input
         }
 
         public delegate void LongPressDelegate(string input);
+
         public event LongPressDelegate LongPress;
 
         public void SetCurrentInputs(List<string> inputs)
@@ -102,8 +102,6 @@ namespace ACToolsUtilities.Input
                             }
                         });
                     }
-
-
                 }
             }
         }

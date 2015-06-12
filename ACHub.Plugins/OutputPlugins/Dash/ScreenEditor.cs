@@ -45,7 +45,6 @@ namespace ACHub.Plugins.OutputPlugins.Dash
                     (flpAnnounce.Controls[i] as ScreenAnnounceEditor).Value = screen.ScrenAnnounce[i].AnnounceText;
                 }
 
-
                 tab.Controls.Add(control);
                 tab.Controls[0].Dock = DockStyle.Fill;
                 this.tabControl1.TabPages.Add(tab);

@@ -69,12 +69,10 @@ namespace ACToolsUtilities
             }
         }
 
-
         public List<string> GetState()
         {
             lock (this)
             {
-                
                 var currentButtons = new List<string>();
 
                 try

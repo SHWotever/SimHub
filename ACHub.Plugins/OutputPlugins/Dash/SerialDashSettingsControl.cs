@@ -1,8 +1,6 @@
 ﻿using ACToolsUtilities.Serialisation;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -71,7 +69,6 @@ namespace ACHub.Plugins.OutputPlugins.Dash
             this.numLowFuelRepeatInterval.Value = (decimal)plugin.Settings.LowFuelLapsAlertInterval;
             this.numIntensity.Value = (decimal)plugin.Settings.Intensity;
             this.numAnnounceTime.Value = (decimal)plugin.Settings.AnnounceTime;
-
 
             if (!light)
             {

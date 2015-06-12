@@ -2,22 +2,16 @@
 using IniParser.Exceptions;
 using IniParser.Model;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ACToolsUtilities.Serialisation
 {
-
     /// <summary>
     ///     Represents an INI data parser for files.
     /// </summary>
     public class IniFileReader : StreamIniDataParser
     {
-
-
         /// <summary>
         ///     Implements reading ini data from a file.
         /// </summary>
@@ -48,8 +42,8 @@ namespace ACToolsUtilities.Serialisation
 
             try
             {
-                // (FileAccess.Read) we want to open the ini only for reading 
-                // (FileShare.ReadWrite) any other process should still have access to the ini file 
+                // (FileAccess.Read) we want to open the ini only for reading
+                // (FileShare.ReadWrite) any other process should still have access to the ini file
                 using (FileStream fs = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
                     using (StreamReader sr = new StreamReader(fs, fileEncoding))
@@ -64,11 +58,6 @@ namespace ACToolsUtilities.Serialisation
             {
                 throw new ParsingException(String.Format("Could not parse file {0}", filePath), ex);
             }
-
         }
-
-
-
     }
-
 }

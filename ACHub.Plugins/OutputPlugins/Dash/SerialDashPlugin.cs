@@ -187,7 +187,6 @@ namespace ACHub.Plugins.OutputPlugins.Dash
 
                 if (currentStaticScreen != null)
                 {
-
                     DisplayScreen(pluginManager, currentStaticScreen);
 
                     bool annonce = false;
@@ -216,10 +215,6 @@ namespace ACHub.Plugins.OutputPlugins.Dash
                         }
                     }
                 }
-
-
-
-
 
                 if (data.GameRunning)
                 {
@@ -750,7 +745,6 @@ namespace ACHub.Plugins.OutputPlugins.Dash
 
         private void RefreshProperties()
         {
-
             pluginManager.SetPropertyValue("DisplayIntensity", typeof(SerialDashPlugin), this.dash.GetIntensity(0));
             pluginManager.SetPropertyValue("BlinkTriggerRatio", typeof(SerialDashPlugin), this.settings.RpmBlinkingLevel);
             pluginManager.SetPropertyValue("RPMStartOffset", typeof(SerialDashPlugin), this.Settings.RPMStartOffset);
