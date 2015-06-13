@@ -1,12 +1,23 @@
-﻿<Models:ServerCar xmlns:Models="clr-namespace:LauncherLight.Models" xmlns:Car="clr-namespace:ACSharedMemory.Models.Car;assembly=ACSharedMemory" xmlns:System="clr-namespace:System;assembly=mscorlib"
-        ConnectedEntries="25" TotalEntries="21">
+﻿<Models:ServerCar xmlns:Car="clr-namespace:ACSharedMemory.Models.Car;assembly=ACSharedMemory"
+                  xmlns:Models="clr-namespace:LauncherLight.Models"
+                  xmlns:System="clr-namespace:System;assembly=mscorlib"
+                  ConnectedEntries="25"
+                  TotalEntries="21">
     <Models:ServerCar.CarDesc>
-        <Car:CarDesc CarBadgePath="Ligula sit vivamus vel" CarPreviewPath="Adipiscing ultrices" CarPath="Enim sem vestibulum lectus" Model="Faucibus libero habitant">
+        <Car:CarDesc CarBadgePath="Ligula sit vivamus vel" CarPath="Enim sem vestibulum lectus" CarPreviewPath="Adipiscing ultrices" Model="Faucibus libero habitant">
             <Car:CarDesc.CarInfo>
-                <Car:CarInfo brand="Sed mauris" class="Nec fermentum" description="Curabitur aliquam cras" name="Vestibulum nam" parent="Aenean maecenas">
+                <Car:CarInfo brand="Sed mauris"
+                             class="Nec fermentum"
+                             description="Curabitur aliquam cras"
+                             name="Vestibulum nam"
+                             parent="Aenean maecenas">
                     <Car:CarInfo.specs>
-                        <Car:Specs acceleration="Hendrerit sed eleifend cursus" bhp="Adipiscing non fusce per" pwratio="Parturient vestibulum dictum facilisi morbi" topspeed="Habitasse congue elit"
-                                torque="Diam fringilla" weight="Eget bibendum dictumst lorem" />
+                        <Car:Specs acceleration="Hendrerit sed eleifend cursus"
+                                   bhp="Adipiscing non fusce per"
+                                   pwratio="Parturient vestibulum dictum facilisi morbi"
+                                   topspeed="Habitasse congue elit"
+                                   torque="Diam fringilla"
+                                   weight="Eget bibendum dictumst lorem" />
                     </Car:CarInfo.specs>
                     <Car:CarInfo.tags>
                         <System:String>Phasellus duis praesent adipiscing consequat</System:String>
@@ -23,30 +34,85 @@
                 </Car:CarInfo>
             </Car:CarDesc.CarInfo>
             <Car:CarDesc.CurrentSkin>
-                <Car:Skin Name="Nec adipiscing" PreviewImage="Non tristique" country="Duis litora nunc venenatis vestibulum" drivername="Urna cras" number="Suscipit torquent cubilia magna magnis"
-                        skinname="Parturient pede quam quis ultricies" team="Luctus vestibulum lorem sociosqu" />
+                <Car:Skin Name="Nec adipiscing"
+                          PreviewImage="Non tristique"
+                          country="Duis litora nunc venenatis vestibulum"
+                          drivername="Urna cras"
+                          number="Suscipit torquent cubilia magna magnis"
+                          skinname="Parturient pede quam quis ultricies"
+                          team="Luctus vestibulum lorem sociosqu" />
             </Car:CarDesc.CurrentSkin>
             <Car:CarDesc.Skins>
-                <Car:Skin Name="Litora erat adipiscing" PreviewImage="Luctus nam sed inceptos" country="Dolor fames parturient" drivername="Proin augue" number="Est lobortis vestibulum"
-                        skinname="Nulla eros nibh magnis" team="Mattis mauris felis dis interdum" />
-                <Car:Skin Name="Ipsum nisi himenaeos nisl" PreviewImage="Nascetur vestibulum justo" country="Pharetra orci pede" drivername="Lacus imperdiet"
-                        number="Quam aliquam hac placerat pulvinar" skinname="Nunc odio" team="Lorem adipiscing magna" />
-                <Car:Skin Name="Sagittis leo mollis montes" PreviewImage="Massa parturient senectus nostra" country="Urna adipiscing cras" drivername="Quis vestibulum morbi blandit commodo"
-                        number="Sociosqu duis nunc" skinname="Ornare metus aliquet vestibulum" team="Mus parturient conubia cubilia" />
-                <Car:Skin Name="Platea malesuada" PreviewImage="Primis dapibus" country="Rutrum gravida penatibus porttitor" drivername="Suscipit torquent ante ultrices"
-                        number="Vestibulum semper iaculis tincidunt" skinname="Egestas amet euismod feugiat" team="Sapien arcu diam" />
-                <Car:Skin Name="Lacinia neque eget" PreviewImage="Laoreet natoque" country="Vestibulum maecenas adipiscing vulputate" drivername="Venenatis elit volutpat" number="Curabitur netus"
-                        skinname="Vehicula sociis tristique ultricies nec" team="Praesent taciti posuere" />
-                <Car:Skin Name="Potenti pretium" PreviewImage="Rhoncus nulla enim erat" country="Sodales non vestibulum" drivername="Phasellus parturient consequat purus tempus"
-                        number="Aliquam velit per convallis dignissim" skinname="Tellus tempor porta accumsan" team="Risus vestibulum tortor viverra" />
-                <Car:Skin Name="Vitae turpis class" PreviewImage="Adipiscing sed" country="Donec aenean" drivername="Bibendum dictumst sit eros varius" number="Mauris elementum nam fusce integer"
-                        skinname="Sem curae" team="Etiam eleifend vel" />
-                <Car:Skin Name="Lorem quisque vivamus nibh parturient" PreviewImage="Facilisis vestibulum" country="Adipiscing fermentum facilisi parturient aliquam" drivername="Nisi sed"
-                        number="Aliquet habitasse" skinname="Vestibulum morbi nulla proin nullam" team="Faucibus fringilla" />
-                <Car:Skin Name="Aptent dis auctor est" PreviewImage="Vestibulum blandit" country="Nunc dictum lobortis nascetur" drivername="Inceptos nisl interdum cursus adipiscing"
-                        number="Dolor fames" skinname="Vestibulum augue habitant congue" team="Hendrerit parturient odio vestibulum" />
-                <Car:Skin Name="Pharetra felis" PreviewImage="Placerat himenaeos" country="Senectus leo libero ipsum mus" drivername="Malesuada hac orci lectus"
-                        number="Justo lacus porttitor tincidunt" skinname="Commodo pulvinar imperdiet sagittis" team="Conubia vestibulum ligula penatibus" />
+                <Car:Skin Name="Litora erat adipiscing"
+                          PreviewImage="Luctus nam sed inceptos"
+                          country="Dolor fames parturient"
+                          drivername="Proin augue"
+                          number="Est lobortis vestibulum"
+                          skinname="Nulla eros nibh magnis"
+                          team="Mattis mauris felis dis interdum" />
+                <Car:Skin Name="Ipsum nisi himenaeos nisl"
+                          PreviewImage="Nascetur vestibulum justo"
+                          country="Pharetra orci pede"
+                          drivername="Lacus imperdiet"
+                          number="Quam aliquam hac placerat pulvinar"
+                          skinname="Nunc odio"
+                          team="Lorem adipiscing magna" />
+                <Car:Skin Name="Sagittis leo mollis montes"
+                          PreviewImage="Massa parturient senectus nostra"
+                          country="Urna adipiscing cras"
+                          drivername="Quis vestibulum morbi blandit commodo"
+                          number="Sociosqu duis nunc"
+                          skinname="Ornare metus aliquet vestibulum"
+                          team="Mus parturient conubia cubilia" />
+                <Car:Skin Name="Platea malesuada"
+                          PreviewImage="Primis dapibus"
+                          country="Rutrum gravida penatibus porttitor"
+                          drivername="Suscipit torquent ante ultrices"
+                          number="Vestibulum semper iaculis tincidunt"
+                          skinname="Egestas amet euismod feugiat"
+                          team="Sapien arcu diam" />
+                <Car:Skin Name="Lacinia neque eget"
+                          PreviewImage="Laoreet natoque"
+                          country="Vestibulum maecenas adipiscing vulputate"
+                          drivername="Venenatis elit volutpat"
+                          number="Curabitur netus"
+                          skinname="Vehicula sociis tristique ultricies nec"
+                          team="Praesent taciti posuere" />
+                <Car:Skin Name="Potenti pretium"
+                          PreviewImage="Rhoncus nulla enim erat"
+                          country="Sodales non vestibulum"
+                          drivername="Phasellus parturient consequat purus tempus"
+                          number="Aliquam velit per convallis dignissim"
+                          skinname="Tellus tempor porta accumsan"
+                          team="Risus vestibulum tortor viverra" />
+                <Car:Skin Name="Vitae turpis class"
+                          PreviewImage="Adipiscing sed"
+                          country="Donec aenean"
+                          drivername="Bibendum dictumst sit eros varius"
+                          number="Mauris elementum nam fusce integer"
+                          skinname="Sem curae"
+                          team="Etiam eleifend vel" />
+                <Car:Skin Name="Lorem quisque vivamus nibh parturient"
+                          PreviewImage="Facilisis vestibulum"
+                          country="Adipiscing fermentum facilisi parturient aliquam"
+                          drivername="Nisi sed"
+                          number="Aliquet habitasse"
+                          skinname="Vestibulum morbi nulla proin nullam"
+                          team="Faucibus fringilla" />
+                <Car:Skin Name="Aptent dis auctor est"
+                          PreviewImage="Vestibulum blandit"
+                          country="Nunc dictum lobortis nascetur"
+                          drivername="Inceptos nisl interdum cursus adipiscing"
+                          number="Dolor fames"
+                          skinname="Vestibulum augue habitant congue"
+                          team="Hendrerit parturient odio vestibulum" />
+                <Car:Skin Name="Pharetra felis"
+                          PreviewImage="Placerat himenaeos"
+                          country="Senectus leo libero ipsum mus"
+                          drivername="Malesuada hac orci lectus"
+                          number="Justo lacus porttitor tincidunt"
+                          skinname="Commodo pulvinar imperdiet sagittis"
+                          team="Conubia vestibulum ligula penatibus" />
             </Car:CarDesc.Skins>
         </Car:CarDesc>
     </Models:ServerCar.CarDesc>

@@ -1,12 +1,4 @@
-﻿using ACSharedMemory.Models.Car;
-using ACSharedMemory.Models.Track;
-using IniParser;
-using IniParser.Model;
-using LauncherLight.Models;
-using LauncherLight.UserControls;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -16,6 +8,14 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Threading;
+using ACSharedMemory.Models.Car;
+using ACSharedMemory.Models.Track;
+using IniParser;
+using IniParser.Model;
+using LauncherLight.Models;
+using LauncherLight.UserControls;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace LauncherLight
 {
@@ -41,21 +41,21 @@ namespace LauncherLight
             btnSettings.Click += btnSettings_Click;
             btnChangeServer.Click += btnChangeServer_Click;
             btnOpenInfoServer.Click += btnOpenInfoServer_Click;
+            btnGameSettingsPesets.Click += BtnGameSettingsPesets_Click;
             Task.Factory.StartNew(() =>
             {
                 LoadData();
-                //    this.Dispatcher.Invoke(() =>
-                //                        {
-                //                            for (var i = 0; i < tab.Items.Count; i++)
-                //                            {
-                //                                tab.SelectedIndex = i;
-
-                //                                tab.UpdateLayout();
-
-                //                            }
-                //                            tab.SelectedIndex = 0;
-                //                        });
             });
+        }
+
+        private void BtnGameSettingsPesets_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsPresets control = new SettingsPresets();
+            DialogHost dialog = GetDialog(control);
+
+            var currentCar = this.lstCars.SelectedItem as CarDesc;
+
+            this.ShowMetroDialogAsync(dialog);
         }
 
         private void btnOpenInfoServer_Click(object sender, RoutedEventArgs e)
@@ -213,107 +213,6 @@ namespace LauncherLight
             });
         }
 
-        public void MergeIniFiles(string src, string target)
-        {
-            var parser = new FileIniDataParser();
-            parser.Parser.Configuration.AssigmentSpacer = "";
-
-            var srcdata = parser.ReadFile(src);
-            var targetdata = parser.ReadFile(target);
-
-            foreach (var section in srcdata.Sections)
-            {
-                // Remove
-                if (containssuffix(section.SectionName, "REMOVE"))
-                {
-                    var sectionName = cutSuffix(section.SectionName, "REMOVE");
-                    if (targetdata.Sections.ContainsSection(sectionName))
-                    {
-                        targetdata.Sections.RemoveSection(sectionName);
-                    }
-                }
-
-                // Replace
-                else if (containssuffix(section.SectionName, "REPLACE"))
-                {
-                    var sectionName = cutSuffix(section.SectionName, "REPLACE");
-
-                    // Delete
-                    if (targetdata.Sections.ContainsSection(sectionName))
-                    {
-                        targetdata.Sections.RemoveSection(sectionName);
-                    }
-
-                    // Copy
-                    targetdata.Sections.AddSection(sectionName);
-                    foreach (var key in section.Keys)
-                    {
-                        targetdata.Sections[sectionName].AddKey(key.KeyName, key.Value);
-                    }
-                }
-
-                // Merge
-                else //if (containssuffix(section.SectionName, "MERGE"))
-                {
-                    string sectionName = string.Empty;
-                    if (containssuffix(section.SectionName, "MERGE"))
-                    {
-                        sectionName = cutSuffix(section.SectionName, "MERGE");
-                    }
-                    else
-                    {
-                        sectionName = section.SectionName;
-                    }
-
-                    // Create of missing
-                    if (!targetdata.Sections.ContainsSection(sectionName))
-                    {
-                        targetdata.Sections.AddSection(sectionName);
-                    }
-
-                    foreach (var key in section.Keys)
-                    {
-                        if (!targetdata.Sections[sectionName].ContainsKey(key.KeyName))
-                        {
-                            targetdata.Sections[sectionName].AddKey(key.KeyName, key.Value);
-                        }
-                        else
-                        {
-                            targetdata.Sections[sectionName][key.KeyName] = key.Value;
-                        }
-                    }
-                }
-            }
-
-            CleanKeys(targetdata);
-
-            parser.SaveFile(target, targetdata);
-        }
-
-        private static void CleanKeys(IniData targetdata)
-        {
-            foreach (var section in targetdata.Sections)
-            {
-                foreach (var key in section.Keys.ToList())
-                {
-                    if ((key.Value ?? "").ToLower() == "REMOVE")
-                    {
-                        section.Keys.RemoveKey(key.KeyName);
-                    }
-                }
-            }
-        }
-
-        public string cutSuffix(string name, string suffixe)
-        {
-            return name.Substring(0, name.Length - ("_" + suffixe).Length);
-        }
-
-        public bool containssuffix(string name, string suffixe)
-        {
-            return name.EndsWith("_" + suffixe, StringComparison.InvariantCultureIgnoreCase);
-        }
-
         /// <summary>
         /// Start race
         /// </summary>
@@ -348,7 +247,7 @@ namespace LauncherLight
                     {
                         string newpath = System.IO.Path.Combine(Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments), "Assetto Corsa", "cfg", System.IO.Path.GetFileNameWithoutExtension(file));
                         //System.IO.File.Copy(file, newpath, true);
-                        MergeIniFiles(file, newpath);
+                        Helpers.MergeIniFiles(file, newpath);
                     }
                 }
             }
@@ -378,7 +277,7 @@ namespace LauncherLight
             try
             {
                 data["CAR_0"]["SKIN"] = //System.IO.Path.GetFileName(
-                    //System.IO.Directory.GetDirectories(System.IO.Path.Combine(GamePath, "content\\cars", car.Model, "skins")).FirstOrDefault()); ;
+                                        //System.IO.Directory.GetDirectories(System.IO.Path.Combine(GamePath, "content\\cars", car.Model, "skins")).FirstOrDefault()); ;
                     car.CurrentSkin.Name;
             }
             catch { }
@@ -824,7 +723,7 @@ namespace LauncherLight
                 {
                     string newpath = System.IO.Path.Combine(Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments), "Assetto Corsa", "cfg", System.IO.Path.GetFileNameWithoutExtension(file));
                     //System.IO.File.Copy(file, newpath, true);
-                    MergeIniFiles(file, newpath);
+                    Helpers.MergeIniFiles(file, newpath);
                 }
             }
 

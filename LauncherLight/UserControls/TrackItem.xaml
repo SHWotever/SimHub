@@ -1,6 +1,12 @@
-﻿<UserControl x:Class="LauncherLight.TrackItem" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300"
-        xmlns:converters="clr-namespace:LauncherLight.Converters">
+﻿<UserControl x:Class="LauncherLight.TrackItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:LauncherLight.Converters"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
     <UserControl.Resources>
         <converters:NullImageConverter x:Key="nullImageConverter" />
     </UserControl.Resources>
@@ -12,21 +18,35 @@
             <ColumnDefinition Width="240" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Border BorderBrush="Black" Grid.RowSpan="2" BorderThickness="0" Margin="0,0,15,0">
+        <Border Grid.RowSpan="2" Margin="0,0,15,0" BorderBrush="Black" BorderThickness="0">
             <Grid>
-                <Image RenderOptions.BitmapScalingMode="HighQuality" Height="142" Width="240"
-                        Source="{Binding TrackPreviewPath,IsAsync=false,Converter={converters:NullImageConverter TargetWidth=240, TargetHeight=142,Fill=True}}" VerticalAlignment="Top" Grid.RowSpan="2"
-                        Stretch="Fill"></Image>
-                <Image RenderOptions.BitmapScalingMode="HighQuality"
-                        Source="{Binding TrackOutlinePath,IsAsync=false,Converter={converters:NullImageConverter TargetWidth=240, TargetHeight=142,Fill=False}}" VerticalAlignment="Center"
-                        HorizontalAlignment="Center" Stretch="None" />
+                <Image Grid.RowSpan="2"
+                       Width="240"
+                       Height="142"
+                       VerticalAlignment="Top"
+                       RenderOptions.BitmapScalingMode="HighQuality"
+                       Source="{Binding TrackPreviewPath,
+                                        IsAsync=false,
+                                        Converter={converters:NullImageConverter TargetWidth=240,
+                                                                                 TargetHeight=142,
+                                                                                 Fill=True}}"
+                       Stretch="Fill" />
+                <Image HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       RenderOptions.BitmapScalingMode="HighQuality"
+                       Source="{Binding TrackOutlinePath,
+                                        IsAsync=false,
+                                        Converter={converters:NullImageConverter TargetWidth=240,
+                                                                                 TargetHeight=142,
+                                                                                 Fill=False}}"
+                       Stretch="None" />
             </Grid>
         </Border>
         <StackPanel Grid.Column="1">
-            <TextBlock Text="{Binding TrackInfo.name}" FontSize="16" FontWeight="Bold" TextWrapping="Wrap" />
-            <TextBlock Text="{Binding TrackInfo.length}" FontSize="14" TextWrapping="Wrap" />
-            <TextBlock Text="{Binding Track}" FontSize="10" TextWrapping="Wrap" />
-            <TextBlock Text="{Binding TrackConfig}" FontSize="10" TextWrapping="Wrap" />
+            <TextBlock FontSize="16" FontWeight="Bold" Text="{Binding TrackInfo.name}" TextWrapping="Wrap" />
+            <TextBlock FontSize="14" Text="{Binding TrackInfo.length}" TextWrapping="Wrap" />
+            <TextBlock FontSize="10" Text="{Binding Track}" TextWrapping="Wrap" />
+            <TextBlock FontSize="10" Text="{Binding TrackConfig}" TextWrapping="Wrap" />
         </StackPanel>
     </Grid>
 </UserControl>

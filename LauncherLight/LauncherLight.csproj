@@ -131,6 +131,9 @@
     <Compile Include="UserControls\ServerListItem.xaml.cs">
       <DependentUpon>ServerListItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\SettingsPresets.xaml.cs">
+      <DependentUpon>SettingsPresets.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\SkinChoice.xaml.cs">
       <DependentUpon>SkinChoice.xaml</DependentUpon>
     </Compile>
@@ -177,6 +180,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\ServerListItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\SettingsPresets.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

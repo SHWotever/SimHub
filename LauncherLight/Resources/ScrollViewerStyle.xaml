@@ -1,5 +1,8 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    mc:Ignorable="d">
     <Color x:Key="BackgroundColor">#003D3D3D</Color>
     <Color x:Key="StandardColor">#FF1DACE9</Color>
     <Color x:Key="HoverColor">#FF3EC2F9</Color>
@@ -29,14 +32,20 @@
                                             <VisualState x:Name="Normal" />
                                             <VisualState x:Name="MouseOver">
                                                 <Storyboard>
-                                                    <ColorAnimation d:IsOptimized="True" Duration="0" Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
-                                                            To="{StaticResource HoverColor}" />
+                                                    <ColorAnimation Duration="0"
+                                                                    Storyboard.TargetName="Arrow"
+                                                                    Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                                                                    To="{StaticResource HoverColor}"
+                                                                    d:IsOptimized="True" />
                                                 </Storyboard>
                                             </VisualState>
                                             <VisualState x:Name="Pressed">
                                                 <Storyboard>
-                                                    <ColorAnimation d:IsOptimized="True" Duration="0" Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
-                                                            To="{StaticResource PressedColor}" />
+                                                    <ColorAnimation Duration="0"
+                                                                    Storyboard.TargetName="Arrow"
+                                                                    Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                                                                    To="{StaticResource PressedColor}"
+                                                                    d:IsOptimized="True" />
                                                 </Storyboard>
                                             </VisualState>
                                             <VisualState x:Name="Disabled" />
@@ -61,14 +70,20 @@
                                             <VisualState x:Name="Normal" />
                                             <VisualState x:Name="MouseOver">
                                                 <Storyboard>
-                                                    <ColorAnimation d:IsOptimized="True" Duration="0" Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
-                                                            To="{StaticResource HoverColor}" />
+                                                    <ColorAnimation Duration="0"
+                                                                    Storyboard.TargetName="Arrow"
+                                                                    Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                                                                    To="{StaticResource HoverColor}"
+                                                                    d:IsOptimized="True" />
                                                 </Storyboard>
                                             </VisualState>
                                             <VisualState x:Name="Pressed">
                                                 <Storyboard>
-                                                    <ColorAnimation d:IsOptimized="True" Duration="0" Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
-                                                            To="{StaticResource PressedColor}" />
+                                                    <ColorAnimation Duration="0"
+                                                                    Storyboard.TargetName="Arrow"
+                                                                    Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                                                                    To="{StaticResource PressedColor}"
+                                                                    d:IsOptimized="True" />
                                                 </Storyboard>
                                             </VisualState>
                                             <VisualState x:Name="Disabled" />
@@ -93,14 +108,20 @@
                                             <VisualState x:Name="Normal" />
                                             <VisualState x:Name="MouseOver">
                                                 <Storyboard>
-                                                    <ColorAnimation d:IsOptimized="True" Duration="0" Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
-                                                            To="{StaticResource HoverColor}" />
+                                                    <ColorAnimation Duration="0"
+                                                                    Storyboard.TargetName="Arrow"
+                                                                    Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                                                                    To="{StaticResource HoverColor}"
+                                                                    d:IsOptimized="True" />
                                                 </Storyboard>
                                             </VisualState>
                                             <VisualState x:Name="Pressed">
                                                 <Storyboard>
-                                                    <ColorAnimation d:IsOptimized="True" Duration="0" Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
-                                                            To="{StaticResource PressedColor}" />
+                                                    <ColorAnimation Duration="0"
+                                                                    Storyboard.TargetName="Arrow"
+                                                                    Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                                                                    To="{StaticResource PressedColor}"
+                                                                    d:IsOptimized="True" />
                                                 </Storyboard>
                                             </VisualState>
                                             <VisualState x:Name="Disabled" />
@@ -125,14 +146,20 @@
                                             <VisualState x:Name="Normal" />
                                             <VisualState x:Name="MouseOver">
                                                 <Storyboard>
-                                                    <ColorAnimation d:IsOptimized="True" Duration="0" Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
-                                                            To="{StaticResource HoverColor}" />
+                                                    <ColorAnimation Duration="0"
+                                                                    Storyboard.TargetName="Arrow"
+                                                                    Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                                                                    To="{StaticResource HoverColor}"
+                                                                    d:IsOptimized="True" />
                                                 </Storyboard>
                                             </VisualState>
                                             <VisualState x:Name="Pressed">
                                                 <Storyboard>
-                                                    <ColorAnimation d:IsOptimized="True" Duration="0" Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
-                                                            To="{StaticResource PressedColor}" />
+                                                    <ColorAnimation Duration="0"
+                                                                    Storyboard.TargetName="Arrow"
+                                                                    Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                                                                    To="{StaticResource PressedColor}"
+                                                                    d:IsOptimized="True" />
                                                 </Storyboard>
                                             </VisualState>
                                             <VisualState x:Name="Disabled" />
@@ -157,14 +184,20 @@
                                             <VisualState x:Name="Normal" />
                                             <VisualState x:Name="MouseOver">
                                                 <Storyboard>
-                                                    <ColorAnimation d:IsOptimized="True" Duration="0" Storyboard.TargetName="VisualThumb"
-                                                            Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" To="{StaticResource HoverColor}" />
+                                                    <ColorAnimation Duration="0"
+                                                                    Storyboard.TargetName="VisualThumb"
+                                                                    Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                                                                    To="{StaticResource HoverColor}"
+                                                                    d:IsOptimized="True" />
                                                 </Storyboard>
                                             </VisualState>
                                             <VisualState x:Name="Pressed">
                                                 <Storyboard>
-                                                    <ColorAnimation d:IsOptimized="True" Duration="0" Storyboard.TargetName="VisualThumb"
-                                                            Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" To="{StaticResource PressedColor}" />
+                                                    <ColorAnimation Duration="0"
+                                                                    Storyboard.TargetName="VisualThumb"
+                                                                    Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                                                                    To="{StaticResource PressedColor}"
+                                                                    d:IsOptimized="True" />
                                                 </Storyboard>
                                             </VisualState>
                                             <VisualState x:Name="Disabled" />
@@ -189,14 +222,20 @@
                                             <VisualState x:Name="Normal" />
                                             <VisualState x:Name="MouseOver">
                                                 <Storyboard>
-                                                    <ColorAnimation d:IsOptimized="True" Duration="0" Storyboard.TargetName="VisualThumb"
-                                                            Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" To="{StaticResource HoverColor}" />
+                                                    <ColorAnimation Duration="0"
+                                                                    Storyboard.TargetName="VisualThumb"
+                                                                    Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                                                                    To="{StaticResource HoverColor}"
+                                                                    d:IsOptimized="True" />
                                                 </Storyboard>
                                             </VisualState>
                                             <VisualState x:Name="Pressed">
                                                 <Storyboard>
-                                                    <ColorAnimation d:IsOptimized="True" Duration="0" Storyboard.TargetName="VisualThumb"
-                                                            Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" To="{StaticResource PressedColor}" />
+                                                    <ColorAnimation Duration="0"
+                                                                    Storyboard.TargetName="VisualThumb"
+                                                                    Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                                                                    To="{StaticResource PressedColor}"
+                                                                    d:IsOptimized="True" />
                                                 </Storyboard>
                                             </VisualState>
                                             <VisualState x:Name="Disabled" />
@@ -235,11 +274,37 @@
                                     <SolidColorBrush Color="{StaticResource BackgroundColor}" />
                                 </Rectangle.Fill>
                             </Rectangle>
-                            <RepeatButton x:Name="HorizontalSmallDecrease" Grid.Column="0" Width="16" Margin="1" Interval="50" IsTabStop="False" Template="{StaticResource HorizontalDecrementTemplate}" />
-                            <RepeatButton x:Name="HorizontalLargeDecrease" Grid.Column="1" Width="0" Interval="50" IsTabStop="False" Template="{StaticResource RepeatButtonTemplate}" />
-                            <Thumb x:Name="HorizontalThumb" Grid.Column="2" Width="18" MinWidth="18" Background="{TemplateBinding Background}" Template="{StaticResource HorizontalThumbTemplate}" />
-                            <RepeatButton x:Name="HorizontalLargeIncrease" Grid.Column="3" Interval="50" IsTabStop="False" Template="{StaticResource RepeatButtonTemplate}" />
-                            <RepeatButton x:Name="HorizontalSmallIncrease" Grid.Column="4" Width="16" Margin="1" Interval="50" IsTabStop="False" Template="{StaticResource HorizontalIncrementTemplate}" />
+                            <RepeatButton x:Name="HorizontalSmallDecrease"
+                                          Grid.Column="0"
+                                          Width="16"
+                                          Margin="1"
+                                          Interval="50"
+                                          IsTabStop="False"
+                                          Template="{StaticResource HorizontalDecrementTemplate}" />
+                            <RepeatButton x:Name="HorizontalLargeDecrease"
+                                          Grid.Column="1"
+                                          Width="0"
+                                          Interval="50"
+                                          IsTabStop="False"
+                                          Template="{StaticResource RepeatButtonTemplate}" />
+                            <Thumb x:Name="HorizontalThumb"
+                                   Grid.Column="2"
+                                   Width="18"
+                                   MinWidth="18"
+                                   Background="{TemplateBinding Background}"
+                                   Template="{StaticResource HorizontalThumbTemplate}" />
+                            <RepeatButton x:Name="HorizontalLargeIncrease"
+                                          Grid.Column="3"
+                                          Interval="50"
+                                          IsTabStop="False"
+                                          Template="{StaticResource RepeatButtonTemplate}" />
+                            <RepeatButton x:Name="HorizontalSmallIncrease"
+                                          Grid.Column="4"
+                                          Width="16"
+                                          Margin="1"
+                                          Interval="50"
+                                          IsTabStop="False"
+                                          Template="{StaticResource HorizontalIncrementTemplate}" />
                         </Grid>
                         <Grid x:Name="VerticalRoot" Visibility="Collapsed">
                             <Grid.RowDefinitions>
@@ -254,11 +319,36 @@
                                     <SolidColorBrush Color="{StaticResource BackgroundColor}" />
                                 </Rectangle.Fill>
                             </Rectangle>
-                            <RepeatButton x:Name="VerticalSmallDecrease" Grid.Row="0" Height="16" Margin="1" Interval="50" IsTabStop="False" Template="{StaticResource VerticalDecrementTemplate}" />
-                            <RepeatButton x:Name="VerticalLargeDecrease" Grid.Row="1" Height="0" Interval="50" IsTabStop="False" Template="{StaticResource RepeatButtonTemplate}" />
-                            <Thumb x:Name="VerticalThumb" Grid.Row="2" Height="18" MinHeight="18" Template="{StaticResource VerticalThumbTemplate}" />
-                            <RepeatButton x:Name="VerticalLargeIncrease" Grid.Row="3" Interval="50" IsTabStop="False" Template="{StaticResource RepeatButtonTemplate}" />
-                            <RepeatButton x:Name="VerticalSmallIncrease" Grid.Row="4" Height="16" Margin="1" Interval="50" IsTabStop="False" Template="{StaticResource VerticalIncrementTemplate}" />
+                            <RepeatButton x:Name="VerticalSmallDecrease"
+                                          Grid.Row="0"
+                                          Height="16"
+                                          Margin="1"
+                                          Interval="50"
+                                          IsTabStop="False"
+                                          Template="{StaticResource VerticalDecrementTemplate}" />
+                            <RepeatButton x:Name="VerticalLargeDecrease"
+                                          Grid.Row="1"
+                                          Height="0"
+                                          Interval="50"
+                                          IsTabStop="False"
+                                          Template="{StaticResource RepeatButtonTemplate}" />
+                            <Thumb x:Name="VerticalThumb"
+                                   Grid.Row="2"
+                                   Height="18"
+                                   MinHeight="18"
+                                   Template="{StaticResource VerticalThumbTemplate}" />
+                            <RepeatButton x:Name="VerticalLargeIncrease"
+                                          Grid.Row="3"
+                                          Interval="50"
+                                          IsTabStop="False"
+                                          Template="{StaticResource RepeatButtonTemplate}" />
+                            <RepeatButton x:Name="VerticalSmallIncrease"
+                                          Grid.Row="4"
+                                          Height="16"
+                                          Margin="1"
+                                          Interval="50"
+                                          IsTabStop="False"
+                                          Template="{StaticResource VerticalIncrementTemplate}" />
                         </Grid>
                     </Grid>
                 </ControlTemplate>
@@ -284,19 +374,36 @@
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <ScrollContentPresenter x:Name="ScrollContentPresenter" Margin="{TemplateBinding Padding}" ContentTemplate="{TemplateBinding ContentTemplate}"
-                                    Cursor="{TemplateBinding Cursor}" />
+                            <ScrollContentPresenter x:Name="ScrollContentPresenter" Margin="{TemplateBinding Padding}" ContentTemplate="{TemplateBinding ContentTemplate}" Cursor="{TemplateBinding Cursor}" />
+                            <ScrollBar x:Name="VerticalScrollBar"
+                                       Grid.Row="0"
+                                       Grid.Column="1"
+                                       Width="18"
+                                       IsTabStop="False"
+                                       Maximum="{TemplateBinding ScrollableHeight}"
+                                       Minimum="0"
+                                       Orientation="Vertical"
+                                       Style="{StaticResource ScrollBarStyle}"
+                                       ViewportSize="{TemplateBinding ViewportHeight}"
+                                       Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                                       Value="{TemplateBinding VerticalOffset}" />
+                            <ScrollBar x:Name="HorizontalScrollBar"
+                                       Grid.Row="1"
+                                       Grid.Column="0"
+                                       Height="18"
+                                       IsTabStop="False"
+                                       Maximum="{TemplateBinding ScrollableWidth}"
+                                       Minimum="0"
+                                       Orientation="Horizontal"
+                                       Style="{StaticResource ScrollBarStyle}"
+                                       ViewportSize="{TemplateBinding ViewportWidth}"
+                                       Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+                                       Value="{TemplateBinding HorizontalOffset}" />
                             <Rectangle Grid.Row="1" Grid.Column="1">
                                 <Rectangle.Fill>
                                     <SolidColorBrush Color="{StaticResource BackgroundColor}" />
                                 </Rectangle.Fill>
                             </Rectangle>
-                            <ScrollBar x:Name="VerticalScrollBar" Grid.Row="0" Grid.Column="1" Width="18" IsTabStop="False" Maximum="{TemplateBinding ScrollableHeight}" Minimum="0"
-                                    Orientation="Vertical" Style="{StaticResource ScrollBarStyle}" ViewportSize="{TemplateBinding ViewportHeight}"
-                                    Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" Value="{TemplateBinding VerticalOffset}" />
-                            <ScrollBar x:Name="HorizontalScrollBar" Grid.Row="1" Grid.Column="0" Height="18" IsTabStop="False" Maximum="{TemplateBinding ScrollableWidth}" Minimum="0"
-                                    Orientation="Horizontal" Style="{StaticResource ScrollBarStyle}" ViewportSize="{TemplateBinding ViewportWidth}"
-                                    Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" Value="{TemplateBinding HorizontalOffset}" />
                         </Grid>
                     </Border>
                 </ControlTemplate>

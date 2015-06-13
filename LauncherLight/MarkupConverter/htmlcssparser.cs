@@ -587,6 +587,7 @@ namespace MarkupConverter
 
         // list-style: [ <list-style-type> || <list-style-position> || <list-style-image> ]
         private static readonly string[] _listStyleTypes = new string[] { "disc", "circle", "square", "decimal", "lower-roman", "upper-roman", "lower-alpha", "upper-alpha", "none" };
+
         private static readonly string[] _listStylePositions = new string[] { "inside", "outside" };
 
         private static void ParseCssListStyle(string styleValue, Hashtable localProperties)

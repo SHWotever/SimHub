@@ -1,7 +1,4 @@
-﻿using ACSharedMemory.Models.Car;
-using ACSharedMemory.Models.Track;
-using LauncherLight.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,11 +7,117 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using ACSharedMemory.Models.Car;
+using ACSharedMemory.Models.Track;
+using IniParser;
+using IniParser.Model;
+using LauncherLight.Models;
 
 namespace LauncherLight
 {
     public class Helpers
     {
+        public static string CutSuffix(string name, string suffixe)
+        {
+            return name.Substring(0, name.Length - ("_" + suffixe).Length);
+        }
+
+        public static bool ContainsSuffix(string name, string suffixe)
+        {
+            return name.EndsWith("_" + suffixe, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        public static void MergeIniFiles(string src, string target)
+        {
+            var parser = new FileIniDataParser();
+            parser.Parser.Configuration.AssigmentSpacer = "";
+
+            var srcdata = parser.ReadFile(src);
+            var targetdata = parser.ReadFile(target);
+
+            foreach (var section in srcdata.Sections)
+            {
+                // Remove
+                if (ContainsSuffix(section.SectionName, "REMOVE"))
+                {
+                    var sectionName = CutSuffix(section.SectionName, "REMOVE");
+                    if (targetdata.Sections.ContainsSection(sectionName))
+                    {
+                        targetdata.Sections.RemoveSection(sectionName);
+                    }
+                }
+
+                // Replace
+                else if (ContainsSuffix(section.SectionName, "REPLACE"))
+                {
+                    var sectionName = CutSuffix(section.SectionName, "REPLACE");
+
+                    // Delete
+                    if (targetdata.Sections.ContainsSection(sectionName))
+                    {
+                        targetdata.Sections.RemoveSection(sectionName);
+                    }
+
+                    // Copy
+                    targetdata.Sections.AddSection(sectionName);
+                    foreach (var key in section.Keys)
+                    {
+                        targetdata.Sections[sectionName].AddKey(key.KeyName, key.Value);
+                    }
+                }
+
+                // Merge
+                else //if (containssuffix(section.SectionName, "MERGE"))
+                {
+                    string sectionName = string.Empty;
+                    if (ContainsSuffix(section.SectionName, "MERGE"))
+                    {
+                        sectionName = CutSuffix(section.SectionName, "MERGE");
+                    }
+                    else
+                    {
+                        sectionName = section.SectionName;
+                    }
+
+                    // Create of missing
+                    if (!targetdata.Sections.ContainsSection(sectionName))
+                    {
+                        targetdata.Sections.AddSection(sectionName);
+                    }
+
+                    foreach (var key in section.Keys)
+                    {
+                        if (!targetdata.Sections[sectionName].ContainsKey(key.KeyName))
+                        {
+                            targetdata.Sections[sectionName].AddKey(key.KeyName, key.Value);
+                        }
+                        else
+                        {
+                            targetdata.Sections[sectionName][key.KeyName] = key.Value;
+                        }
+                    }
+                }
+            }
+
+            CleanKeys(targetdata);
+
+            parser.SaveFile(target, targetdata);
+        }
+
+        private static void CleanKeys(IniData targetdata)
+        {
+            foreach (var section in targetdata.Sections)
+            {
+                foreach (var key in section.Keys.ToList())
+                {
+                    if ((key.Value ?? "").ToLower() == "REMOVE")
+                    {
+                        section.Keys.RemoveKey(key.KeyName);
+                    }
+                }
+            }
+        }
+
         public static List<TrackDesc> GetTracks(string gamePath)
         {
             List<TrackDesc> tracks = new List<TrackDesc>();
@@ -79,7 +182,7 @@ namespace LauncherLight
         {
             AbortRefresh();
 
-            RefreshServerThread = new Thread(delegate()
+            RefreshServerThread = new Thread(delegate ()
               {
                   Thread.CurrentThread.Priority = ThreadPriority.Lowest;
                   var tmpservers = server.OrderByDescending(i => i.cars.Count > 1 && i.pickup).Where(i => i.pickup);
@@ -330,7 +433,7 @@ namespace LauncherLight
                     IPAddress subnetMask = GetSubnetMask(ip);
                     IPAddress bcast = GetBroadcastAddress(ip, subnetMask);
 
-                    Parallel.For(num, num2, delegate(int i, ParallelLoopState state)
+                    Parallel.For(num, num2, delegate (int i, ParallelLoopState state)
                     {
                         string text = BCastPing(bcast, i);
                         if (!text.EndsWith("-1"))

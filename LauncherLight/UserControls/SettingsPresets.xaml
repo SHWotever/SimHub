@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="LauncherLight.UserControls.SkinChoice"
+﻿<UserControl x:Class="LauncherLight.UserControls.SettingsPresets"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
@@ -30,14 +30,14 @@
         <converters:NullImageConverter x:Key="nullImageConverter" />
     </UserControl.Resources>
     <Grid Width="800">
-        <Grid Grid.Column="0" Height="700">
+        <Grid Grid.Column="0" Height="300">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
-            <Label Grid.Row="0" Style="{StaticResource TitleStyle}">Liveries</Label>
-            <ListBox x:Name="lstSkins"
+            <Label Grid.Row="0" Style="{StaticResource TitleStyle}">Game presets</Label>
+            <ListBox x:Name="lstPresets"
                      Grid.Row="1"
                      Margin="0,0,0,0"
                      ItemsSource="{Binding}"
@@ -62,7 +62,10 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <StackPanel Grid.Row="3" Height="85" HorizontalAlignment="Right" Orientation="Horizontal">
+            <StackPanel Grid.Row="3"
+                        Height="85"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
                 <Button x:Name="btnSelect"
                         Height="35"
                         MinWidth="80"

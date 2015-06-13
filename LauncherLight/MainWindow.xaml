@@ -1,7 +1,19 @@
-﻿<Controls:MetroWindow xmlns:Items="clr-namespace:LauncherLight.UserControls" xmlns:LauncherLight="clr-namespace:LauncherLight" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" x:Class="LauncherLight.MainWindow" Title="ACLauncher" Height="598.264"
-        Width="1746.591" Icon="startorb.ico" xmlns:converters="clr-namespace:LauncherLight.Converters" xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        xmlns:UserControls="clr-namespace:LauncherLight.UserControls" xmlns:Behaviors="clr-namespace:LauncherLight.Behaviors" WindowState="Maximized" WindowStartupLocation="CenterOwner">
+﻿<Controls:MetroWindow x:Class="LauncherLight.MainWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:Behaviors="clr-namespace:LauncherLight.Behaviors"
+                      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:Items="clr-namespace:LauncherLight.UserControls"
+                      xmlns:LauncherLight="clr-namespace:LauncherLight"
+                      xmlns:UserControls="clr-namespace:LauncherLight.UserControls"
+                      xmlns:converters="clr-namespace:LauncherLight.Converters"
+                      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+                      Title="ACLauncher"
+                      Width="1746.591"
+                      Height="598.264"
+                      Icon="startorb.ico"
+                      WindowStartupLocation="CenterOwner"
+                      WindowState="Maximized">
     <Controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -14,7 +26,7 @@
             <converters:HtmlToRichConverter x:Key="htmlToRichConverter" />
             <converters:ChartSerieConverter x:Key="chartSerieConverter" />
             <converters:TrimConverter x:Key="trimConverter" />
-            <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button" x:Key="OnlinebuttonStyle">
+            <Style x:Key="OnlinebuttonStyle" BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding Path=CurrentServer.SelectedCar, Converter={converters:IsNullConverter}}" Value="True">
                         <Setter Property="IsEnabled" Value="False" />
@@ -22,36 +34,16 @@
                 </Style.Triggers>
             </Style>
         </ResourceDictionary>
-        <!--<Style TargetType="ListBox" BasedOn="{StaticResource {x:Type ListBox}}">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=Items.Count}" Value="0">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate>
-                                <Controls:ProgressRing Foreground="{DynamicResource AccentColorBrush}" IsActive="True" />
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>-->
     </Controls:MetroWindow.Resources>
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
-            <Button Content="Change server" x:Name="btnChangeServer" Visibility="{Binding ElementName=onlineTab, Path=IsSelected, Converter={converters:BoolToVisibilityConverter Invert=False}}"></Button>
-            <Button Content="Open Server infos" x:Name="btnOpenInfoServer" Visibility="{Binding ElementName=onlineTab, Path=IsSelected, Converter={converters:BoolToVisibilityConverter Invert=False}}"></Button>
-            <Button Content="Settings" x:Name="btnSettings" />
+            <Button x:Name="btnChangeServer" Content="Change server" Visibility="{Binding ElementName=onlineTab, Path=IsSelected, Converter={converters:BoolToVisibilityConverter Invert=False}}" />
+            <Button x:Name="btnOpenInfoServer" Content="Open Server infos" Visibility="{Binding ElementName=onlineTab, Path=IsSelected, Converter={converters:BoolToVisibilityConverter Invert=False}}" />
+            <Button x:Name="btnSettings" Content="Settings" />
+            <Button x:Name="btnGameSettingsPesets" Content="Game settings" />
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
     <DockPanel>
-        <Menu DockPanel.Dock="Top" Visibility="Collapsed">
-            <MenuItem Header="_File">
-                <MenuItem Header="Refresh data" Click="menuReleadData_Click" />
-                <MenuItem Header="Options" Click="menuOptions_Click" />
-                <Separator />
-                <MenuItem Header="_Exit" Click="menuExit_Click" />
-            </MenuItem>
-        </Menu>
         <TabControl x:Name="tab" SelectionChanged="tab_SelectionChanged">
             <TabItem Header="Start">
                 <Grid>
@@ -62,81 +54,68 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="100*" />
-                        <ColumnDefinition Width="75*" MaxWidth="600" MinWidth="400" />
+                        <ColumnDefinition Width="75*" MinWidth="400" MaxWidth="600" />
                     </Grid.ColumnDefinitions>
-                    <Grid x:Name="grdCars" Grid.Column="0" Margin="15,0,15,15" Grid.ColumnSpan="2">
+                    <Grid x:Name="grdCars" Grid.Column="0" Grid.ColumnSpan="2" Margin="15,0,15,15">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="50*" />
-                            <!--<ColumnDefinition Width="280" />-->
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <Label Content="Car" HorizontalAlignment="Left" Grid.Row="0" Style="{StaticResource DescriptionHeaderStyle}" />
-                        <TextBox x:Name="txtCarSearch" Controls:TextBoxHelper.Watermark="Search car by name or brand" Controls:TextBoxHelper.ClearTextButton="True" Grid.ColumnSpan="2" Grid.Row="1"
-                                TextChanged="txtCarSearch_TextChanged" PreviewKeyUp="txtCarSearch_PreviewKeyUp" />
-                        <Grid Grid.Column="0" Grid.Row="2">
-                            <ListBox x:Name="lstCars" VerticalContentAlignment="Top" Grid.Row="1" VirtualizingPanel.IsVirtualizing="true" VirtualizingPanel.VirtualizationMode="Recycling"
-                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.ScrollUnit="Pixel" ItemsSource="{Binding}" Margin="0,0,0,0">
-                                <!--<ListBox.ItemContainerStyle>
-                                    <Style TargetType="{x:Type ListBoxItem}">
-                                        <Setter Property="VerticalContentAlignment" Value="Stretch" />
-                                    </Style>
-                                </ListBox.ItemContainerStyle>-->
+                        <Label Grid.Row="0" HorizontalAlignment="Left" Content="Car" Style="{StaticResource DescriptionHeaderStyle}" />
+                        <TextBox x:Name="txtCarSearch"
+                                 Grid.Row="1"
+                                 Grid.ColumnSpan="2"
+                                 Controls:TextBoxHelper.ClearTextButton="True"
+                                 Controls:TextBoxHelper.Watermark="Search car by name or brand"
+                                 PreviewKeyUp="txtCarSearch_PreviewKeyUp"
+                                 TextChanged="txtCarSearch_TextChanged" />
+                        <Grid Grid.Row="2" Grid.Column="0">
+                            <ListBox x:Name="lstCars"
+                                     Grid.Row="1"
+                                     Margin="0,0,0,0"
+                                     VerticalContentAlignment="Top"
+                                     ItemsSource="{Binding}"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                     VirtualizingPanel.IsVirtualizing="true"
+                                     VirtualizingPanel.ScrollUnit="Pixel"
+                                     VirtualizingPanel.VirtualizationMode="Recycling">
                                 <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <UniformGrid
-                                                Columns="{Binding Path=ActualWidth,  RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}},Converter={converters:UniformGridColConverter MinItemWidth=340,MinColumns=2} }"></UniformGrid>
-                                        <!--<WrapPanel Orientation="Horizontal" />-->
+                                        <UniformGrid Columns="{Binding Path=ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Converter={converters:UniformGridColConverter MinItemWidth=340, MinColumns=2}}" />
                                     </ItemsPanelTemplate>
                                 </ListBox.ItemsPanel>
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <UserControls:CarItem DataContext="{Binding}" VerticalAlignment="Top" />
+                                        <UserControls:CarItem VerticalAlignment="Top" DataContext="{Binding}" />
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
-                            <!--<Border Grid.Row="1" BorderThickness="0,20" Height="20" VerticalAlignment="Top">
-                                <Border.BorderBrush>
-                                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
-                                        <GradientStop Color="#FF252525" Offset="0" />
-                                        <GradientStop Color="#00252525" Offset="1" />
-                                    </LinearGradientBrush>
-                                </Border.BorderBrush>
-                            </Border>-->
                         </Grid>
-                        <!--<Grid Grid.Column="1" Grid.Row="2">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Label Style="{StaticResource DescriptionHeaderStyle}" Content="Skin" />
-                            <ListBox x:Name="lstSkins" Grid.Row="1" ScrollViewer.CanContentScroll="True" VirtualizingPanel.VirtualizationMode="Recycling" VirtualizingPanel.ScrollUnit="Pixel"
-                                    ItemsSource="{Binding}" Margin="0,0,0,0">
-                                -->
-                        <!--Style="{StaticResource MetroListBox}">-->
-                        <!--
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <LauncherLight:SkinItem DataContext="{Binding}" />
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                        </Grid>-->
                     </Grid>
-                    <Grid Grid.Column="2" Grid.Row="0" Margin="15,0,15,15">
+                    <Grid Grid.Row="0" Grid.Column="2" Margin="15,0,15,15">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <Label Content="Track" HorizontalAlignment="Left" Grid.Row="0" Style="{StaticResource DescriptionHeaderStyle}" />
-                        <TextBox Controls:TextBoxHelper.Watermark="Search track by name or country" Controls:TextBoxHelper.ClearTextButton="True" x:Name="txtTrackSearch" Grid.Row="1"
-                                TextChanged="txtTrackSearch_TextChanged" PreviewKeyUp="txtTrackSearch_PreviewKeyUp" />
-                        <ListBox x:Name="lstTracks" Grid.Row="2" ItemsSource="{Binding}" VirtualizingPanel.IsVirtualizing="true" VirtualizingPanel.VirtualizationMode="Recycling"
-                                ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.ScrollUnit="Pixel">
+                        <Label Grid.Row="0" HorizontalAlignment="Left" Content="Track" Style="{StaticResource DescriptionHeaderStyle}" />
+                        <TextBox x:Name="txtTrackSearch"
+                                 Grid.Row="1"
+                                 Controls:TextBoxHelper.ClearTextButton="True"
+                                 Controls:TextBoxHelper.Watermark="Search track by name or country"
+                                 PreviewKeyUp="txtTrackSearch_PreviewKeyUp"
+                                 TextChanged="txtTrackSearch_TextChanged" />
+                        <ListBox x:Name="lstTracks"
+                                 Grid.Row="2"
+                                 ItemsSource="{Binding}"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                 VirtualizingPanel.IsVirtualizing="true"
+                                 VirtualizingPanel.ScrollUnit="Pixel"
+                                 VirtualizingPanel.VirtualizationMode="Recycling">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <LauncherLight:TrackItem DataContext="{Binding}" />
@@ -144,7 +123,11 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
                     </Grid>
-                    <GroupBox Header="Server" Grid.Row="1" x:Name="grpServer" HorizontalAlignment="Left" Margin="-5,5,0,-5">
+                    <GroupBox x:Name="grpServer"
+                              Grid.Row="1"
+                              Margin="-5,5,0,-5"
+                              HorizontalAlignment="Left"
+                              Header="Server">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto" />
@@ -162,33 +145,77 @@
                                 <RowDefinition Height="40" />
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="10" />
-                                <!--<RowDefinition Height="28" />-->
                             </Grid.RowDefinitions>
-                            <Label Style="{DynamicResource DescriptionHeaderStyle}" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">Practice (minutes)</Label>
-                            <xctk:ShortUpDown Grid.Row="0" Grid.Column="2" x:Name="numPractive" Value="3" Height="22" Foreground="White" />
-                            <Label Style="{DynamicResource DescriptionHeaderStyle}" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">Qualify (minutes)</Label>
-                            <xctk:ShortUpDown Grid.Row="1" Grid.Column="2" Value="5" x:Name="numQualify" Height="22" Foreground="White" />
-                            <Label Style="{DynamicResource DescriptionHeaderStyle}" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center">Race (laps)</Label>
-                            <xctk:ShortUpDown Grid.Row="2" Grid.Column="2" Value="5" x:Name="numLaps" Height="22" Foreground="White" />
-                            <Label Style="{DynamicResource DescriptionHeaderStyle}" Grid.Row="0" Grid.Column="4" VerticalAlignment="Center">Traction Control</Label>
-                            <ComboBox Grid.Row="0" Grid.Column="6" x:Name="cbTC" DisplayMemberPath="Text" Height="22" />
-                            <Label Style="{DynamicResource DescriptionHeaderStyle}" Grid.Row="1" Grid.Column="4" VerticalAlignment="Center">ABS</Label>
-                            <ComboBox Grid.Row="1" Grid.Column="6" x:Name="cbABS" DisplayMemberPath="Text" Height="22" />
-                            <Label Style="{DynamicResource DescriptionHeaderStyle}" Grid.Row="2" Grid.Column="4" VerticalAlignment="Center">Stability control</Label>
-                            <ComboBox Grid.Row="2" Grid.Column="6" x:Name="cbStability" DisplayMemberPath="Text" Height="22" />
-                            <Button x:Name="btnStartServer" Grid.Column="7" Grid.RowSpan="4" HorizontalAlignment="Right" VerticalAlignment="Stretch" Click="btnStartServer_Click" Margin="10,0">
+                            <Button x:Name="btnStartServer"
+                                    Grid.RowSpan="4"
+                                    Grid.Column="7"
+                                    Margin="10,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Stretch"
+                                    Click="btnStartServer_Click">
                                 <StackPanel>
                                     <TextBlock TextAlignment="Center">Start Server</TextBlock>
-                                    <TextBlock x:Name="txtServerRunning" TextAlignment="Center" Foreground="Red" Margin="0,0,0,0" Visibility="Collapsed">Running</TextBlock>
+                                    <TextBlock x:Name="txtServerRunning"
+                                               Margin="0,0,0,0"
+                                               Foreground="Red"
+                                               TextAlignment="Center"
+                                               Visibility="Collapsed">
+                                        Running
+                                    </TextBlock>
                                     <Image RenderOptions.BitmapScalingMode="HighQuality" Source="server.png" />
                                 </StackPanel>
                             </Button>
+                            <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Style="{DynamicResource DescriptionHeaderStyle}">Practice (minutes)</Label>
+                            <xctk:ShortUpDown x:Name="numPractive"
+                                              Grid.Row="0"
+                                              Grid.Column="2"
+                                              Height="22"
+                                              Foreground="White"
+                                              Value="3" />
+                            <Label Grid.Row="0" Grid.Column="4" VerticalAlignment="Center" Style="{DynamicResource DescriptionHeaderStyle}">Traction Control</Label>
+                            <ComboBox x:Name="cbTC"
+                                      Grid.Row="0"
+                                      Grid.Column="6"
+                                      Height="22"
+                                      DisplayMemberPath="Text" />
+                            <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Style="{DynamicResource DescriptionHeaderStyle}">Qualify (minutes)</Label>
+                            <xctk:ShortUpDown x:Name="numQualify"
+                                              Grid.Row="1"
+                                              Grid.Column="2"
+                                              Height="22"
+                                              Foreground="White"
+                                              Value="5" />
+                            <Label Grid.Row="1" Grid.Column="4" VerticalAlignment="Center" Style="{DynamicResource DescriptionHeaderStyle}">ABS</Label>
+                            <ComboBox x:Name="cbABS"
+                                      Grid.Row="1"
+                                      Grid.Column="6"
+                                      Height="22"
+                                      DisplayMemberPath="Text" />
+                            <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Style="{DynamicResource DescriptionHeaderStyle}">Race (laps)</Label>
+                            <xctk:ShortUpDown x:Name="numLaps"
+                                              Grid.Row="2"
+                                              Grid.Column="2"
+                                              Height="22"
+                                              Foreground="White"
+                                              Value="5" />
+                            <Label Grid.Row="2" Grid.Column="4" VerticalAlignment="Center" Style="{DynamicResource DescriptionHeaderStyle}">Stability control</Label>
+                            <ComboBox x:Name="cbStability"
+                                      Grid.Row="2"
+                                      Grid.Column="6"
+                                      Height="22"
+                                      DisplayMemberPath="Text" />
                         </Grid>
                     </GroupBox>
-                    <GroupBox Grid.Column="1" Grid.ColumnSpan="2" Header="Quick Race" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,5,-5,-5" Grid.Row="1">
+                    <GroupBox Grid.Row="1"
+                              Grid.Column="1"
+                              Grid.ColumnSpan="2"
+                              Margin="0,5,-5,-5"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              Header="Quick Race">
                         <GroupBox.HeaderTemplate>
                             <DataTemplate>
-                                <TextBlock Text="QUICKRACE" HorizontalAlignment="Right" />
+                                <TextBlock HorizontalAlignment="Right" Text="QUICKRACE" />
                             </DataTemplate>
                         </GroupBox.HeaderTemplate>
                         <Grid>
@@ -208,15 +235,75 @@
                                 <RowDefinition Height="100*" />
                                 <RowDefinition Height="10" />
                             </Grid.RowDefinitions>
-                            <Label Style="{DynamicResource DescriptionHeaderStyle}" Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="1">Livery</Label>
+                            <converters:Proxy Grid.ColumnSpan="3" In="{Binding Mode=OneWay, ElementName=lstCars, Path=SelectedItem.CarInfo.description, Converter={StaticResource htmlToRichConverter}}" Out="{Binding ElementName=rtb, Path=Document}" />
+                            <Grid Grid.Row="0" Grid.Column="2" DataContext="{Binding ElementName=lstCars, Path=SelectedItem}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Image Grid.RowSpan="2"
+                                       Grid.Column="0"
+                                       Width="30"
+                                       Height="30"
+                                       Margin="10,0,10,0"
+                                       VerticalAlignment="Top"
+                                       RenderOptions.BitmapScalingMode="HighQuality"
+                                       Source="{Binding CarBadgePath,
+                                                        IsAsync=false,
+                                                        Converter={converters:NullImageConverter TargetWidth=40,
+                                                                                                 TargetHeight=40}}"
+                                       Stretch="UniformToFill" />
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock FontSize="16" FontWeight="Bold" Text="{Binding CarInfo.name, Converter={StaticResource trimConverter}}" TextWrapping="WrapWithOverflow" />
+                                </StackPanel>
+                            </Grid>
+                            <Label Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="1" Style="{DynamicResource DescriptionHeaderStyle}">Livery</Label>
+                            <Label Grid.Row="0" Grid.Column="6" Style="{DynamicResource DescriptionHeaderStyle}">Presets</Label>
+                            <Button x:Name="btnStart"
+                                    Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    Grid.Column="8"
+                                    Margin="10,0,0,0"
+                                    HorizontalAlignment="Left"
+                                    Click="btnStart_Click">
+                                <StackPanel>
+                                    <TextBlock TextAlignment="Center">Start Race</TextBlock>
+                                    <Image RenderOptions.BitmapScalingMode="HighQuality" Source="startorb.png" />
+                                </StackPanel>
+                            </Button>
+                            <RichTextBox x:Name="rtb"
+                                         Grid.Row="1"
+                                         Grid.Column="2"
+                                         Margin="0, 10, 0, 0"
+                                         HorizontalAlignment="Stretch"
+                                         VerticalAlignment="Stretch"
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         FontSize="12"
+                                         IsReadOnly="True"
+                                         Padding="0"
+                                         VerticalScrollBarVisibility="Auto" />
                             <Grid Grid.Row="1" Grid.Column="4" Margin="0,0,0,0">
-                                <Border BorderThickness="0" BorderBrush="Black" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                <Border HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="Black" BorderThickness="0">
                                     <Grid>
                                         <Button x:Name="btnSkinChoice" Click="btnSkinChoice_Click" Padding="10">
                                             <Grid>
-                                                <Image x:Name="imgSkin" VerticalAlignment="Stretch" HorizontalAlignment="Center" MinWidth="120" RenderOptions.BitmapScalingMode="HighQuality"
-                                                        Source="{Binding ElementName=lstCars, Path=SelectedItem.CurrentSkin.PreviewImage,IsAsync=False, Converter={converters:NullImageConverter TargetHeight=189,TargetWidth=320,Fill=True}}" />
-                                                <Button Width="50" Height="50" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,10,-10,-10"
+                                                <Image x:Name="imgSkin"
+                                                       MinWidth="120"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Stretch"
+                                                       RenderOptions.BitmapScalingMode="HighQuality"
+                                                       Source="{Binding ElementName=lstCars,
+                                                                        Path=SelectedItem.CurrentSkin.PreviewImage,
+                                                                        IsAsync=False,
+                                                                        Converter={converters:NullImageConverter TargetHeight=189,
+                                                                                                                 TargetWidth=320,
+                                                                                                                 Fill=True}}" />
+                                                <Button Width="50"
+                                                        Height="50"
+                                                        Margin="0,10,-10,-10"
+                                                        HorizontalAlignment="Right"
+                                                        VerticalAlignment="Bottom"
                                                         Style="{DynamicResource MetroCircleButtonStyle}">
                                                     <Rectangle Width="20" Height="20" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
                                                         <Rectangle.OpacityMask>
@@ -229,38 +316,7 @@
                                     </Grid>
                                 </Border>
                             </Grid>
-                            <Label Style="{DynamicResource DescriptionHeaderStyle}" Grid.Row="0" Grid.Column="6">Presets</Label>
-                            <ListBox x:Name="lstPreset" ItemsSource="{Binding}" Grid.Column="6" Grid.Row="1" />
-                            <Button x:Name="btnStart" Grid.Row="0" Grid.RowSpan="2" Grid.Column="8" HorizontalAlignment="Left" Click="btnStart_Click" Margin="10,0,0,0">
-                                <StackPanel>
-                                    <TextBlock TextAlignment="Center">Start Race</TextBlock>
-                                    <Image RenderOptions.BitmapScalingMode="HighQuality" Source="startorb.png" />
-                                </StackPanel>
-                            </Button>
-                            <Grid Grid.Column="2" Grid.Row="0" DataContext="{Binding ElementName=lstCars, Path=SelectedItem}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Image Grid.Column="0" VerticalAlignment="Top" Height="30" Width="30" Margin="10,0,10,0" RenderOptions.BitmapScalingMode="HighQuality" Stretch="UniformToFill"
-                                        Source="{Binding CarBadgePath,IsAsync=false,Converter={converters:NullImageConverter TargetWidth=40,TargetHeight=40} }" Grid.RowSpan="2"></Image>
-                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                    <!--<StackPanel Orientation="Horizontal" Grid.Column="1">
-                                        <TextBlock Text="{Binding CarInfo.brand,Converter={StaticResource trimConverter}}" FontSize="12" TextWrapping="Wrap" />
-                                        <TextBlock FontSize="12" Text=" - " TextWrapping="Wrap" />
-                                        <TextBlock Text="{Binding CarInfo.class,Converter={StaticResource trimConverter}}" FontSize="12" TextWrapping="Wrap" />
-                                        <TextBlock FontSize="12" Text=" - " TextWrapping="Wrap" />
-                                        <TextBlock Text="{Binding CarInfo.specs.bhp,Converter={StaticResource trimConverter}}" FontSize="12" TextWrapping="Wrap" />
-                                        <TextBlock FontSize="12" Text="" TextWrapping="Wrap" />
-                                    </StackPanel>-->
-                                    <TextBlock Text="{Binding CarInfo.name,Converter={StaticResource trimConverter}}" FontSize="16" FontWeight="Bold" TextWrapping="WrapWithOverflow" />
-                                </StackPanel>
-                            </Grid>
-                            <!--<Label Grid.Column="2" Grid.Row="0" Style="{DynamicResource DescriptionHeaderStyle}">Car description</Label>-->
-                            <RichTextBox x:Name="rtb" IsReadOnly="True" Padding="0" BorderThickness="0" FontSize="12" Background="Transparent" Grid.Column="2" Grid.Row="1" VerticalAlignment="Stretch"
-                                    HorizontalAlignment="Stretch" Margin="0, 10, 0, 0" VerticalScrollBarVisibility="Auto" />
-                            <converters:Proxy In="{Binding Mode=OneWay, ElementName=lstCars, Path=SelectedItem.CarInfo.description, Converter={StaticResource htmlToRichConverter}}"
-                                    Out="{Binding ElementName=rtb, Path=Document}" Grid.ColumnSpan="3" />
+                            <ListBox x:Name="lstPreset" Grid.Row="1" Grid.Column="6" ItemsSource="{Binding}" />
                         </Grid>
                     </GroupBox>
                 </Grid>
@@ -271,21 +327,34 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="*" />
                         <RowDefinition Height="200" />
-                        <!--<RowDefinition Height="270" />-->
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="100*" />
                     </Grid.ColumnDefinitions>
-                    <UserControls:SelectedServer x:Name="serverPreview" DataContext="{Binding CurrentServer}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Stretch" />
+                    <UserControls:SelectedServer x:Name="serverPreview"
+                                                 Grid.Row="0"
+                                                 Grid.Column="0"
+                                                 Grid.ColumnSpan="3"
+                                                 VerticalAlignment="Stretch"
+                                                 DataContext="{Binding CurrentServer}" />
                     <Grid Grid.Row="1" Grid.Column="0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <Label Style="{StaticResource DescriptionHeaderStyle}" Content="Cars" />
-                        <ListBox x:Name="lstOnlineCars" VerticalContentAlignment="Top" Grid.Row="1" VirtualizingPanel.IsVirtualizing="true" VirtualizingPanel.VirtualizationMode="Recycling"
-                                ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch" VirtualizingPanel.ScrollUnit="Pixel" VerticalAlignment="Top"
-                                ItemsSource="{Binding CurrentServer.ServerCars}" SelectedItem="{Binding CurrentServer.SelectedCar}" Margin="0,0,0,0">
+                        <Label Content="Cars" Style="{StaticResource DescriptionHeaderStyle}" />
+                        <ListBox x:Name="lstOnlineCars"
+                                 Grid.Row="1"
+                                 Margin="0,0,0,0"
+                                 VerticalAlignment="Top"
+                                 HorizontalContentAlignment="Stretch"
+                                 VerticalContentAlignment="Top"
+                                 ItemsSource="{Binding CurrentServer.ServerCars}"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                 SelectedItem="{Binding CurrentServer.SelectedCar}"
+                                 VirtualizingPanel.IsVirtualizing="true"
+                                 VirtualizingPanel.ScrollUnit="Pixel"
+                                 VirtualizingPanel.VirtualizationMode="Recycling">
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="{x:Type ListBoxItem}">
                                     <Style.Triggers>
@@ -297,22 +366,25 @@
                             </ListBox.ItemContainerStyle>
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <UniformGrid
-                                            Columns="{Binding Path=ActualWidth,  RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}},Converter={converters:UniformGridColConverter MinItemWidth=340,MinColumns=2} }"></UniformGrid>
-                                    <!--<WrapPanel Orientation="Horizontal" />-->
+                                    <UniformGrid Columns="{Binding Path=ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Converter={converters:UniformGridColConverter MinItemWidth=340, MinColumns=2}}" />
                                 </ItemsPanelTemplate>
                             </ListBox.ItemsPanel>
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <UserControls:ServerCarItem DataContext="{Binding}" VerticalAlignment="Top" HorizontalAlignment="Stretch" />
+                                    <UserControls:ServerCarItem HorizontalAlignment="Stretch" VerticalAlignment="Top" DataContext="{Binding}" />
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
                     </Grid>
-                    <GroupBox Grid.Column="0" Grid.Row="2" Header="Online" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,5,-5,-5">
+                    <GroupBox Grid.Row="2"
+                              Grid.Column="0"
+                              Margin="0,5,-5,-5"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              Header="Online">
                         <GroupBox.HeaderTemplate>
                             <DataTemplate>
-                                <TextBlock Text="QUICKRACE" HorizontalAlignment="Right" />
+                                <TextBlock HorizontalAlignment="Right" Text="QUICKRACE" />
                             </DataTemplate>
                         </GroupBox.HeaderTemplate>
                         <Grid Margin="0,2,0,-2">
@@ -332,15 +404,90 @@
                                 <RowDefinition Height="100*" />
                                 <RowDefinition Height="10" />
                             </Grid.RowDefinitions>
-                            <Label Style="{DynamicResource DescriptionHeaderStyle}" Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="1">Livery</Label>
-                            <Grid Grid.Row="1" Grid.Column="4" Margin="0,0,0,0" Visibility="{Binding  CurrentServer.SelectedCar,Converter={converters:IsNullToHiddenConverter}}">
-                                <Border BorderThickness="0" BorderBrush="Black" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Grid Grid.Row="0" Grid.Column="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Image Grid.RowSpan="2"
+                                       Grid.Column="0"
+                                       Width="30"
+                                       Height="30"
+                                       Margin="10,0,10,0"
+                                       VerticalAlignment="Top"
+                                       RenderOptions.BitmapScalingMode="HighQuality"
+                                       Source="{Binding CurrentServer.SelectedCar.CarDesc.CarBadgePath,
+                                                        IsAsync=false,
+                                                        Converter={converters:NullImageConverter TargetWidth=40,
+                                                                                                 TargetHeight=40}}"
+                                       Stretch="UniformToFill" />
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock FontSize="16" FontWeight="Bold" Text="{Binding CurrentServer.SelectedCar.CarDesc.CarInfo.name, Converter={StaticResource trimConverter}}" TextWrapping="WrapWithOverflow" />
+                                </StackPanel>
+                            </Grid>
+                            <Label Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="1" Style="{DynamicResource DescriptionHeaderStyle}">Livery</Label>
+                            <Grid Grid.Row="0"
+                                  Grid.RowSpan="2"
+                                  Grid.Column="6"
+                                  Width="140"
+                                  Margin="20,0,0,0"
+                                  Visibility="{Binding CurrentServer.pass,
+                                                       Converter={converters:BoolToVisibilityConverter}}">
+                                <StackPanel>
+                                    <Label Style="{DynamicResource DescriptionHeaderStyle}">Password</Label>
+                                    <TextBox Text="{Binding CurrentServer.CurrentPassword}" />
+                                </StackPanel>
+                            </Grid>
+                            <Button x:Name="btnStartOnline"
+                                    Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    Grid.Column="8"
+                                    Margin="10,0,0,0"
+                                    HorizontalAlignment="Left"
+                                    Click="btnStartOnline_Click"
+                                    Style="{DynamicResource OnlinebuttonStyle}">
+                                <StackPanel>
+                                    <TextBlock TextAlignment="Center">Start Race</TextBlock>
+                                    <Image RenderOptions.BitmapScalingMode="HighQuality" Source="startorb.png" />
+                                </StackPanel>
+                            </Button>
+                            <ScrollViewer Grid.Row="1"
+                                          Grid.Column="2"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch"
+                                          HorizontalScrollBarVisibility="Disabled">
+                                <TextBlock x:Name="rtbOnline"
+                                           Margin="0, 10, 0, 0"
+                                           HorizontalAlignment="Stretch"
+                                           VerticalAlignment="Stretch"
+                                           Background="Transparent"
+                                           Behaviors:HtmlTextBoxProperties.HtmlText="{Binding Path=CurrentServer.SelectedCar.CarDesc.CarInfo.description}"
+                                           FontSize="12"
+                                           Padding="0"
+                                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                           ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                           TextWrapping="Wrap" />
+                            </ScrollViewer>
+                            <Grid Grid.Row="1" Grid.Column="4" Margin="0,0,0,0" Visibility="{Binding CurrentServer.SelectedCar, Converter={converters:IsNullToHiddenConverter}}">
+                                <Border HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="Black" BorderThickness="0">
                                     <Grid>
                                         <Button x:Name="btnOnlineSkinChoice" Click="btnOnlineSkinChoice_Click" Padding="10">
                                             <Grid>
-                                                <Image x:Name="imgOnlineSkin" VerticalAlignment="Stretch" HorizontalAlignment="Center" MinWidth="120" RenderOptions.BitmapScalingMode="HighQuality"
-                                                        Source="{Binding CurrentServer.SelectedCar.CarDesc.CurrentSkin.PreviewImage,IsAsync=False, Converter={converters:NullImageConverter TargetHeight=189,TargetWidth=320,Fill=True}}" />
-                                                <Button Width="50" Height="50" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,10,-10,-10"
+                                                <Image x:Name="imgOnlineSkin"
+                                                       MinWidth="120"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Stretch"
+                                                       RenderOptions.BitmapScalingMode="HighQuality"
+                                                       Source="{Binding CurrentServer.SelectedCar.CarDesc.CurrentSkin.PreviewImage,
+                                                                        IsAsync=False,
+                                                                        Converter={converters:NullImageConverter TargetHeight=189,
+                                                                                                                 TargetWidth=320,
+                                                                                                                 Fill=True}}" />
+                                                <Button Width="50"
+                                                        Height="50"
+                                                        Margin="0,10,-10,-10"
+                                                        HorizontalAlignment="Right"
+                                                        VerticalAlignment="Bottom"
                                                         Style="{DynamicResource MetroCircleButtonStyle}">
                                                     <Rectangle Width="20" Height="20" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
                                                         <Rectangle.OpacityMask>
@@ -353,50 +500,13 @@
                                     </Grid>
                                 </Border>
                             </Grid>
-                            <Grid Grid.Row="0" Grid.Column="6" Grid.RowSpan="2" Width="140" Visibility="{Binding CurrentServer.pass, Converter={ converters:BoolToVisibilityConverter}}"
-                                    Margin="20,0,0,0">
-                                <StackPanel>
-                                    <Label Style="{DynamicResource DescriptionHeaderStyle}">Password</Label>
-                                    <TextBox Text="{Binding CurrentServer.CurrentPassword}" />
-                                </StackPanel>
-                            </Grid>
-                            <Button x:Name="btnStartOnline" Grid.Row="0" Grid.RowSpan="2" Grid.Column="8" HorizontalAlignment="Left" Margin="10,0,0,0" Style="{DynamicResource OnlinebuttonStyle}"
-                                    Click="btnStartOnline_Click">
-                                <StackPanel>
-                                    <TextBlock TextAlignment="Center">Start Race</TextBlock>
-                                    <Image RenderOptions.BitmapScalingMode="HighQuality" Source="startorb.png" />
-                                </StackPanel>
-                            </Button>
-                            <Grid Grid.Column="2" Grid.Row="0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Image Grid.Column="0" VerticalAlignment="Top" Height="30" Width="30" Margin="10,0,10,0" RenderOptions.BitmapScalingMode="HighQuality" Stretch="UniformToFill"
-                                        Source="{Binding CurrentServer.SelectedCar.CarDesc.CarBadgePath,IsAsync=false,Converter={converters:NullImageConverter TargetWidth=40,TargetHeight=40} }"
-                                        Grid.RowSpan="2"></Image>
-                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding CurrentServer.SelectedCar.CarDesc.CarInfo.name,Converter={StaticResource trimConverter}}" FontSize="16" FontWeight="Bold"
-                                            TextWrapping="WrapWithOverflow" />
-                                </StackPanel>
-                            </Grid>
-                            <!--<Label Grid.Column="2" Grid.Row="0" Style="{DynamicResource DescriptionHeaderStyle}">Car description</Label>-->
-                            <!--<RichTextBox x:Name="rtbOnline" IsReadOnly="True" Padding="0" BorderThickness="0" FontSize="12" Background="Transparent" Grid.Column="2" Grid.Row="1" VerticalAlignment="Stretch"
-                                    HorizontalAlignment="Stretch" Margin="0, 10, 0, 0" VerticalScrollBarVisibility="Auto" />-->
-                            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="2" Grid.Row="1">
-                                <TextBlock x:Name="rtbOnline" Padding="0" FontSize="12" Background="Transparent" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
-                                        ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0, 10, 0, 0" TextWrapping="Wrap"
-                                        Behaviors:HtmlTextBoxProperties.HtmlText="{Binding Path=CurrentServer.SelectedCar.CarDesc.CarInfo.description}" />
-                            </ScrollViewer>
-                            <!--<converters:Proxy In="{Binding CurrentServer.SelectedCar.CarDesc.CarInfo.description, Converter={StaticResource htmlToRichConverter}}"
-                                    Out="{Binding ElementName=rtbOnline, Path=Document}" Grid.ColumnSpan="3" />-->
                         </Grid>
                     </GroupBox>
                 </Grid>
             </TabItem>
             <TabItem Header="Logs">
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                    <TextBlock x:Name="tbServerLogs" Text="rfdg" FontFamily="Consolas" />
+                    <TextBlock x:Name="tbServerLogs" FontFamily="Consolas" Text="rfdg" />
                 </ScrollViewer>
             </TabItem>
         </TabControl>

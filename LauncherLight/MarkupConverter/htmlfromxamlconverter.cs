@@ -636,9 +636,5 @@ namespace MarkupConverter
         // Private Fields
         //
         // ---------------------------------------------------------------------
-
-        #region Private Fields
-
-        #endregion Private Fields
     }
 }

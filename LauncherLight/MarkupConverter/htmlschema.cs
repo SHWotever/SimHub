@@ -221,10 +221,6 @@ namespace MarkupConverter
         //
         // ---------------------------------------------------------------------
 
-        #region Internal Properties
-
-        #endregion Internal Properties
-
         // ---------------------------------------------------------------------
         //
         // Private Methods

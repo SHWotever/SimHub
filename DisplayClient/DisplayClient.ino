@@ -22,21 +22,20 @@ public:
 };
 
 // Connected modules
-int ENABLEDMODULES = 2;
+int ENABLEDMODULES = 3;
 
 // Modules common pins
-#define DIO 16
-#define CLK 15
+#define DIO 8
+#define CLK 7
 
 // 1st module strobe pin
-#define STB1 17
+#define STB1 9
 // 2nd screen strobe pin
-#define STB2 14
+#define STB2 10
+// 3nd screen strobe pin
+#define STB3 11
 // 4rd screen strobe pin
 #define STB4 12
-// 3nd screen strobe pin
-#define STB3 13
-
 TM1638 module1(DIO, CLK, STB1, false);
 ScreenItem screen1(&module1);
 

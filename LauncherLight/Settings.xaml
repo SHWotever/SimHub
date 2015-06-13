@@ -1,8 +1,15 @@
-﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="LauncherLight.Settings" Title="Settings" Height="362" Width="598">
+﻿<Window x:Class="LauncherLight.Settings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Title="Settings"
+        Width="598"
+        Height="362"
+        mc:Ignorable="d">
     <Window.Resources>
         <Style TargetType="TextBlock">
-            <Setter Property="Foreground" Value="White"></Setter>
+            <Setter Property="Foreground" Value="White" />
         </Style>
     </Window.Resources>
     <Grid>
@@ -10,20 +17,29 @@
             <RowDefinition Height="287*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-            <TextBlock><Run Text="Game path" /></TextBlock>
+        <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <TextBlock><Run Text="Game path" />
+            </TextBlock>
             <TextBox x:Name="txtGamePath" />
-            <CheckBox x:Name="cbEnableServerFeature" Content="Show quick server feature" Margin="0,3,0,0" />
-            <TextBlock><Run Text="Steam Id (online)" /></TextBlock>
+            <CheckBox x:Name="cbEnableServerFeature" Margin="0,3,0,0" Content="Show quick server feature" />
+            <TextBlock><Run Text="Steam Id (online)" />
+            </TextBlock>
             <TextBox x:Name="txtSteamId" />
-            <TextBlock><Run Text="Player Pseudo (online)" /></TextBlock>
+            <TextBlock><Run Text="Player Pseudo (online)" />
+            </TextBlock>
             <TextBox x:Name="txtPseudo" />
-            <TextBlock><Run Text="Server path" /></TextBlock>
+            <TextBlock><Run Text="Server path" />
+            </TextBlock>
             <TextBox x:Name="txtServerPath" />
-            <CheckBox x:Name="cbUseRename" Content="Use rename" Margin="0,3,0,0" />
+            <CheckBox x:Name="cbUseRename" Margin="0,3,0,0" Content="Use rename" />
         </StackPanel>
-        <StackPanel Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Right">
-            <Button x:Name="btnSave" Padding="10" Margin=" 10" Width="100" Click="Button_Click" Content="Save" />
+        <StackPanel Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Stretch">
+            <Button x:Name="btnSave"
+                    Width="100"
+                    Margin=" 10"
+                    Click="Button_Click"
+                    Content="Save"
+                    Padding="10" />
         </StackPanel>
     </Grid>
 </Window>
