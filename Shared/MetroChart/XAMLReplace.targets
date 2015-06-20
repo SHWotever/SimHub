@@ -1,0 +1,163 @@
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <!-- For WPF projects -->
+    <MarkupCompilePass1DependsOn>
+      $(MarkupCompilePass1DependsOn)
+      PreprocessXaml;
+    </MarkupCompilePass1DependsOn>
+    <!-- For Silverlight projects -->
+    <CompileXamlDependsOn>
+      $(CompileXamlDependsOn)
+      PreprocessXaml;
+    </CompileXamlDependsOn>
+  </PropertyGroup>
+
+  <Target Name="PreprocessXaml">
+    <CreateItem Include="@(Page)" Condition="'%(Page.Link)'!=''">
+      <Output TaskParameter="Include" ItemName="LinkedPages" />
+    </CreateItem>
+    <CreateItem Include="@(Page)" Condition="'%(Page.Link)'==''">
+      <Output TaskParameter="Include" ItemName="UnlinkedPages" />
+    </CreateItem>
+    <Copy SourceFiles="@(LinkedPages->'%(FullPath)')" DestinationFiles="@(LinkedPages->'%(Link)')" />
+    <ItemGroup>
+      <FinalLinkedPages Include="@(LinkedPages->'%(Link)')" />
+    </ItemGroup>
+    <ItemGroup>
+      <Page Remove="@(Page)" />
+      <Page Include="@(FinalLinkedPages);@(UnlinkedPages)" />
+    </ItemGroup>
+
+    <AdjustXAML DefineConstants="$(DefineConstants)" Folder="$(ProjectDir)" />
+  </Target>
+
+  <UsingTask TaskName="ReplaceGenericXAML" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll" >
+    <ParameterGroup>
+      <SolutionFolder ParameterType="System.String" Required="true" />
+      <ProjectFolder ParameterType="System.String" Required="true" />
+      <DefineConstants ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Code Type="Fragment" Language="cs">
+      <![CDATA[
+
+        Log.LogMessage("ProjectFolder " + ProjectFolder, MessageImportance.High);
+
+        string usingString = "=\"using:";
+        string clrString = "=\"clr-namespace:";
+
+        //replace generic.xaml with the major file
+        string mainGenericXAML = SolutionFolder + @"\SPCAF.Client.Core\Themes\Generic.xaml";
+        if(ProjectFolder.Contains("De.TorstenMandelkow.MetroChart"))
+        {
+          mainGenericXAML = SolutionFolder + @"\De.TorstenMandelkow.MetroChart\Themes\Generic.xaml";
+        }
+        else if(ProjectFolder.Contains("TestApplication"))
+        {
+          mainGenericXAML = SolutionFolder + @"\TestApplication.Shared\Themes\Generic.xaml";
+        }
+        
+        Log.LogMessage("mainGenericXAML " + mainGenericXAML, MessageImportance.High);
+        string mainGenericContent = System.IO.File.ReadAllText(mainGenericXAML);
+        Log.LogMessage("Loaded content of main generic.xaml file " + mainGenericXAML, MessageImportance.High);
+
+        if(DefineConstants.Contains("NETFX_CORE"))
+        {
+        StringBuilder replacedLines = new StringBuilder();
+        string[] allLines = System.IO.File.ReadAllLines(mainGenericXAML);
+        foreach (string line in allLines)
+        {
+        string replacedLine = line;
+        replacedLine = replacedLine.Replace(clrString, usingString);
+        replacedLine = replacedLine.Replace("{DynamicResource ", "{StaticResource ");
+        if(replacedLine.Contains(";assembly="))
+        {	//remove 'assembly=..." from the line
+        int startOfAssembly = replacedLine.IndexOf(";assembly=");
+        int endOfAssembly = replacedLine.IndexOf("\"", startOfAssembly);
+        replacedLine = replacedLine.Remove(startOfAssembly, endOfAssembly - startOfAssembly);
+        }
+        replacedLine = replacedLine.Replace("xmlns:cal=\"http://www.caliburnproject.org\"", "xmlns:cal=\"clr-namespace:Caliburn.Micro\"");
+        replacedLines.AppendLine(replacedLine);
+        }
+
+        mainGenericContent = replacedLines.ToString();
+        }
+        if(!DefineConstants.Contains("SILVERLIGHT"))
+        {
+        mainGenericContent = mainGenericContent.Replace("/TestApplicationSL;component","");
+        }
+
+        string genericXAMLForReplace = ProjectFolder + @"\Themes\Generic.xaml";
+        Log.LogMessage("Replaced content of " + genericXAMLForReplace, MessageImportance.High);
+        System.IO.File.WriteAllText(genericXAMLForReplace, mainGenericContent);
+        
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+  <UsingTask TaskName="AdjustXAML" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll" >
+    <ParameterGroup>
+      <Folder ParameterType="System.String" Required="true" />
+      <DefineConstants ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Code Type="Fragment" Language="cs">
+        string usingString = "=\"using:";
+        string clrString = "=\"clr-namespace:";
+
+        foreach(FileInfo xamlFile in new DirectoryInfo(Folder).GetFiles("*.xaml", SearchOption.AllDirectories))
+        {
+        Log.LogMessage("Replacing in File: " + xamlFile.FullName, MessageImportance.High);
+        string content = System.IO.File.ReadAllText(xamlFile.FullName);
+
+        if(DefineConstants.Contains("NETFX_CORE"))
+        {
+
+        StringBuilder replacedLines = new StringBuilder();
+        string[] allLines = System.IO.File.ReadAllLines(xamlFile.FullName);
+        foreach (string line in allLines)
+        {
+        string replacedLine = line;
+        replacedLine = replacedLine.Replace(clrString, usingString);
+        replacedLine = replacedLine.Replace("{DynamicResource ", "{StaticResource ");
+        if(replacedLine.Contains(";assembly="))
+        {	//remove 'assembly=..." from the line
+        int startOfAssembly = replacedLine.IndexOf(";assembly=");
+        int endOfAssembly = replacedLine.IndexOf("\"", startOfAssembly);
+        replacedLine = replacedLine.Remove(startOfAssembly, endOfAssembly - startOfAssembly);
+        }
+        replacedLine = replacedLine.Replace("xmlns:cal=\"http://www.caliburnproject.org\"", "xmlns:cal=\"clr-namespace:Caliburn.Micro\"");
+        replacedLines.AppendLine(replacedLine);
+        }
+
+        //content = content.Replace("xmlns:cal=\"http://www.caliburnproject.org\"", "xmlns:cal=\"clr-namespace:Caliburn.Micro\"");
+        //content = content.Replace(clrString, usingString);
+        System.IO.File.WriteAllText(xamlFile.FullName, replacedLines.ToString());
+        Log.LogMessage("Writing to " + xamlFile.FullName, MessageImportance.High);
+        }
+        else
+        {
+        if(content.Contains(usingString))
+        {
+        content = content.Replace(usingString, clrString);
+        System.IO.File.WriteAllText(xamlFile.FullName, content);
+        Log.LogMessage("Writing to " + xamlFile.FullName, MessageImportance.High);
+        }
+        }
+        }
+      </Code>
+    </Task>
+  </UsingTask>
+
+
+  <Target Name="BeforeBuild">
+    <Message Text="BeforeBuild" Importance="high" />
+    <ReplaceGenericXAML SolutionFolder="$(SolutionDir)" ProjectFolder="$(ProjectDir)" DefineConstants="$(DefineConstants)" />
+  </Target>
+  <!--
+  <Target Name="BeforeCompile">
+    <AdjustXAML DefineConstants="$(DefineConstants)" Folder="$(IntermediateOutputPath)" />
+  </Target>
+-->
+</Project>

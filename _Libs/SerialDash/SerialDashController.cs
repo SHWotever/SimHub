@@ -442,6 +442,18 @@ namespace SerialDash
             }
         }
 
+        public List<int> ScreenMap { get; set; }
+
+        private int Remap(int idx)
+        {
+            if (ScreenMap == null || idx >= ScreenMap.Count)
+            {
+                return idx;
+            }
+            return ScreenMap[idx];
+        }
+
+
         private void Send_MODELA()
         {
             List<byte> bytes = new List<byte>();
@@ -449,21 +461,23 @@ namespace SerialDash
             bytes.Add(PROTOCOL_COMMAND_SENDDISPLAY);
             for (int screenIndex = 0; screenIndex < ModuleCount; screenIndex++)
             {
+                var newIdx = Remap(screenIndex);
+
                 // INTENSITY
-                bytes.Add((byte)GetIntensity(screenIndex));
+                bytes.Add((byte)GetIntensity(newIdx));
 
                 // TEXT
-                var data = getDataFromDefaultFont(GetText(screenIndex), GetInvertedScreen(screenIndex));
+                var data = getDataFromDefaultFont(GetText(newIdx), GetInvertedScreen(newIdx));
                 bytes.AddRange(data.Take(8));
 
                 // LEDS
 
-                if (!GetInvertedScreen(screenIndex))
+                if (!GetInvertedScreen(newIdx))
                     for (int i = 0; i < 8; i++)
-                        bytes.Add(GetByteColor(screenIndex, i));
+                        bytes.Add(GetByteColor(newIdx, i));
                 else
                     for (int i = 0; i < 8; i++)
-                        bytes.Add(GetByteColor(screenIndex, 7 - i));
+                        bytes.Add(GetByteColor(newIdx, 7 - i));
             }
             try
             {
@@ -489,11 +503,12 @@ namespace SerialDash
                 bytes.Add(PROTOCOL_COMMAND_SENDTEXT);
                 for (int screenIndex = 0; screenIndex < ModuleCount; screenIndex++)
                 {
+                    var newIdx = Remap(screenIndex);
                     // INTENSITY
-                    crc.Add((byte)GetIntensity(screenIndex));
+                    crc.Add((byte)GetIntensity(newIdx));
 
                     // TEXT
-                    var data = getDataFromDefaultFont(GetText(screenIndex), GetInvertedScreen(screenIndex));
+                    var data = getDataFromDefaultFont(GetText(newIdx), GetInvertedScreen(newIdx));
                     crc.AddRange(data.Take(8));
                     bytes.AddRange(crc.getDataWithCrc());
 

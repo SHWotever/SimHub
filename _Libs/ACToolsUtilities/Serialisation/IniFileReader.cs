@@ -1,9 +1,9 @@
-﻿using IniParser;
-using IniParser.Exceptions;
-using IniParser.Model;
-using System;
+﻿using System;
 using System.IO;
 using System.Text;
+using IniParser;
+using IniParser.Exceptions;
+using IniParser.Model;
 
 namespace ACToolsUtilities.Serialisation
 {
@@ -50,8 +50,6 @@ namespace ACToolsUtilities.Serialisation
                     {
                         return ReadData(sr);
                     }
-
-                    fs.Close();
                 }
             }
             catch (IOException ex)

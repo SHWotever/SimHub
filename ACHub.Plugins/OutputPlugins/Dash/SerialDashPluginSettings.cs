@@ -189,7 +189,10 @@ namespace ACHub.Plugins.OutputPlugins.Dash
             this.LowFuelLapsLevel = 2;
             this.LowFuelLapsAlertInterval = 30;
             this.AnnounceTime = 0.5;
+           // this.ModuleLogicalMap = new List<int>(new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
         }
+
+        public List<int> ModuleLogicalMap { get; set; }
 
         /// <summary>
         /// Announce screen display time (seconds)

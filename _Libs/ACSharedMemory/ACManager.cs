@@ -3,6 +3,7 @@ using ACSharedMemory.Models.Track;
 using ACSharedMemory.Reader;
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Timers;
 
 namespace ACSharedMemory
@@ -195,6 +196,9 @@ namespace ACSharedMemory
                     data.NewData.TyreWear2 = this.data.NewData.Physics.TyreWear[1];
                     data.NewData.TyreWear3 = this.data.NewData.Physics.TyreWear[2];
                     data.NewData.TyreWear4 = this.data.NewData.Physics.TyreWear[3];
+                    data.NewData.TyreWearAvg = this.data.NewData.Physics.TyreWear.Average();
+                    data.NewData.TyreWearMin = this.data.NewData.Physics.TyreWear.Min();
+                    data.NewData.TyreWearMax = this.data.NewData.Physics.TyreWear.Max();
                 }
 
                 if (data.NewData.Physics.TyreDirtyLevel != null && data.NewData.Physics.TyreDirtyLevel.Length == 4)
@@ -203,6 +207,31 @@ namespace ACSharedMemory
                     data.NewData.TyreDirtyLevel2 = this.data.NewData.Physics.TyreDirtyLevel[1];
                     data.NewData.TyreDirtyLevel3 = this.data.NewData.Physics.TyreDirtyLevel[2];
                     data.NewData.TyreDirtyLevel4 = this.data.NewData.Physics.TyreDirtyLevel[3];
+                    data.NewData.TyreDirtyLevelAvg = this.data.NewData.Physics.TyreDirtyLevel.Average();
+                    data.NewData.TyreDirtyLevelMin = this.data.NewData.Physics.TyreDirtyLevel.Min();
+                    data.NewData.TyreDirtyLevelMax = this.data.NewData.Physics.TyreDirtyLevel.Max();
+                }
+
+                if (data.NewData.Physics.TyreCoreTemperature != null && data.NewData.Physics.TyreCoreTemperature.Length == 4)
+                {
+                    data.NewData.TyreCoreTemperature1 = this.data.NewData.Physics.TyreCoreTemperature[0];
+                    data.NewData.TyreCoreTemperature2 = this.data.NewData.Physics.TyreCoreTemperature[1];
+                    data.NewData.TyreCoreTemperature3 = this.data.NewData.Physics.TyreCoreTemperature[2];
+                    data.NewData.TyreCoreTemperature4 = this.data.NewData.Physics.TyreCoreTemperature[3];
+                    data.NewData.TyreCoreTemperatureAvg = this.data.NewData.Physics.TyreCoreTemperature.Average();
+                    data.NewData.TyreCoreTemperatureMin = this.data.NewData.Physics.TyreCoreTemperature.Min();
+                    data.NewData.TyreCoreTemperatureMax = this.data.NewData.Physics.TyreCoreTemperature.Max();
+                }
+                if (data.NewData.Physics.CarDamage != null && data.NewData.Physics.CarDamage.Length == 5)
+                {
+                    data.NewData.CarDamage1 = this.data.NewData.Physics.CarDamage[0];
+                    data.NewData.CarDamage2 = this.data.NewData.Physics.CarDamage[1];
+                    data.NewData.CarDamage3 = this.data.NewData.Physics.CarDamage[2];
+                    data.NewData.CarDamage4 = this.data.NewData.Physics.CarDamage[3];
+                    data.NewData.CarDamage5 = this.data.NewData.Physics.CarDamage[4];
+                    data.NewData.CarDamageAvg = this.data.NewData.Physics.CarDamage.Average();
+                    data.NewData.CarDamageMin = this.data.NewData.Physics.CarDamage.Min();
+                    data.NewData.CarDamageMax = this.data.NewData.Physics.CarDamage.Max();
                 }
             }
         }

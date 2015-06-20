@@ -149,6 +149,7 @@ namespace LauncherLight.UserControls
                         new Typeface(FontFamily, FontStyle, FontWeight, FontStretch),
                                   FontSize, Brushes.White);
             _textGeometry = formattedText.BuildGeometry(Origin);
+            this.SnapsToDevicePixels = false;
         }
     }
 }

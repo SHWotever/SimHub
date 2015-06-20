@@ -241,6 +241,9 @@ namespace ACHub.Plugins.DataPlugins.DataCore
             pluginManager.AddAction("SwitchRacingLine", typeof(DataCorePlugin), (pm, a) => { if (pm.Status.GameRunning)SimulateKeyPress(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_I); });
             pluginManager.AddAction("SwitchDamageDisplayer", typeof(DataCorePlugin), (pm, a) => { if (pm.Status.GameRunning)SimulateKeyPress(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_Q); });
 
+            pluginManager.AddAction("ServerKickVoteYes", typeof(DataCorePlugin), (pm, a) => { if (pm.Status.GameRunning)SimulateKeyPress(VirtualKeyCode.VK_Y); });
+            pluginManager.AddAction("ServerKickVoteNo", typeof(DataCorePlugin), (pm, a) => { if (pm.Status.GameRunning)SimulateKeyPress(VirtualKeyCode.VK_N); });
+
             pluginManager.AddAction("IncrementGameVolume", typeof(DataCorePlugin), (pm, a) => { if (pm.Status.GameRunning)SetGameVolume(10); });
             pluginManager.AddAction("DecrementGameVolume", typeof(DataCorePlugin), (pm, a) => { if (pm.Status.GameRunning) SetGameVolume(-10); });
 
@@ -348,7 +351,8 @@ namespace ACHub.Plugins.DataPlugins.DataCore
 
         private void DeclareType(PluginManager pluginManager, Type type, string currentName)
         {
-            //
+            if (!ParsePropertyPath(currentName)) { return; }
+
             if (type == typeof(TimeSpan) || type == typeof(string) || type.IsEnum || type.IsPrimitive || type.IsArray || type.Name == "List`1")
             {
                 if (!type.IsArray && !(type.Name == "List`1"))
@@ -451,15 +455,19 @@ namespace ACHub.Plugins.DataPlugins.DataCore
             }
         }
 
+        private bool ParsePropertyPath(string currentName)
+        {
+            if (currentName.Contains("Skin")) { return false; }
+            if (currentName.EndsWith("OldData")) { return false; }
+            if (currentName.EndsWith("OldData")) { return false; }
+            if (currentName.EndsWith("Events")) { return false; }
+            return true;
+        }
+
         private void UpdateData(PluginManager pluginManager, string currentName, object value)
         {
-            if (currentName.Contains("Skin"))
-            {
-                return;
-            }
-
-            if (value == null)
-                return;
+            if (!ParsePropertyPath(currentName)) { return; }
+            if (value == null) { return; }
 
             var type = value.GetType();
 

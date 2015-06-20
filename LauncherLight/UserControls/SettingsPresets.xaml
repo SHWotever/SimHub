@@ -27,42 +27,62 @@
         <Style x:Key="TitleStyle" TargetType="Label">
             <Setter Property="FontSize" Value="28" />
         </Style>
+        <Style x:Key="H2Style" TargetType="Label">
+            <Setter Property="FontSize" Value="18" />
+        </Style>
         <converters:NullImageConverter x:Key="nullImageConverter" />
     </UserControl.Resources>
     <Grid Width="800">
         <Grid Grid.Column="0" Height="300">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50*" />
+                <ColumnDefinition Width="50*" />
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
-            <Label Grid.Row="0" Style="{StaticResource TitleStyle}">Game presets</Label>
-            <ListBox x:Name="lstPresets"
-                     Grid.Row="1"
-                     Margin="0,0,0,0"
-                     ItemsSource="{Binding}"
-                     ScrollViewer.CanContentScroll="True"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                     VirtualizingPanel.ScrollUnit="Pixel"
-                     VirtualizingPanel.VirtualizationMode="Recycling">
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListBoxItem}">
-                        <Setter Property="VerticalContentAlignment" Value="Stretch" />
-                    </Style>
-                </ListBox.ItemContainerStyle>
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal" />
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
-                <!--  Style="{StaticResource MetroListBox}">  -->
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <LauncherLight:SkinItem DataContext="{Binding}" PreviewMouseDown="SkinItem_MouseUp" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            <StackPanel Grid.Row="3"
+            <Label Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource TitleStyle}">Game presets</Label>
+            <Grid Grid.Row="1" Grid.ColumnSpan="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Style="{StaticResource H2Style}">Presets</Label>
+                <ListBox x:Name="lstPresets"
+                         Grid.Row="1"
+                         Grid.RowSpan="2"
+                         Margin="0,0,0,0"
+                         ItemsSource="{Binding}"
+                         ScrollViewer.CanContentScroll="True"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         VirtualizingPanel.ScrollUnit="Pixel"
+                         VirtualizingPanel.VirtualizationMode="Recycling" />
+            </Grid>
+
+            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical">
+                <Label Style="{StaticResource H2Style}">New preset</Label>
+                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal">
+
+                    <TextBox Height="35"
+                             MinWidth="200"
+                             Margin="5 0 5 0"
+                             VerticalContentAlignment="Center"
+                             Controls:TextBoxHelper.Watermark="Preset name"
+                             FontSize="14" />
+                    <Button x:Name="btnCreatePreset"
+                            Height="35"
+                            MinWidth="80"
+                            Margin="5 0 5 0"
+                            Click="btnCreatePreset_Click">
+                        Save current game settings
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2"
+                        Grid.Column="0"
                         Height="85"
                         HorizontalAlignment="Right"
                         Orientation="Horizontal">

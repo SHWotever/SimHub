@@ -3,16 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:LocalBehaviors="clr-namespace:LauncherLight.Behaviors"
-             xmlns:cconverters="clr-namespace:Community.Windows.ValueConverters;assembly=Community.ValueConverters"
              xmlns:converters="clr-namespace:LauncherLight.Converters"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:interactivity="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:LauncherLight.Models"
+             HorizontalAlignment="Stretch"
              d:DataContext="{d:DesignInstance Type=models:ACServerSample,
                                               IsDesignTimeCreatable=True}"
              d:DesignHeight="300"
-             d:DesignWidth="700"
+             d:DesignWidth="612"
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -36,7 +36,7 @@
                 <Setter Property="FontSize" Value="28" />
             </Style>
             <converters:NullImageConverter x:Key="nullImageConverter" />
-            <cconverters:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
+            <converters:BoolToVisibilityConverter x:Key="booleanToVisibilityConverter" />
             <converters:BooleanToBrushConverter x:Key="booleanToBrushConverter">
                 <converters:BooleanToBrushConverter.TrueBrush>
                     <SolidColorBrush Color="Red" />
@@ -84,7 +84,7 @@
                                         Converter={converters:NullImageConverter TargetHeight=60,
                                                                                  TargetWidth=120,
                                                                                  MissingImage=true}}"
-                       Stretch="Fill" />
+                       Stretch="None" />
                 <Image Width="120"
                        Height="60"
                        VerticalAlignment="Top"
@@ -92,13 +92,13 @@
                        Source="{Binding TrackDesc.TrackOutlinePath,
                                         IsAsync=false,
                                         Converter={converters:NullImageConverter TargetHeight=60,
-                                                                                 TargetWidth=120}}"
+                                                                                 TargetWidth=120,
+                                                                                 Fill=False}}"
                        Stretch="None" />
             </Grid>
         </Border>
         <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch">
-            <TextBlock MaxWidth="500"
-                       HorizontalAlignment="Left"
+            <TextBlock HorizontalAlignment="Stretch"
                        FontSize="16"
                        FontWeight="Bold"
                        Text="{Binding name,
@@ -106,7 +106,7 @@
                        TextWrapping="Wrap" />
             <TextBlock FontSize="14" Text="{Binding TrackDesc.TrackInfo.name}" />
         </StackPanel>
-        <Grid Grid.Row="0" Grid.Column="2" Width="80">
+        <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Width="80">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
@@ -118,10 +118,57 @@
                 <TextBlock FontSize="20" FontWeight="Bold" Foreground="{Binding IsFull, Converter={StaticResource clientsBooleanToBrushConverter}}" Text="/" />
                 <TextBlock FontSize="20" FontWeight="Bold" Foreground="{Binding IsFull, Converter={StaticResource clientsBooleanToBrushConverter}}" Text="{Binding maxclients}" />
             </StackPanel>
+            <StackPanel Grid.Row="2"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Orientation="Vertical"
+                        TextElement.FontSize="10">
+                <Border Grid.Row="1"
+                        Width="70"
+                        Margin="2"
+                        HorizontalAlignment="Center"
+                        Background="Gray"
+                        BorderBrush="Gray"
+                        BorderThickness="1"
+                        Padding="2"
+                        Visibility="{Binding pickup,
+                                             Converter={StaticResource booleanToVisibilityConverter}}">
+                    <StackPanel Orientation="Horizontal">
+                        <Rectangle Width="14" Height="14" Fill="Black">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_draw_pixel_fill_grid}" />
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                        <TextBlock Margin="2">Pickup</TextBlock>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Row="2"
+                        Width="70"
+                        Margin="2"
+                        HorizontalAlignment="Center"
+                        Background="Gray"
+                        BorderThickness="1"
+                        Padding="2"
+                        Visibility="{Binding pass,
+                                             Converter={StaticResource booleanToVisibilityConverter}}">
+                    <StackPanel Orientation="Horizontal">
+                        <Rectangle Width="12" Height="14" Fill="#FFBB0000">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_lock}" />
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                        <TextBlock Margin="2" FontWeight="Bold">Password</TextBlock>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
         </Grid>
-        <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Bottom" Orientation="Horizontal">
-            <Border Height="30"
-                    MinWidth="120"
+        <WrapPanel Grid.Row="1"
+                   Grid.Column="1"
+                   Grid.ColumnSpan="1"
+                   VerticalAlignment="Bottom"
+                   Orientation="Horizontal"
+                   TextElement.FontSize="10">
+            <Border MinWidth="95"
                     Margin="2,2,2,2"
                     Background="{Binding IsBooking,
                                          Converter={StaticResource booleanToBrushConverter}}"
@@ -129,10 +176,12 @@
                     BorderThickness="0"
                     Visibility="{Binding Booking,
                                          Converter={converters:BoolToVisibilityConverter}}">
-                <Label HorizontalAlignment="Center" VerticalAlignment="Center">Booking</Label>
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                    <Label HorizontalAlignment="Center" VerticalAlignment="Center">Booking</Label>
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Path=LiveBookingTime, Converter={converters:CompactTimeSpanConverter}}" />
+                </StackPanel>
             </Border>
-            <Border Height="30"
-                    MinWidth="120"
+            <Border MinWidth="95"
                     Margin="2,2,2,2"
                     Background="{Binding IsPractice,
                                          Converter={StaticResource booleanToBrushConverter}}"
@@ -142,11 +191,10 @@
                                          Converter={converters:BoolToVisibilityConverter}}">
                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                     <Label HorizontalAlignment="Center" VerticalAlignment="Center">Practice</Label>
-                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Path=PracticeTime, StringFormat={}{0:hh':'mm}}" />
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Path=LivePracticeTime, Converter={converters:CompactTimeSpanConverter}}" />
                 </StackPanel>
             </Border>
-            <Border Height="30"
-                    MinWidth="120"
+            <Border MinWidth="95"
                     Margin="2,2,2,2"
                     Background="{Binding IsQualify,
                                          Converter={StaticResource booleanToBrushConverter}}"
@@ -156,11 +204,10 @@
                                          Converter={converters:BoolToVisibilityConverter}}">
                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                     <Label HorizontalAlignment="Center" VerticalAlignment="Center">Qualify</Label>
-                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Path=QualifyTime, StringFormat={}{0:hh':'mm}}" />
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Path=LiveQualifyTime, Converter={converters:CompactTimeSpanConverter}}" />
                 </StackPanel>
             </Border>
-            <Border Height="30"
-                    MinWidth="120"
+            <Border MinWidth="95"
                     Margin="2,2,2,2"
                     Background="{Binding IsRace,
                                          Converter={StaticResource booleanToBrushConverter}}"
@@ -169,57 +216,16 @@
                     Visibility="{Binding Race,
                                          Converter={converters:BoolToVisibilityConverter}}">
                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Race</TextBlock>
+                    <Label HorizontalAlignment="Center" VerticalAlignment="Center">Race</Label>
                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Path=RaceLaps, StringFormat=' {0} laps'}" />
                 </StackPanel>
             </Border>
-        </StackPanel>
-        <StackPanel Grid.Row="1"
-                    Grid.Column="1"
-                    Grid.ColumnSpan="2"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    Orientation="Horizontal">
-            <Border Grid.Row="1"
-                    Margin="2"
-                    HorizontalAlignment="Center"
-                    Background="Gray"
-                    BorderBrush="Gray"
-                    BorderThickness="1"
-                    Padding="2"
-                    Visibility="{Binding pickup,
-                                         Converter={StaticResource booleanToVisibilityConverter}}">
-                <StackPanel Orientation="Horizontal">
-                    <Rectangle Width="16" Height="16" Fill="Black">
-                        <Rectangle.OpacityMask>
-                            <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_draw_pixel_fill_grid}" />
-                        </Rectangle.OpacityMask>
-                    </Rectangle>
-                    <TextBlock Margin="5">Pickup</TextBlock>
-                </StackPanel>
-            </Border>
-            <Border Grid.Row="2"
-                    Margin="2"
-                    HorizontalAlignment="Center"
-                    Background="Gray"
-                    BorderThickness="1"
-                    Padding="2"
-                    Visibility="{Binding pass,
-                                         Converter={StaticResource booleanToVisibilityConverter}}">
-                <StackPanel Orientation="Horizontal">
-                    <Rectangle Width="14" Height="16" Fill="Black">
-                        <Rectangle.OpacityMask>
-                            <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_lock}" />
-                        </Rectangle.OpacityMask>
-                    </Rectangle>
-                    <TextBlock Margin="5" FontWeight="Bold">Password</TextBlock>
-                </StackPanel>
-            </Border>
-        </StackPanel>
+        </WrapPanel>
         <ItemsControl Grid.Row="3"
                       Grid.ColumnSpan="3"
                       Margin="5,5,5,5"
                       HorizontalAlignment="Stretch"
+                      HorizontalContentAlignment="Stretch"
                       ItemsSource="{Binding ServerCars}"
                       VirtualizingPanel.IsVirtualizing="False">
             <ItemsControl.ItemTemplate>
@@ -274,7 +280,8 @@
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <!--<WrapPanel Orientation="Horizontal" ScrollViewer.HorizontalScrollBarVisibility="Disabled" />-->
-                    <UniformGrid Columns="3" />
+                    <!--<UniformGrid Columns="3" />-->
+                    <UniformGrid Columns="{Binding Path=ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Converter={converters:UniformGridColConverter MinItemWidth=200, MinColumns=1}}" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>

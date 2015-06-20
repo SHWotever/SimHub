@@ -1,0 +1,24 @@
+<Application
+    x:Class="TestApplication.WinRT.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TestApplication.WinRT"
+    xmlns:localData="using:TestApplication.WinRT.Data">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/Generic.xaml" />
+                <ResourceDictionary Source="Skins/MainSkin.xaml" />
+                <!-- 
+                    Stile, die allgemeine Aspekte von Aussehen und Verhalten der Plattform definieren
+                    Erforderlich für Visual Studio-Projekt und Elementvorlagen
+                 -->
+                <ResourceDictionary Source="Common/StandardStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Anwendungsspezifische Ressourcen -->
+
+            <x:String x:Key="AppName">TestApplication.WinRT</x:String>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

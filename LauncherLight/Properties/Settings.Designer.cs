@@ -118,5 +118,53 @@ namespace LauncherLight.Properties {
                 this["LastServer"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string CarFirstSeen {
+            get {
+                return ((string)(this["CarFirstSeen"]));
+            }
+            set {
+                this["CarFirstSeen"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string TracksFirstSeen {
+            get {
+                return ((string)(this["TracksFirstSeen"]));
+            }
+            set {
+                this["TracksFirstSeen"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public int LastModsDays {
+            get {
+                return ((int)(this["LastModsDays"]));
+            }
+            set {
+                this["LastModsDays"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastServerListSettings {
+            get {
+                return ((string)(this["LastServerListSettings"]));
+            }
+            set {
+                this["LastServerListSettings"] = value;
+            }
+        }
     }
 }

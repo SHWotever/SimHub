@@ -1,10 +1,10 @@
-﻿using ACToolsUtilities.Serialisation;
-using IniParser;
-using PropertyChanged;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using ACToolsUtilities.Serialisation;
+using IniParser;
+using PropertyChanged;
 
 namespace ACSharedMemory.Models.Car
 {
@@ -35,6 +35,17 @@ namespace ACSharedMemory.Models.Car
             result.CarInfo = CarInfo.FromModel(ACPAth, model);
             result.Model = model;
             return result;
+        }
+
+        public CarDesc()
+        {
+        }
+
+        public CarDesc(string ACPAth, string model)
+        {
+            this.carPath = System.IO.Path.Combine(ACPAth, "content", "cars", model);
+            this.CarInfo = CarInfo.FromModel(ACPAth, model);
+            this.Model = model;
         }
 
         public static CarDesc GetFromGameSettings(string acpath)

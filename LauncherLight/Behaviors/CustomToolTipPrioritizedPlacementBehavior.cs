@@ -1,14 +1,14 @@
-﻿using LauncherLight.Enums;
-using System;
+﻿using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using LauncherLight.Enums;
 
 namespace LauncherLight.Behaviors
 {
     public class CustomToolTipPrioritizedPlacementBehavior : CustomToolTipPlacementBehavior
     {
-        protected virtual CustomPopupPlacement[] CalculatePopupPlacement(Size popupSize, Size targetSize, Point offset)
+        protected override CustomPopupPlacement[] CalculatePopupPlacement(Size popupSize, Size targetSize, Point offset)
         {
             var verticalOffsets = GetVerticalOffsets(VerticalPlacement, popupSize.Height, targetSize.Height, offset.Y);
             var horizontalOffsets = GetHorizontalOffsets(HorizontalPlacement, popupSize.Width, targetSize.Width, offset.X);

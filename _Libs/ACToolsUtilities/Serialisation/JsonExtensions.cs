@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 
 namespace ACToolsUtilities.Serialisation
 {
@@ -33,6 +35,48 @@ namespace ACToolsUtilities.Serialisation
                 return default(T);
             }
             return (T)Newtonsoft.Json.JsonConvert.DeserializeObject<T>(System.IO.File.ReadAllText(path));
+        }
+
+        public static T FromJsonGZipFile<T>(string path)
+        {
+            if (!File.Exists(path))
+            {
+                return default(T);
+            }
+            using (var fileStream = new FileStream(path, FileMode.Open))
+            {
+                using (var outputStream = new GZipStream(fileStream, CompressionMode.Decompress, false))
+                {
+                    using (var reader = new StreamReader(outputStream))
+                    {
+                        var serializer = new JsonSerializer();
+
+                        using (var jsonReader = new JsonTextReader(reader))
+                        {
+                            jsonReader.Read();
+                            return serializer.Deserialize<T>(jsonReader);
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void ToJsonGZipFile<T>(this T objectInstance, string path)
+        {
+            if (!System.IO.Directory.Exists(Path.GetDirectoryName(path)))
+            {
+                System.IO.Directory.CreateDirectory(Path.GetDirectoryName(path));
+            }
+            using (var fileStream = new FileStream(path, FileMode.Create))
+            {
+                using (var outputStream = new GZipStream(fileStream, CompressionMode.Compress, false))
+                {
+                    using (var writer = new StreamWriter(outputStream))
+                    {
+                        writer.Write(Newtonsoft.Json.JsonConvert.SerializeObject(objectInstance));
+                    }
+                }
+            }
         }
 
         public static T FromJsonFile<T>(string path, Func<string, string> textHandler)

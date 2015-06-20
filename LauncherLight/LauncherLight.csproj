@@ -42,15 +42,9 @@
     <ApplicationIcon>startorb.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Community.ValueConverters">
-      <HintPath>..\packages\Community.Windows.ValueConverters.0.2.0\lib\net45\Community.ValueConverters.dll</HintPath>
-    </Reference>
     <Reference Include="INIFileParser, Version=2.0.4.0, Culture=neutral, PublicKeyToken=79af7b307b65cf3c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ini-parser.2.1.1\lib\INIFileParser.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro">
-      <HintPath>..\packages\MahApps.Metro.1.1.2.0\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -64,9 +58,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.1.1.2.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
-    </Reference>
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -105,9 +97,12 @@
     <Compile Include="Behaviors\CustomToolTipPlacementBehavior.cs" />
     <Compile Include="Behaviors\CustomToolTipPrioritizedPlacementBehavior.cs" />
     <Compile Include="Behaviors\DesignModeTool.cs" />
+    <Compile Include="Behaviors\DpiDecorator.cs" />
     <Compile Include="Behaviors\HtmlTextBoxProperties.cs" />
     <Compile Include="Converters\BindableRichTextBox.cs" />
     <Compile Include="Converters\BooleanToBrushConverter.cs" />
+    <Compile Include="Converters\CompactTimeSpanConverter.cs" />
+    <Compile Include="Converters\NotBoolConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\HtmlToRichConverter.cs" />
     <Compile Include="Converters\ChartSerieConverter.cs" />
@@ -118,6 +113,9 @@
     <Compile Include="Enums\ToolTipEnums.cs" />
     <Compile Include="Converters\NullImageConverter.cs" />
     <Compile Include="Helpers.cs" />
+    <Compile Include="Models\LLCarDesc.cs" />
+    <Compile Include="Models\LLTrackDesc.cs" />
+    <Compile Include="Models\ModHistoryProvider.cs" />
     <Compile Include="Models\ServerListModel.cs" />
     <Compile Include="UserControls\CarItem.xaml.cs">
       <DependentUpon>CarItem.xaml</DependentUpon>
@@ -263,12 +261,19 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <Resource Include="Resources\Entypo.ttf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Shared\MahApps.Metro-master\MahApps.Metro.Resources\MahApps.Metro.Resources.csproj">
+      <Project>{e708ac99-605b-42a0-8d20-abca8fe42dd2}</Project>
+      <Name>MahApps.Metro.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Shared\MahApps.Metro-master\MahApps.Metro\MahApps.Metro.NET45.csproj">
+      <Project>{942d11c4-29f5-46c4-8c14-4b976d56c637}</Project>
+      <Name>MahApps.Metro.NET45</Name>
+    </ProjectReference>
     <ProjectReference Include="..\_Libs\ACSharedMemory\ACSharedMemory.csproj">
       <Project>{020af3ed-0a4c-4215-9b1d-1d41dd26f8bb}</Project>
       <Name>ACSharedMemory</Name>
@@ -297,12 +302,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="FodyWeavers.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\WindowsIcons-license.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Entypo-license.txt" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="MarkupConverter\MarkupConverter.csproj" />

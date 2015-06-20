@@ -61,6 +61,11 @@
             this.flowLayoutPanel8 = new System.Windows.Forms.FlowLayoutPanel();
             this.numAnnounceTime = new System.Windows.Forms.NumericUpDown();
             this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.lstModuleMap = new System.Windows.Forms.ListBox();
+            this.flowLayoutPanel9 = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnModuleUp = new System.Windows.Forms.Button();
+            this.btnModuleDown = new System.Windows.Forms.Button();
             this.detectTimer = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -77,8 +82,8 @@
             this.btnDown = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.ledEditor2 = new ACHub.Plugins.OutputPlugins.Dash.LedEditor();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.ledEditor2 = new ACHub.Plugins.OutputPlugins.Dash.LedEditor();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.flowLayoutPanel7.SuspendLayout();
@@ -95,6 +100,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numLowFuelRepeatInterval)).BeginInit();
             this.flowLayoutPanel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numAnnounceTime)).BeginInit();
+            this.flowLayoutPanel9.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -108,8 +114,9 @@
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 323F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Controls.Add(this.groupBox1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.groupBox4, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -117,8 +124,6 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 794F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 794F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(932, 794);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
@@ -130,10 +135,13 @@
             this.groupBox1.Controls.Add(this.cbReverseModule3);
             this.groupBox1.Controls.Add(this.cbReverseModule2);
             this.groupBox1.Controls.Add(this.cbReverseModule1);
+            this.groupBox1.Controls.Add(this.label12);
+            this.groupBox1.Controls.Add(this.lstModuleMap);
+            this.groupBox1.Controls.Add(this.flowLayoutPanel9);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(144, 788);
+            this.groupBox1.Size = new System.Drawing.Size(317, 788);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Modules settings";
@@ -152,16 +160,17 @@
             // 
             this.label9.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.Location = new System.Drawing.Point(0, 6);
             this.label9.Margin = new System.Windows.Forms.Padding(0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(46, 13);
+            this.label9.Size = new System.Drawing.Size(59, 13);
             this.label9.TabIndex = 12;
             this.label9.Text = "Intensity";
             // 
             // numIntensity
             // 
-            this.numIntensity.Location = new System.Drawing.Point(49, 3);
+            this.numIntensity.Location = new System.Drawing.Point(62, 3);
             this.numIntensity.Maximum = new decimal(new int[] {
             7,
             0,
@@ -174,7 +183,7 @@
             // lblDetectedModules
             // 
             this.lblDetectedModules.AutoSize = true;
-            this.lblDetectedModules.Location = new System.Drawing.Point(-3, 134);
+            this.lblDetectedModules.Location = new System.Drawing.Point(0, 135);
             this.lblDetectedModules.Name = "lblDetectedModules";
             this.lblDetectedModules.Size = new System.Drawing.Size(102, 13);
             this.lblDetectedModules.TabIndex = 4;
@@ -184,9 +193,10 @@
             // cbReverseModule4
             // 
             this.cbReverseModule4.AutoSize = true;
+            this.cbReverseModule4.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbReverseModule4.Location = new System.Drawing.Point(3, 85);
             this.cbReverseModule4.Name = "cbReverseModule4";
-            this.cbReverseModule4.Size = new System.Drawing.Size(112, 17);
+            this.cbReverseModule4.Size = new System.Drawing.Size(128, 17);
             this.cbReverseModule4.TabIndex = 3;
             this.cbReverseModule4.Text = "Reverse module 4";
             this.cbReverseModule4.UseVisualStyleBackColor = true;
@@ -194,9 +204,10 @@
             // cbReverseModule3
             // 
             this.cbReverseModule3.AutoSize = true;
+            this.cbReverseModule3.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbReverseModule3.Location = new System.Drawing.Point(3, 62);
             this.cbReverseModule3.Name = "cbReverseModule3";
-            this.cbReverseModule3.Size = new System.Drawing.Size(112, 17);
+            this.cbReverseModule3.Size = new System.Drawing.Size(128, 17);
             this.cbReverseModule3.TabIndex = 2;
             this.cbReverseModule3.Text = "Reverse module 3";
             this.cbReverseModule3.UseVisualStyleBackColor = true;
@@ -204,9 +215,10 @@
             // cbReverseModule2
             // 
             this.cbReverseModule2.AutoSize = true;
+            this.cbReverseModule2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbReverseModule2.Location = new System.Drawing.Point(3, 39);
             this.cbReverseModule2.Name = "cbReverseModule2";
-            this.cbReverseModule2.Size = new System.Drawing.Size(112, 17);
+            this.cbReverseModule2.Size = new System.Drawing.Size(128, 17);
             this.cbReverseModule2.TabIndex = 1;
             this.cbReverseModule2.Text = "Reverse module 2";
             this.cbReverseModule2.UseVisualStyleBackColor = true;
@@ -214,9 +226,10 @@
             // cbReverseModule1
             // 
             this.cbReverseModule1.AutoSize = true;
+            this.cbReverseModule1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbReverseModule1.Location = new System.Drawing.Point(3, 16);
             this.cbReverseModule1.Name = "cbReverseModule1";
-            this.cbReverseModule1.Size = new System.Drawing.Size(112, 17);
+            this.cbReverseModule1.Size = new System.Drawing.Size(128, 17);
             this.cbReverseModule1.TabIndex = 0;
             this.cbReverseModule1.Text = "Reverse module 1";
             this.cbReverseModule1.UseVisualStyleBackColor = true;
@@ -225,9 +238,9 @@
             // 
             this.groupBox4.Controls.Add(this.flowLayoutPanel2);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox4.Location = new System.Drawing.Point(153, 3);
+            this.groupBox4.Location = new System.Drawing.Point(326, 3);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(776, 788);
+            this.groupBox4.Size = new System.Drawing.Size(603, 788);
             this.groupBox4.TabIndex = 10;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Limits";
@@ -249,15 +262,16 @@
             this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 16);
             this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(770, 769);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(597, 769);
             this.flowLayoutPanel2.TabIndex = 10;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(65, 13);
+            this.label1.Size = new System.Drawing.Size(73, 13);
             this.label1.TabIndex = 6;
             this.label1.Text = "RPM Start : ";
             // 
@@ -293,9 +307,10 @@
             // label2
             // 
             this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(3, 45);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(57, 13);
+            this.label2.Size = new System.Drawing.Size(62, 13);
             this.label2.TabIndex = 8;
             this.label2.Text = "RPM Blink";
             // 
@@ -331,9 +346,10 @@
             // label3
             // 
             this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(3, 90);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(95, 13);
+            this.label3.Size = new System.Drawing.Size(113, 13);
             this.label3.TabIndex = 9;
             this.label3.Text = "Low fuel alert level";
             // 
@@ -374,9 +390,10 @@
             // label7
             // 
             this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.Location = new System.Drawing.Point(3, 135);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(104, 13);
+            this.label7.Size = new System.Drawing.Size(124, 13);
             this.label7.TabIndex = 14;
             this.label7.Text = "Repeat low fuel alert";
             // 
@@ -426,9 +443,10 @@
             // label10
             // 
             this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label10.Location = new System.Drawing.Point(3, 180);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(114, 13);
+            this.label10.Size = new System.Drawing.Size(133, 13);
             this.label10.TabIndex = 16;
             this.label10.Text = "Screen announce time";
             // 
@@ -470,6 +488,54 @@
             this.label11.Size = new System.Drawing.Size(47, 13);
             this.label11.TabIndex = 11;
             this.label11.Text = "seconds";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Location = new System.Drawing.Point(0, 162);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(147, 13);
+            this.label12.TabIndex = 22;
+            this.label12.Text = "Hardware modules order";
+            // 
+            // lstModuleMap
+            // 
+            this.lstModuleMap.FormattingEnabled = true;
+            this.lstModuleMap.Location = new System.Drawing.Point(3, 178);
+            this.lstModuleMap.Name = "lstModuleMap";
+            this.lstModuleMap.Size = new System.Drawing.Size(120, 186);
+            this.lstModuleMap.TabIndex = 18;
+            // 
+            // flowLayoutPanel9
+            // 
+            this.flowLayoutPanel9.Controls.Add(this.btnModuleUp);
+            this.flowLayoutPanel9.Controls.Add(this.btnModuleDown);
+            this.flowLayoutPanel9.Location = new System.Drawing.Point(0, 362);
+            this.flowLayoutPanel9.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanel9.Name = "flowLayoutPanel9";
+            this.flowLayoutPanel9.Size = new System.Drawing.Size(133, 28);
+            this.flowLayoutPanel9.TabIndex = 21;
+            // 
+            // btnModuleUp
+            // 
+            this.btnModuleUp.Location = new System.Drawing.Point(3, 3);
+            this.btnModuleUp.Name = "btnModuleUp";
+            this.btnModuleUp.Size = new System.Drawing.Size(57, 23);
+            this.btnModuleUp.TabIndex = 19;
+            this.btnModuleUp.Text = "Up";
+            this.btnModuleUp.UseVisualStyleBackColor = true;
+            this.btnModuleUp.Click += new System.EventHandler(this.btnModuleUp_Click);
+            // 
+            // btnModuleDown
+            // 
+            this.btnModuleDown.Location = new System.Drawing.Point(66, 3);
+            this.btnModuleDown.Name = "btnModuleDown";
+            this.btnModuleDown.Size = new System.Drawing.Size(57, 23);
+            this.btnModuleDown.TabIndex = 20;
+            this.btnModuleDown.Text = "Down";
+            this.btnModuleDown.UseVisualStyleBackColor = true;
+            this.btnModuleDown.Click += new System.EventHandler(this.btnModuleDown_Click);
             // 
             // detectTimer
             // 
@@ -636,14 +702,6 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Leds";
             // 
-            // ledEditor2
-            // 
-            this.ledEditor2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ledEditor2.Location = new System.Drawing.Point(3, 16);
-            this.ledEditor2.Name = "ledEditor2";
-            this.ledEditor2.Size = new System.Drawing.Size(920, 769);
-            this.ledEditor2.TabIndex = 9;
-            // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.tableLayoutPanel1);
@@ -653,6 +711,14 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Settings";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // ledEditor2
+            // 
+            this.ledEditor2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ledEditor2.Location = new System.Drawing.Point(3, 16);
+            this.ledEditor2.Name = "ledEditor2";
+            this.ledEditor2.Size = new System.Drawing.Size(920, 769);
+            this.ledEditor2.TabIndex = 9;
             // 
             // SerialDashSettingsControl
             // 
@@ -685,6 +751,7 @@
             this.flowLayoutPanel8.ResumeLayout(false);
             this.flowLayoutPanel8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numAnnounceTime)).EndInit();
+            this.flowLayoutPanel9.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
@@ -750,5 +817,10 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private LedEditor ledEditor2;
         private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.ListBox lstModuleMap;
+        private System.Windows.Forms.Button btnModuleUp;
+        private System.Windows.Forms.Button btnModuleDown;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel9;
     }
 }

@@ -26,11 +26,11 @@
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
-        <Rectangle Grid.RowSpan="2" Grid.ColumnSpan="3" Fill="#99000000" Visibility="{Binding IsFull, Converter={converters:BoolToVisibilityConverter}}" />
+        
         <!--<Rectangle Grid.RowSpan="2" Grid.ColumnSpan="3" Visibility="{Binding IsFull,Converter={converters:BoolToVisibilityConverter}}" Fill="#99000000" />-->
         <Border Grid.Column="1" HorizontalAlignment="Center" BorderBrush="Black" BorderThickness="0">
             <Grid>
-                <Image Width="320" Height="189" Source="{Binding CarDesc.CarPreviewPath, Converter={converters:NullImageConverter Fill=True, TargetWidth=320, TargetHeight=189}, IsAsync=false}" />
+                <Image Width="320" Height="189" Source="{Binding CarDesc.CarPreviewPath, Converter={converters:NullImageConverter Fill=True, TargetWidth=320, TargetHeight=189, MissingImage=True}, IsAsync=false}" />
                 <!--<Border Background="#99FFFFFF" CornerRadius="5" BorderThickness="1" VerticalAlignment="Top" HorizontalAlignment="Right">-->
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Visibility="{Binding IsPickup, Converter={converters:BoolToVisibilityConverter}}">
                     <usercontrols:TextPath Margin="5"
@@ -104,5 +104,6 @@
                 <TextBlock FontSize="16" FontWeight="Bold" Text="{Binding CarDesc.CarInfo.name, Converter={StaticResource trimConverter}}" TextWrapping="Wrap" />
             </StackPanel>
         </Grid>
+        <Rectangle Grid.RowSpan="2" Grid.ColumnSpan="3" Fill="#BB000000" Visibility="{Binding IsFull, Converter={converters:BoolToVisibilityConverter}}" />
     </Grid>
 </UserControl>

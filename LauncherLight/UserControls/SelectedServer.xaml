@@ -32,7 +32,6 @@
                 <Setter Property="FontSize" Value="28" />
             </Style>
             <converters:NullImageConverter x:Key="nullImageConverter" />
-
             <converters:BooleanToBrushConverter x:Key="booleanToBrushConverter">
                 <converters:BooleanToBrushConverter.TrueBrush>
                     <SolidColorBrush Color="Red" />
@@ -67,12 +66,13 @@
                 Margin="0,0,15,0"
                 VerticalAlignment="Top"
                 BorderBrush="Black"
-                BorderThickness="2">
+                BorderThickness="0">
             <Grid>
                 <Image Grid.RowSpan="2"
                        Width="240"
                        Height="142"
-                       VerticalAlignment="Top"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
                        Source="{Binding TrackDesc.TrackPreviewPath,
                                         IsAsync=False,
                                         Converter={converters:NullImageConverter TargetHeight=142,
@@ -82,27 +82,33 @@
                 <Image Grid.RowSpan="2"
                        Width="240"
                        Height="142"
-                       VerticalAlignment="Top"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
                        RenderOptions.BitmapScalingMode="HighQuality"
                        Source="{Binding TrackDesc.TrackOutlinePath,
                                         IsAsync=false,
                                         Converter={converters:NullImageConverter TargetHeight=142,
                                                                                  TargetWidth=240,
-                                                                                 Fill=False}}"
+                                                                                 Fill=False,
+                                                                                 MissingImage=True}}"
                        Stretch="None" />
             </Grid>
         </Border>
         <StackPanel Grid.Column="1" HorizontalAlignment="Left">
-            <TextBlock FontSize="40" FontWeight="Bold" Text="{Binding name}" TextWrapping="Wrap" />
+            <TextBlock FontSize="35" FontWeight="Bold" Text="{Binding name, Converter={converters:TrimConverter}}" TextWrapping="Wrap" />
             <TextBlock FontSize="30" FontWeight="Bold" Text="{Binding TrackDesc.TrackInfo.name}" />
             <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
                 <TextBlock FontSize="20" FontWeight="Bold" Text="{Binding clients}" />
                 <TextBlock FontSize="20" FontWeight="Bold" Text="/" />
                 <TextBlock FontSize="20" FontWeight="Bold" Text="{Binding maxclients}" />
             </StackPanel>
-            <StackPanel Grid.Column="1" VerticalAlignment="Bottom" Orientation="Horizontal">
-                <Border Height="30"
-                        MinWidth="120"
+            <StackPanel Grid.Row="1"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="1"
+                        VerticalAlignment="Bottom"
+                        Orientation="Horizontal"
+                        TextElement.FontSize="10">
+                <Border MinWidth="95"
                         Margin="2,2,2,2"
                         Background="{Binding IsBooking,
                                              Converter={StaticResource booleanToBrushConverter}}"
@@ -110,10 +116,12 @@
                         BorderThickness="0"
                         Visibility="{Binding Booking,
                                              Converter={converters:BoolToVisibilityConverter}}">
-                    <Label HorizontalAlignment="Center" VerticalAlignment="Center">Booking</Label>
+                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                        <Label HorizontalAlignment="Center" VerticalAlignment="Center">Booking</Label>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Path=LiveBookingTime, Converter={converters:CompactTimeSpanConverter}}" />
+                    </StackPanel>
                 </Border>
-                <Border Height="30"
-                        MinWidth="120"
+                <Border MinWidth="95"
                         Margin="2,2,2,2"
                         Background="{Binding IsPractice,
                                              Converter={StaticResource booleanToBrushConverter}}"
@@ -123,11 +131,10 @@
                                              Converter={converters:BoolToVisibilityConverter}}">
                     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                         <Label HorizontalAlignment="Center" VerticalAlignment="Center">Practice</Label>
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Path=PracticeTime, StringFormat={}{0:hh':'mm}}" />
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Path=LivePracticeTime, Converter={converters:CompactTimeSpanConverter}}" />
                     </StackPanel>
                 </Border>
-                <Border Height="30"
-                        MinWidth="120"
+                <Border MinWidth="95"
                         Margin="2,2,2,2"
                         Background="{Binding IsQualify,
                                              Converter={StaticResource booleanToBrushConverter}}"
@@ -137,11 +144,10 @@
                                              Converter={converters:BoolToVisibilityConverter}}">
                     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                         <Label HorizontalAlignment="Center" VerticalAlignment="Center">Qualify</Label>
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Path=QualifyTime, StringFormat={}{0:hh':'mm}}" />
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Path=LiveQualifyTime, Converter={converters:CompactTimeSpanConverter}}" />
                     </StackPanel>
                 </Border>
-                <Border Height="30"
-                        MinWidth="120"
+                <Border MinWidth="95"
                         Margin="2,2,2,2"
                         Background="{Binding IsRace,
                                              Converter={StaticResource booleanToBrushConverter}}"
@@ -150,7 +156,7 @@
                         Visibility="{Binding Race,
                                              Converter={converters:BoolToVisibilityConverter}}">
                     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Race</TextBlock>
+                        <Label HorizontalAlignment="Center" VerticalAlignment="Center">Race</Label>
                         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Path=RaceLaps, StringFormat=' {0} laps'}" />
                     </StackPanel>
                 </Border>

@@ -135,13 +135,24 @@ namespace ACHub.Plugins.DataPlugins.PersistantTracker
             var storageFolder = GetStoragePath(manager);
             if (Directory.Exists(storageFolder))
             {
-                var result = JsonExtensions.GetFiles(storageFolder, "*_*.json").OrderBy(i => i).FirstOrDefault();
+                var files = new List<string>();
+
+                files.AddRange(JsonExtensions.GetFiles(storageFolder, "*_*.json").ToList());
+                files.AddRange(JsonExtensions.GetFiles(storageFolder, "*_*.json.gz").ToList());
+
+                var result = files.OrderBy(i => i).FirstOrDefault();
                 if (result != null)
                 {
-                    var resultRecord = JsonExtensions.FromJsonFile<DataRecord>(result);
+                    DataRecord resultRecord = null;
+                    if (Path.GetExtension(result).ToLower().Contains("gz"))
+                    {
+                        resultRecord = JsonExtensions.FromJsonGZipFile<DataRecord>(result);
+                    }
+                    else
+                    {
+                        resultRecord = JsonExtensions.FromJsonFile<DataRecord>(result);
+                    }
                     Logging.Current.Info("Best time found :" + resultRecord.LapTime.ToString());
-
-                    List<KeyValuePair<TimeSpan, float>> tmp = new List<KeyValuePair<TimeSpan, float>>(resultRecord.CarPositions);
 
                     return resultRecord;
                 }
@@ -150,6 +161,7 @@ namespace ACHub.Plugins.DataPlugins.PersistantTracker
         }
 
         private bool newRecordEvent = false;
+
         private bool newBestEvent = false;
         private bool newSessionBestEvent = false;
 
@@ -174,10 +186,12 @@ namespace ACHub.Plugins.DataPlugins.PersistantTracker
                 record.CarPositions.Add(new KeyValuePair<TimeSpan, float>(record.LapTime, 1));
 
                 record.RecordDate = DateTime.Now;
-                record.ToJsonFile(
-                    Path.Combine(
+                string file = Path.Combine(
                     GetStoragePath(manager),
-                    record.LapTime.ToString(@"hh\.mm\.ss\.ffff") + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json"));
+                    record.LapTime.ToString(@"hh\.mm\.ss\.ffff") + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json");
+
+                //record.ToJsonFile(file);
+                record.ToJsonGZipFile(file + ".gz");
             }
             if (!testLap)
             {

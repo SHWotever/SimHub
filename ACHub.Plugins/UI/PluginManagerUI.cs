@@ -35,7 +35,8 @@ namespace ACHub.Plugins.UI
                 var control = plugin.GetSettingsControl(manager);
                 if (control == null)
                 {
-                    control = new PluginDefaultUI();
+                    continue;
+                    //control = new PluginDefaultUI();
                 }
                 this.InputSettings.AddPlugin(plugin.Name, plugin.Version, control);
             }
@@ -44,7 +45,8 @@ namespace ACHub.Plugins.UI
                 var control = plugin.GetSettingsControl(manager);
                 if (control == null)
                 {
-                    control = new PluginDefaultUI();
+                    continue;
+                    //control = new PluginDefaultUI();
                 }
                 this.InputSettings.AddPlugin(plugin.Name, plugin.Version, control);
             }
@@ -53,7 +55,8 @@ namespace ACHub.Plugins.UI
                 var control = plugin.GetSettingsControl(manager);
                 if (control == null)
                 {
-                    control = new PluginDefaultUI();
+                    continue;
+                    //control = new PluginDefaultUI();
                 }
                 this.InputSettings.AddPlugin(plugin.Name, plugin.Version, control);
             }

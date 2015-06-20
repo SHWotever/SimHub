@@ -16,17 +16,19 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="240" />
+            <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
-        <Border Margin="0" BorderBrush="Black" BorderThickness="0">
+        <Border Grid.Column="1" Margin="0" BorderBrush="Black" BorderThickness="0">
             <Image Grid.RowSpan="2"
-                   Height="120"
+                   Height="140"
                    VerticalAlignment="Top"
                    RenderOptions.BitmapScalingMode="HighQuality"
                    Source="{Binding PreviewImage,
                                     IsAsync=True,
                                     Converter={StaticResource nullImageConverter}}" />
         </Border>
-        <TextBlock Grid.Row="2" HorizontalAlignment="Center" Text="{Binding skinname}" />
+        <TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" Text="{Binding skinname}" />
     </Grid>
 </UserControl>

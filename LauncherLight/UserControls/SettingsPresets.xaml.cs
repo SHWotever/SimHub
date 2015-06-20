@@ -29,6 +29,28 @@ namespace LauncherLight.UserControls
         {
             if (lstPresets.SelectedValue != null)
             {
+                try
+                {
+                    foreach (var file in System.IO.Directory.GetFiles("SettingsPresets\\" + lstPresets.SelectedItem.ToString()))
+                    {
+                        if (!file.ToLower().EndsWith(".merge"))
+                        {
+                            string newpath = System.IO.Path.Combine(Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments), "Assetto Corsa", "cfg", System.IO.Path.GetFileName(file));
+                            System.IO.File.Copy(file, newpath, true);
+                        }
+                    }
+                    foreach (var file in System.IO.Directory.GetFiles("SettingsPresets\\" + lstPresets.SelectedItem.ToString()))
+                    {
+                        if (file.EndsWith(".merge"))
+                        {
+                            string newpath = System.IO.Path.Combine(Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments), "Assetto Corsa", "cfg", System.IO.Path.GetFileNameWithoutExtension(file));
+                            //System.IO.File.Copy(file, newpath, true);
+                            Helpers.MergeIniFiles(file, newpath);
+                        }
+                    }
+                }
+                catch { }
+
                 Cancel();
             }
         }
@@ -36,6 +58,10 @@ namespace LauncherLight.UserControls
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             Cancel();
+        }
+
+        private void btnCreatePreset_Click(object sender, RoutedEventArgs e)
+        {
         }
     }
 }

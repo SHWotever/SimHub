@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Threading;
 using ACSharedMemory.Models.Car;
@@ -53,8 +52,10 @@ namespace LauncherLight
             SettingsPresets control = new SettingsPresets();
             DialogHost dialog = GetDialog(control);
 
-            var currentCar = this.lstCars.SelectedItem as CarDesc;
-
+            control.Cancel = () =>
+            {
+                this.HideMetroDialogAsync(dialog);
+            };
             this.ShowMetroDialogAsync(dialog);
         }
 
@@ -95,8 +96,8 @@ namespace LauncherLight
 
         private string ServerPath { get { return Properties.Settings.Default.ServerPath; } }
 
-        private List<CarDesc> cars;
-        private List<TrackDesc> tracks;
+        private List<LLCarDesc> cars;
+        private List<LLTrackDesc> tracks;
 
         private void LoadData()
         {
@@ -180,6 +181,8 @@ namespace LauncherLight
                     var currenttrack = TrackDesc.GetFromGameSettings(GamePath);
                     if (currenttrack != null)
                         this.lstTracks.SelectedItem = tracks.FirstOrDefault(i => i.TrackCode == currenttrack.TrackCode);
+                    else
+                        this.lstTracks.SelectedItem = tracks.First();
                     this.lstTracks.ScrollIntoView(this.lstTracks.SelectedItem);
                 }
                 catch { }
@@ -188,6 +191,9 @@ namespace LauncherLight
                     var currentcar = CarDesc.GetFromGameSettings(GamePath);
                     if (currentcar != null)
                         this.lstCars.SelectedItem = cars.FirstOrDefault(i => i.Model == currentcar.Model);
+                    else
+                        this.lstCars.SelectedItem = cars.First();
+
                     this.lstCars.ScrollIntoView(this.lstCars.SelectedItem);
                 }
                 catch { }
@@ -259,7 +265,7 @@ namespace LauncherLight
             var raceIniPath = System.IO.Path.Combine(Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments), "Assetto Corsa", "cfg", "race.ini");
             var data = parser.ReadFile(raceIniPath);
 
-            var track = lstTracks.SelectedItem as TrackDesc;
+            var track = lstTracks.SelectedItem as LLTrackDesc;
             if (cars == null || track == null)
             {
                 btnStart.IsEnabled = true;
@@ -272,12 +278,12 @@ namespace LauncherLight
                 data["RACE"].AddKey("CONFIG_TRACK", track.TrackConfig);
             }
 
-            var car = lstCars.SelectedItem as CarDesc;
+            var car = lstCars.SelectedItem as LLCarDesc;
             data["RACE"]["MODEL"] = car.Model;
             try
             {
                 data["CAR_0"]["SKIN"] = //System.IO.Path.GetFileName(
-                                        //System.IO.Directory.GetDirectories(System.IO.Path.Combine(GamePath, "content\\cars", car.Model, "skins")).FirstOrDefault()); ;
+                    //System.IO.Directory.GetDirectories(System.IO.Path.Combine(GamePath, "content\\cars", car.Model, "skins")).FirstOrDefault()); ;
                     car.CurrentSkin.Name;
             }
             catch { }
@@ -340,14 +346,15 @@ namespace LauncherLight
         {
             if (txtServerRunning.Visibility != System.Windows.Visibility.Collapsed)
             {
+                logsTab.Visibility = Visibility.Collapsed;
                 txtServerRunning.Visibility = System.Windows.Visibility.Collapsed;
                 KillServers();
                 return;
             }
             KillServers();
-
-            var car = lstCars.SelectedItem as CarDesc;
-            var track = lstTracks.SelectedItem as TrackDesc;
+            logsTab.Visibility = Visibility.Visible;
+            var car = lstCars.SelectedItem as LLCarDesc;
+            var track = lstTracks.SelectedItem as LLTrackDesc;
 
             var parser = new FileIniDataParser();
             parser.Parser.Configuration.AssigmentSpacer = "";
@@ -356,7 +363,7 @@ namespace LauncherLight
 
             IniData data = parser.ReadFile(cfgFile);
 
-            data["SERVER"]["CARS"] = (lstCars.SelectedItem as CarDesc).Model;
+            data["SERVER"]["CARS"] = (lstCars.SelectedItem as LLCarDesc).Model;
 
             if (data["SERVER"].ContainsKey("CONFIG_TRACK"))
             {
@@ -409,7 +416,7 @@ namespace LauncherLight
             }
 
             parser.WriteFile(entryFile, entryData);
-            string log = "";
+
             p = new Process();
             p.StartInfo = new ProcessStartInfo() { UseShellExecute = false, CreateNoWindow = true, RedirectStandardError = true, RedirectStandardOutput = true, WindowStyle = ProcessWindowStyle.Hidden, FileName = System.IO.Path.Combine(ServerPath, "acServer.exe"), WorkingDirectory = ServerPath };
             p.OutputDataReceived += p_OutputDataReceived;
@@ -480,7 +487,7 @@ namespace LauncherLight
                 int baseindex = fromStart ? 0 : lstCars.SelectedIndex;
                 for (int i = 1; i < lstCars.Items.Count; i++)
                 {
-                    var tmpcar = (lstCars.Items[(baseindex + i) % lstCars.Items.Count] as CarDesc);
+                    var tmpcar = (lstCars.Items[(baseindex + i) % lstCars.Items.Count] as LLCarDesc);
                     if ((tmpcar.CarInfo.name + " " + tmpcar.CarInfo.brand).ToLower().Contains(txtCarSearch.Text.ToLower()))
                     {
                         lstCars.SelectedIndex = (baseindex + i) % lstCars.Items.Count;
@@ -500,7 +507,7 @@ namespace LauncherLight
                 int baseindex = fromStart ? 0 : lstTracks.SelectedIndex;
                 for (int i = 1; i < lstTracks.Items.Count; i++)
                 {
-                    var tmptrack = (lstTracks.Items[(baseindex + i) % lstTracks.Items.Count] as TrackDesc);
+                    var tmptrack = (lstTracks.Items[(baseindex + i) % lstTracks.Items.Count] as LLTrackDesc);
                     if ((tmptrack.TrackInfo.name + " " + tmptrack.TrackInfo.country).ToLower().Contains(txtTrackSearch.Text.ToLower()))
                     {
                         lstTracks.SelectedIndex = (baseindex + i) % lstTracks.Items.Count;
@@ -543,14 +550,14 @@ namespace LauncherLight
             return dialog;
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
             SelectServer();
         }
 
         private bool closed = false;
 
-        private async void SelectServer(Action oncloseDelegate = null)
+        private void SelectServer(Action oncloseDelegate = null)
         {
             closed = false;
             ServerList serverListControl = new ServerList();
@@ -559,8 +566,8 @@ namespace LauncherLight
             serverListControl.ServerSelected = (a) =>
             {
                 closed = true;
-                Task.Factory.StartNew(() =>
-                Helpers.RefreshServer(a, Properties.Settings.Default.SteamID, false));
+                //Task.Factory.StartNew(() =>
+                //Helpers.RefreshServer(a, Properties.Settings.Default.SteamID, false));
                 onlineContext.CurrentServer = a;
 
                 Properties.Settings.Default.LastServer = Newtonsoft.Json.JsonConvert.SerializeObject(a);
@@ -640,7 +647,7 @@ namespace LauncherLight
             SkinChoice skinChoiceControl = new SkinChoice();
             DialogHost dialog = GetDialog(skinChoiceControl);
 
-            var currentCar = this.lstCars.SelectedItem as CarDesc;
+            var currentCar = this.lstCars.SelectedItem as LLCarDesc;
 
             skinChoiceControl.SkinSelected = (a) =>
             {
@@ -684,7 +691,7 @@ namespace LauncherLight
             }
         }
 
-        private async void tab_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void tab_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (tab.SelectedItem == onlineTab)
             {
@@ -698,11 +705,6 @@ namespace LauncherLight
                             tab.SelectedIndex = 0;
                         }
                     });
-
-                    //if (onlineContext.CurrentServer == null)
-                    //{
-                    //    tab.SelectedIndex = 0;
-                    //}
                 }
             }
         }
@@ -749,66 +751,4 @@ namespace LauncherLight
             await StartGame();
         }
     }
-
-    //public static class DialogHelper
-    //{
-    //    ///
-    //    /// Recursively processes a given dependency object and all its
-    //    /// children, and updates sources of all objects that use a
-    //    /// binding expression on a given property.
-    //    ///
-    //    /// The dependency object that marks a starting
-    //    /// point. This could be a dialog window or a panel control that
-    //    /// hosts bound controls.
-    //    /// The properties to be updated if
-    //    ///  or one of its childs provide it along
-    //    /// with a binding expression.
-    //    public static void UpdateBindingSources(DependencyObject obj)
-    //    {
-    //        IEnumerable props = obj.EnumerateDependencyProperties();
-    //        foreach (DependencyProperty p in props)
-    //        {
-    //            Binding b = BindingOperations.GetBinding(obj, p);
-    //            //if (b.UpdateSourceTrigger == UpdateSourceTrigger.Explicit)
-    //            {
-    //                //check whether the submitted object provides a bound property
-    //                //that matches the property parameters
-    //                BindingExpression be =
-    //                  BindingOperations.GetBindingExpression(obj, p);
-    //                if (be != null) be.UpdateSource();
-    //            }
-    //        }
-
-    //        int count = VisualTreeHelper.GetChildrenCount(obj);
-    //        for (int i = 0; i < count; i++)
-    //        {
-    //            //process child items recursively
-    //            DependencyObject childObject = VisualTreeHelper.GetChild(obj, i);
-    //            UpdateBindingSources(childObject);
-    //        }
-    //    }
-
-    //    public static void UpdateAllSources(this FrameworkElement w)
-    //    {
-    //        UpdateBindingSources(w);
-    //    }
-    //}
-
-    //public static class DependencyObjectExtensions
-    //{
-    //    public static IEnumerable EnumerateDependencyProperties(this DependencyObject element)
-    //    {
-    //        LocalValueEnumerator lve = element.GetLocalValueEnumerator();
-
-    //        while (lve.MoveNext())
-    //        {
-    //            LocalValueEntry entry = lve.Current;
-    //            if (BindingOperations.IsDataBound(element, entry.Property))
-    //            {
-    //                yield return entry.Property;
-    //            }
-    //        }
-    //    }
-
-    //}
 }

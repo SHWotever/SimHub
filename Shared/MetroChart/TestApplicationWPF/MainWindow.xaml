@@ -1,0 +1,14 @@
+﻿<Window x:Class="TestApplicationWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
+        Title="Modern UI Charts by Torsten Mandelkow"         
+        Height="700" 
+        Width="900"        
+        Loaded="ShellView_Loaded_1">
+    <Grid x:Name="mainGrid">
+        <ContentControl Content="{Binding}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ContentTemplate="{StaticResource PageContent}" />
+        <Grid.LayoutTransform>
+            <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="1.0" ScaleY="1.0" />
+        </Grid.LayoutTransform>
+    </Grid>
+</Window>

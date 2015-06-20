@@ -81,6 +81,9 @@
     <Compile Include="Serialisation\JsonExtensions.cs" />
     <Compile Include="ThreadingUtils.cs" />
     <Compile Include="UI\Blinker.cs" />
+    <Compile Include="UI\DraggableTabControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UI\DataGridViewExtension\DataGridViewNumericUpDownCell.cs" />
     <Compile Include="UI\DataGridViewExtension\DataGridViewNumericUpDownColumn.cs" />
     <Compile Include="UI\DataGridViewExtension\DataGridViewNumericUpDownEditingControl.cs">

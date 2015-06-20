@@ -1,0 +1,243 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{229F48A7-2922-4F26-AFC7-6A2DCE096E90}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>De.TorstenMandelkow.MetroChart</RootNamespace>
+    <AssemblyName>De.TorstenMandelkow.MetroChart</AssemblyName>
+    <DefaultLanguage>de-DE</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\MainKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\ChartControls\ChartArea.cs">
+      <Link>ChartControls\ChartArea.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\ChartControls\ChartLegendItem.cs">
+      <Link>ChartControls\ChartLegendItem.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\ChartControls\ChartSeries.cs">
+      <Link>ChartControls\ChartSeries.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\ChartControls\ChartTitle.cs">
+      <Link>ChartControls\ChartTitle.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\ChartControls\Legend.cs">
+      <Link>ChartControls\Legend.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\ChartControls\PiePieceLabel.cs">
+      <Link>ChartControls\PiePieceLabel.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\ChartControls\PlotterArea.cs">
+      <Link>ChartControls\PlotterArea.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\ChartControls\ResourceDictionaryCollection.cs">
+      <Link>ChartControls\ResourceDictionaryCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Controls\AutoSizeTextBlock.cs">
+      <Link>Controls\AutoSizeTextBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Controls\ColumnSeriesPanel.cs">
+      <Link>Controls\ColumnSeriesPanel.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Controls\CustomWrapPanel.cs">
+      <Link>Controls\CustomWrapPanel.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Controls\EvenlyDistributedColumnsGrid.cs">
+      <Link>Controls\EvenlyDistributedColumnsGrid.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Controls\EvenlyDistributedRowGrid.cs">
+      <Link>Controls\EvenlyDistributedRowGrid.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Controls\FadingListView.cs">
+      <Link>Controls\FadingListView.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Controls\MinimalWidthTextBlock.cs">
+      <Link>Controls\MinimalWidthTextBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Controls\RowSeriesPanel.cs">
+      <Link>Controls\RowSeriesPanel.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Controls\StackedColumnsPanel.cs">
+      <Link>Controls\StackedColumnsPanel.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Controls\UniformGridPanel.cs">
+      <Link>Controls\UniformGridPanel.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Converters\BooleanToVisibilityConverter.cs">
+      <Link>Converters\BooleanToVisibilityConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Converters\DoubleToGridLengthPercent.cs">
+      <Link>Converters\DoubleToGridLengthPercent.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\BarChart\BarPiece.cs">
+      <Link>Core\BarChart\BarPiece.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\BarChart\ClusteredBarChart.cs">
+      <Link>Core\BarChart\ClusteredBarChart.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\BarChart\StackedBar100Chart.cs">
+      <Link>Core\BarChart\StackedBar100Chart.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\BarChart\StackedBarChart.cs">
+      <Link>Core\BarChart\StackedBarChart.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\ChartBase.cs">
+      <Link>Core\ChartBase.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\ChartSeriesViewModel.cs">
+      <Link>Core\ChartSeriesViewModel.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\ColumnChart\ClusteredColumnChart.cs">
+      <Link>Core\ColumnChart\ClusteredColumnChart.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\ColumnChart\ColumnPiece.cs">
+      <Link>Core\ColumnChart\ColumnPiece.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\ColumnChart\StackedColumn100Chart.cs">
+      <Link>Core\ColumnChart\StackedColumn100Chart.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\ColumnChart\StackedColumnChart.cs">
+      <Link>Core\ColumnChart\StackedColumnChart.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\DataPoint.cs">
+      <Link>Core\DataPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\DataPointGroup.cs">
+      <Link>Core\DataPointGroup.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\Doughnut\DoughnutChart.cs">
+      <Link>Core\Doughnut\DoughnutChart.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\Extensions.cs">
+      <Link>Core\Extensions.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\GaugeChart\RadialGaugeChart.cs">
+      <Link>Core\GaugeChart\RadialGaugeChart.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\GaugeChart\RadialGaugePiece.cs">
+      <Link>Core\GaugeChart\RadialGaugePiece.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\PieceBase.cs">
+      <Link>Core\PieceBase.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\PieChart\PieChart.cs">
+      <Link>Core\PieChart\PieChart.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\PieChart\PiePiece.cs">
+      <Link>Core\PieChart\PiePiece.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
+    <VisualStudioVersion>11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <Import Project="$(SolutionDir)\XAMLReplace.targets" />
+</Project>

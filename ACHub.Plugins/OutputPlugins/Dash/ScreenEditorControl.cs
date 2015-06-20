@@ -29,6 +29,16 @@ namespace ACHub.Plugins.OutputPlugins.Dash
             set { parts = value; this.lstParts.DataSource = parts; }
         }
 
+        public string GetParent(string item)
+        {
+            if (item.Contains("."))
+            {
+                var tmp = item.Split('.').ToList();
+                return string.Join(".", tmp.Take(tmp.Count - 1));
+            }
+            return "";
+        }
+
         /// <summary>
         /// CTor
         /// </summary>
@@ -36,7 +46,7 @@ namespace ACHub.Plugins.OutputPlugins.Dash
         public ScreenEditorControl(PluginManager manager)
             : this()
         {
-            foreach (var prop in manager.GeneratedProperties.OrderBy(i => i.Key))
+            foreach (var prop in manager.GeneratedProperties.OrderBy(i => GetParent(i.Key)).ThenBy(i => i.Key))
             {
                 lstExpression.Items.Add(prop.Key);
             }

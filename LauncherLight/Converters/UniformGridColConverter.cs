@@ -15,8 +15,6 @@ namespace LauncherLight.Converters
 
             var val = System.Convert.ToDouble(value);
             return Math.Max((int)((val - 40) / MinItemWidth), MinColumns);
-
-            return value;
         }
 
         public int MinItemWidth { get; set; }

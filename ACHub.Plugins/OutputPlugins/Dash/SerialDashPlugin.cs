@@ -16,7 +16,7 @@ namespace ACHub.Plugins.OutputPlugins.Dash
         private Blinker RpmBlink = new Blinker();
         private Blinker FuelLapsBlink = new Blinker() { BlinkTime = 500 };
         private AlertManager FuelLapsAlertManager = new AlertManager { AlertRecurency = 60 };
-        private double annoncelength = 0.5;
+
         private Blinker ScreenBlinker = new Blinker();
 
         private const string SettingsPath = "PluginsData\\SerialDashPlugin.json";
@@ -141,6 +141,9 @@ namespace ACHub.Plugins.OutputPlugins.Dash
             this.dash.SetInvertedScreen(1, Settings.ReverseScreen1);
             this.dash.SetInvertedScreen(2, Settings.ReverseScreen2);
             this.dash.SetInvertedScreen(3, Settings.ReverseScreen3);
+
+            this.dash.ScreenMap = settings.ModuleLogicalMap;
+
             this.dash.SetIntensity(settings.Intensity);
             this.FuelLapsAlertManager.AlertRecurency = Math.Max(1, (int)settings.LowFuelLapsAlertInterval);
             CreateActions(pluginManager);
@@ -163,9 +166,9 @@ namespace ACHub.Plugins.OutputPlugins.Dash
                 {
                     var fuelLapsRemaining = Convert.ToDouble(pluginManager.GetPropertyValue("DataCorePlugin.Computed.Fuel_RemainingLaps") ?? "-1");
                     var fuelConsumption = Convert.ToDouble(pluginManager.GetPropertyValue("DataCorePlugin.Computed.Fuel_LitersPerLap") ?? "-1");
-                    FuelLapsAlertManager.Started = fuelLapsRemaining <= settings.LowFuelLapsLevel;
+                    FuelLapsAlertManager.Started = fuelLapsRemaining <= settings.LowFuelLapsLevel && fuelLapsRemaining != 0 && fuelConsumption > 0;
 
-                    if (FuelLapsAlertManager.Elapsed && fuelLapsRemaining != -1 && fuelConsumption > 0 && data.NewData.Graphics.IsInPit == 0)
+                    if (FuelLapsAlertManager.Elapsed && fuelLapsRemaining != 0 && fuelConsumption > 0 && data.NewData.Graphics.IsInPit == 0)
                     {
                         FuelLapsAlertManager.Reset();
                         pluginManager.TriggerEvent("LowFuelLapAlert", typeof(SerialDashPlugin));
@@ -234,7 +237,7 @@ namespace ACHub.Plugins.OutputPlugins.Dash
                         currentRpm = Math.Min(100.0, RPM / MaxRPM * 100);
 
                         var fuelLapsRemaining = Convert.ToDouble(pluginManager.GetPropertyValue("DataCorePlugin.Computed.Fuel_RemainingLaps") ?? "0");
-                        FuelLapsBlink.Started = fuelLapsRemaining <= settings.LowFuelLapsLevel;
+                        FuelLapsBlink.Started = FuelLapsAlertManager.Started;
 
                         var fuelPercent = Convert.ToDouble(pluginManager.GetPropertyValue("DataCorePlugin.Computed.Fuel_Percent") ?? "100");
                         var allTimeBestDelta = Convert.ToDouble(pluginManager.GetPropertyValue("PersistantTrackerPlugin.SessionBestLiveDeltaSeconds") ?? "0");

@@ -35,6 +35,7 @@ namespace LauncherLight.UserControls
             {
                 this.grdContentControl.Children.Clear();
                 this.grdContentControl.Children.Add(value);
+                value.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
             }
         }
     }

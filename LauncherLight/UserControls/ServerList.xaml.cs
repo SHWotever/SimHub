@@ -1,5 +1,4 @@
-﻿using LauncherLight.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -8,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using LauncherLight.Models;
 
 namespace LauncherLight.UserControls
 {
@@ -21,12 +21,21 @@ namespace LauncherLight.UserControls
 
         public ServerList()
         {
+
+
             InitializeComponent();
-            datac = new ServerListModel();
+
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.LastServerListSettings))
+            {
+                try
+                {
+                    datac = Newtonsoft.Json.JsonConvert.DeserializeObject<ServerListModel>(Properties.Settings.Default.LastServerListSettings);
+                }
+                catch { }
+            }
+            datac = datac ?? new ServerListModel();
             this.DataContext = datac;
         }
-
-        private CollectionViewSource view;
 
         public void SetSevers(List<ACServer> servers)
         {
@@ -45,10 +54,16 @@ namespace LauncherLight.UserControls
         {
             this.Dispatcher.Invoke(() =>
               {
-                  foreach (var server in servers)
-                      (datac.View.Source as ObservableCollection<ACServer>).Add(server);
-
-                  datac.View.View.Refresh();
+                  try
+                  {
+                      foreach (var server in servers)
+                          (datac.View.Source as ObservableCollection<ACServer>).Add(server);
+                      if (datac.OnlyLan)
+                      {
+                          datac.View.View.Refresh();
+                      }
+                  }
+                  catch { }
               });
         }
 
@@ -60,7 +75,15 @@ namespace LauncherLight.UserControls
             if (e.ClickCount == 2)
             {
                 ServerSelected((sender as FrameworkElement).DataContext as ACServer);
+                SaveDefaults();
             }
+        }
+
+        private void SaveDefaults()
+        {
+
+            Properties.Settings.Default.LastServerListSettings = Newtonsoft.Json.JsonConvert.SerializeObject(datac);
+            Properties.Settings.Default.Save();
         }
 
         private void btnSelect_Click(object sender, RoutedEventArgs e)
@@ -68,12 +91,14 @@ namespace LauncherLight.UserControls
             if (lstServers.SelectedValue != null)
             {
                 ServerSelected(lstServers.SelectedValue as ACServer);
+                SaveDefaults();
             }
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             Cancel();
+            SaveDefaults();
         }
     }
 }

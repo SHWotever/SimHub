@@ -22,7 +22,7 @@ public:
 };
 
 // Connected modules
-int ENABLEDMODULES = 3;
+int ENABLEDMODULES = 4;
 
 // Modules common pins
 #define DIO 8

@@ -29,7 +29,7 @@
         </Style>
         <converters:NullImageConverter x:Key="nullImageConverter" />
     </UserControl.Resources>
-    <Grid Width="800">
+    <Grid>
         <Grid Grid.Column="0" Height="700">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
@@ -40,25 +40,26 @@
             <ListBox x:Name="lstSkins"
                      Grid.Row="1"
                      Margin="0,0,0,0"
+                     HorizontalContentAlignment="Stretch"
                      ItemsSource="{Binding}"
                      ScrollViewer.CanContentScroll="True"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      VirtualizingPanel.ScrollUnit="Pixel"
                      VirtualizingPanel.VirtualizationMode="Recycling">
-                <ListBox.ItemContainerStyle>
+                <!--<ListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ListBoxItem}">
                         <Setter Property="VerticalContentAlignment" Value="Stretch" />
                     </Style>
-                </ListBox.ItemContainerStyle>
+                </ListBox.ItemContainerStyle>-->
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal" />
+                        <UniformGrid Columns="{Binding Path=ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Converter={converters:UniformGridColConverter MinItemWidth=250, MinColumns=2}}" />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
                 <!--  Style="{StaticResource MetroListBox}">  -->
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <LauncherLight:SkinItem DataContext="{Binding}" PreviewMouseDown="SkinItem_MouseUp" />
+                        <LauncherLight:SkinItem HorizontalAlignment="Stretch" DataContext="{Binding}" PreviewMouseDown="SkinItem_MouseUp" />
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

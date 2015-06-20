@@ -1,5 +1,6 @@
 ﻿using ACSharedMemory;
 using MapGenerator.Renderers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -140,6 +141,30 @@ namespace MapGenerator
             this.lblZoom.Text = zoom + "%";
         }
 
+        public static T FromJsonGZipFile<T>(string path)
+        {
+            if (!File.Exists(path))
+            {
+                return default(T);
+            }
+            using (var fileStream = new FileStream(path, FileMode.Open))
+            {
+                using (var outputStream = new GZipStream(fileStream, CompressionMode.Decompress, false))
+                {
+                    using (var reader = new StreamReader(outputStream))
+                    {
+                        var serializer = new JsonSerializer();
+
+                        using (var jsonReader = new JsonTextReader(reader))
+                        {
+                            jsonReader.Read();
+                            return serializer.Deserialize<T>(jsonReader);
+                        }
+                    }
+                }
+            }
+        }
+
         private void openTrackPositionDumpToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog of = new OpenFileDialog();
@@ -167,8 +192,17 @@ namespace MapGenerator
                     }
                     else
                     {
+                        DataRecord filedata;
                         // Convert to telemetry
-                        var filedata = Newtonsoft.Json.JsonConvert.DeserializeObject<DataRecord>(File.ReadAllText(of.FileName));
+                        if (of.FileName.ToLower().EndsWith("gz"))
+                        {
+                            filedata = FromJsonGZipFile<DataRecord>(of.FileName);
+                        }
+                        else
+                        {
+                            filedata = Newtonsoft.Json.JsonConvert.DeserializeObject<DataRecord>(File.ReadAllText(of.FileName));
+                        }
+
                         var newFile = System.IO.Path.GetFileName(System.IO.Path.ChangeExtension(of.FileName, ".tracktelemetry"));
                         newFile = Path.Combine(System.IO.Path.GetTempPath(), newFile);
 

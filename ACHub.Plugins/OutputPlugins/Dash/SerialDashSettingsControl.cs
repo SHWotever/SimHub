@@ -46,6 +46,11 @@ namespace ACHub.Plugins.OutputPlugins.Dash
         /// <param name="light"></param>
         private void LoadSettings(bool light)
         {
+            if (plugin.Settings.ModuleLogicalMap == null)
+            {
+                plugin.Settings.ModuleLogicalMap = new List<int>(new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
+            }
+
             this.numLowFuelLaps.ValueChanged -= Settings_numValueChanged;
             this.numRPMBlink.ValueChanged -= Settings_numValueChanged;
             this.numRPMOffset.ValueChanged -= Settings_numValueChanged;
@@ -80,6 +85,8 @@ namespace ACHub.Plugins.OutputPlugins.Dash
                 this.lstScreens.DataSource = plugin.Settings.Screens;
 
                 this.ledEditor2.LoadLeds(plugin.Settings.LedSettings, plugin);
+
+                this.lstModuleMap.DataSource = plugin.Settings.ModuleLogicalMap;
             }
 
             this.cbReverseModule1.CheckedChanged += this.Settings_cbCheckedChanged;
@@ -313,6 +320,48 @@ namespace ACHub.Plugins.OutputPlugins.Dash
         private static string GetCopyName(string currentName, int i)
         {
             return currentName + "Copy" + (i == 0 ? "" : i.ToString());
+        }
+
+        private void btnModuleUp_Click(object sender, EventArgs e)
+        {
+            if (lstModuleMap.SelectedValue != null)
+            {
+                var value = (int)lstModuleMap.SelectedValue;
+                var source = lstModuleMap.DataSource as List<int>;
+                var idx = source.IndexOf((int)lstModuleMap.SelectedValue);
+                if (idx > 0)
+                {
+                    source.RemoveAt(idx);
+                    source.Insert(idx - 1, value);
+                }
+                lstModuleMap.DataSource = null;
+                lstModuleMap.DataSource = source;
+                lstModuleMap.SelectedIndex = idx - 1;
+                plugin.Settings.ModuleLogicalMap = source;
+            }
+
+            plugin.ApplySettings();
+        }
+
+        private void btnModuleDown_Click(object sender, EventArgs e)
+        {
+            if (lstModuleMap.SelectedValue != null)
+            {
+                var value = (int)lstModuleMap.SelectedValue;
+                var source = lstModuleMap.DataSource as List<int>;
+                var idx = source.IndexOf((int)lstModuleMap.SelectedValue);
+                if (idx < source.Count - 2)
+                {
+                    source.RemoveAt(idx);
+                    source.Insert(idx + 1, value);
+                }
+                lstModuleMap.DataSource = null;
+                lstModuleMap.DataSource = source;
+                lstModuleMap.SelectedIndex = idx + 1;
+                plugin.Settings.ModuleLogicalMap = source;
+            }
+
+            plugin.ApplySettings();
         }
     }
 }

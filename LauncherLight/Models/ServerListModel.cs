@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel;
 using System.Windows.Data;
 
@@ -16,10 +17,16 @@ namespace LauncherLight.Models
 
         private CollectionViewSource _view;
 
+        [JsonIgnore]
         public CollectionViewSource View
         {
             get { return _view; }
             set { _view = value; RaisePropertyChanged("View"); }
+        }
+
+        private void RefreshView()
+        {
+            if (_view != null) _view.View.Refresh();
         }
 
         private bool _NoPass;
@@ -27,7 +34,7 @@ namespace LauncherLight.Models
         public bool NoPass
         {
             get { return _NoPass; }
-            set { _NoPass = value; RaisePropertyChanged("NoPass"); _view.View.Refresh(); }
+            set { _NoPass = value; RaisePropertyChanged("NoPass"); RefreshView(); }
         }
 
         private bool _NoEmpty;
@@ -35,7 +42,7 @@ namespace LauncherLight.Models
         public bool NoEmpty
         {
             get { return _NoEmpty; }
-            set { _NoEmpty = value; RaisePropertyChanged("NoEmpty"); _view.View.Refresh(); }
+            set { _NoEmpty = value; RaisePropertyChanged("NoEmpty"); RefreshView(); }
         }
 
         private bool _NoFull;
@@ -43,15 +50,15 @@ namespace LauncherLight.Models
         public bool NoFull
         {
             get { return _NoFull; }
-            set { _NoFull = value; RaisePropertyChanged("NoFull"); _view.View.Refresh(); }
+            set { _NoFull = value; RaisePropertyChanged("NoFull"); RefreshView(); }
         }
 
-        private bool _NoBooking;
+        private bool _NoBooking = true;
 
         public bool NoBooking
         {
             get { return _NoBooking; }
-            set { _NoBooking = value; RaisePropertyChanged("NoBooking"); _view.View.Refresh(); }
+            set { _NoBooking = value; RaisePropertyChanged("NoBooking"); RefreshView(); }
         }
 
         private bool _OnlyLan;
@@ -59,7 +66,7 @@ namespace LauncherLight.Models
         public bool OnlyLan
         {
             get { return _OnlyLan; }
-            set { _OnlyLan = value; RaisePropertyChanged("OnlyLan"); _view.View.Refresh(); }
+            set { _OnlyLan = value; RaisePropertyChanged("OnlyLan"); RefreshView(); }
         }
 
         private string _ServerFilter = null;
@@ -67,7 +74,7 @@ namespace LauncherLight.Models
         public string ServerFilter
         {
             get { return _ServerFilter; }
-            set { _ServerFilter = value; RaisePropertyChanged("ServerFilter"); _view.View.Refresh(); }
+            set { _ServerFilter = value; RaisePropertyChanged("ServerFilter"); RefreshView(); }
         }
 
         private bool _MissingContent = false;
@@ -75,7 +82,7 @@ namespace LauncherLight.Models
         public bool MissingContent
         {
             get { return _MissingContent; }
-            set { _MissingContent = value; RaisePropertyChanged("MissingContent"); _view.View.Refresh(); }
+            set { _MissingContent = value; RaisePropertyChanged("MissingContent"); RefreshView(); }
         }
 
         public void view_Filter(object sender, FilterEventArgs e)

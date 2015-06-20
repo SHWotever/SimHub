@@ -1,4 +1,9 @@
-﻿using System;
+﻿using ACSharedMemory.Models.Car;
+using ACSharedMemory.Models.Track;
+using IniParser;
+using IniParser.Model;
+using LauncherLight.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,11 +12,6 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-using ACSharedMemory.Models.Car;
-using ACSharedMemory.Models.Track;
-using IniParser;
-using IniParser.Model;
-using LauncherLight.Models;
 
 namespace LauncherLight
 {
@@ -101,7 +101,9 @@ namespace LauncherLight
 
             CleanKeys(targetdata);
 
+#pragma warning disable CS0618 // Type or member is obsolete
             parser.SaveFile(target, targetdata);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         private static void CleanKeys(IniData targetdata)
@@ -118,9 +120,9 @@ namespace LauncherLight
             }
         }
 
-        public static List<TrackDesc> GetTracks(string gamePath)
+        public static List<LLTrackDesc> GetTracks(string gamePath)
         {
-            List<TrackDesc> tracks = new List<TrackDesc>();
+            List<LLTrackDesc> tracks = new List<LLTrackDesc>();
             try
             {
                 if (System.IO.Directory.Exists(System.IO.Path.Combine(gamePath, "content", "tracks")))
@@ -132,7 +134,7 @@ namespace LauncherLight
                             {
                                 try
                                 {
-                                    tracks.Add(new TrackDesc(gamePath, System.IO.Path.GetFileName(track), System.IO.Path.GetFileName(config)));
+                                    tracks.Add(new LLTrackDesc(gamePath, System.IO.Path.GetFileName(track), System.IO.Path.GetFileName(config)));
                                 }
                                 catch { }
                             }
@@ -141,7 +143,7 @@ namespace LauncherLight
                         {
                             try
                             {
-                                tracks.Add(new TrackDesc(gamePath, System.IO.Path.GetFileName(track), null));
+                                tracks.Add(new LLTrackDesc(gamePath, System.IO.Path.GetFileName(track), null));
                             }
                             catch { }
                         }
@@ -151,15 +153,15 @@ namespace LauncherLight
             return tracks;
         }
 
-        public static List<CarDesc> GetCars(string gamePath)
+        public static List<LLCarDesc> GetCars(string gamePath)
         {
-            List<CarDesc> cars = new List<CarDesc>();
+            List<LLCarDesc> cars = new List<LLCarDesc>();
             try
             {
                 if (System.IO.Directory.Exists(System.IO.Path.Combine(gamePath, "content", "cars")))
                     foreach (var car in System.IO.Directory.GetDirectories(System.IO.Path.Combine(gamePath, "content", "cars")))
                     {
-                        var card = CarDesc.FromModel(gamePath, System.IO.Path.GetFileName(car));
+                        var card = new LLCarDesc(gamePath, System.IO.Path.GetFileName(car));
                         cars.Add(card);
                     }
             }
@@ -182,7 +184,7 @@ namespace LauncherLight
         {
             AbortRefresh();
 
-            RefreshServerThread = new Thread(delegate ()
+            RefreshServerThread = new Thread(delegate()
               {
                   Thread.CurrentThread.Priority = ThreadPriority.Lowest;
                   var tmpservers = server.OrderByDescending(i => i.cars.Count > 1 && i.pickup).Where(i => i.pickup);
@@ -253,7 +255,7 @@ namespace LauncherLight
                 server.timestamp = infos.timestamp;
                 server.lastupdate = infos.lastupdate;
                 server.l = infos.l;
-
+                server.LastRefresh = DateTime.Now;
                 server.Unreachable = false;
                 server.fill(force);
             }
@@ -401,7 +403,7 @@ namespace LauncherLight
                     socket.ReceiveFrom(array, ref endPoint);
                 }
             }
-            catch (SocketException var_6_7D)
+            catch (SocketException)
             {
             }
             socket.Close();
@@ -433,7 +435,7 @@ namespace LauncherLight
                     IPAddress subnetMask = GetSubnetMask(ip);
                     IPAddress bcast = GetBroadcastAddress(ip, subnetMask);
 
-                    Parallel.For(num, num2, delegate (int i, ParallelLoopState state)
+                    Parallel.For(num, num2, delegate(int i, ParallelLoopState state)
                     {
                         string text = BCastPing(bcast, i);
                         if (!text.EndsWith("-1"))

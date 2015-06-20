@@ -1,0 +1,16 @@
+<common:LayoutAwarePage
+    x:Name="pageRoot"
+    x:Class="TestApplication.WinRT.GroupDetailPage"    
+    IsTabStop="false"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TestApplication.WinRT"
+    xmlns:data="using:TestApplication.WinRT.Data"
+    xmlns:common="using:TestApplication.WinRT.Common"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Grid>
+        <ContentControl Content="{Binding}" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" ContentTemplate="{StaticResource PageContent}" />
+    </Grid>
+</common:LayoutAwarePage>

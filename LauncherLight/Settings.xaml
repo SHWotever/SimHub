@@ -3,14 +3,22 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:my="http://metro.mahapps.com/winfx/xaml/controls"
         Title="Settings"
         Width="598"
-        Height="362"
+        Height="600.924"
+        ResizeMode="NoResize"
         mc:Ignorable="d">
     <Window.Resources>
-        <Style TargetType="TextBlock">
-            <Setter Property="Foreground" Value="White" />
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="TextBlock">
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="FontSize" Value="16" />
+            </Style>
+        </ResourceDictionary>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -18,20 +26,45 @@
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <TextBlock><Run Text="Game path" />
-            </TextBlock>
-            <TextBox x:Name="txtGamePath" />
-            <CheckBox x:Name="cbEnableServerFeature" Margin="0,3,0,0" Content="Show quick server feature" />
-            <TextBlock><Run Text="Steam Id (online)" />
-            </TextBlock>
-            <TextBox x:Name="txtSteamId" />
-            <TextBlock><Run Text="Player Pseudo (online)" />
-            </TextBlock>
-            <TextBox x:Name="txtPseudo" />
-            <TextBlock><Run Text="Server path" />
-            </TextBlock>
-            <TextBox x:Name="txtServerPath" />
-            <CheckBox x:Name="cbUseRename" Margin="0,3,0,0" Content="Use rename" />
+            <GroupBox Margin="5,5,5,0" Header="Game settings">
+                <StackPanel>
+                    <TextBlock Text="Game path" />
+                    <TextBox x:Name="txtGamePath" />
+                    <CheckBox x:Name="cbUseRename" Margin="0,3,0,0" Content="Use rename method (steam protection)" />
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Margin="5,5,5,0" Header="Online settings">
+                <StackPanel>
+                    <TextBlock Text="Steam Id (online)" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="120" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="txtSteamId" />
+                        <Button x:Name="btnAutoDetectSteamId" Grid.Column="1" Margin="5,0,0,0" Click="btnAutoDetectSteamId_Click">Autodetect</Button>
+                    </Grid>
+                    <TextBlock Text="Player Pseudo (online)" />
+                    <TextBox x:Name="txtPseudo" />
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Margin="5,5,5,0" Header="QuickServer">
+                <StackPanel>
+                    <CheckBox x:Name="cbEnableServerFeature" Margin="0,3,0,0" Content="Show quick server feature" />
+                    <TextBlock Text="Server path" />
+                    <TextBox x:Name="txtServerPath" />
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Margin="5,5,5,0" Header="New Mods">
+                <StackPanel>
+                    <TextBlock Text="Show new mod indicator for" />
+                    <StackPanel Orientation="Horizontal">
+                        <my:NumericUpDown x:Name="modDays" Width="120" StringFormat="{}{0} days" />
+                        <TextBlock Text="Days" />
+                    </StackPanel>
+                    <Button x:Name="btnClearCurrentIndicators" Margin="0,5,5,5" HorizontalAlignment="Left">Clear current mods</Button>
+                </StackPanel>
+            </GroupBox>
         </StackPanel>
         <StackPanel Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Stretch">
             <Button x:Name="btnSave"

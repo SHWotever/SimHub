@@ -47,6 +47,7 @@ namespace ACHub.Plugins.OutputPlugins.Dash
 
                 tab.Controls.Add(control);
                 tab.Controls[0].Dock = DockStyle.Fill;
+                tab.AllowDrop = true;
                 this.tabControl1.TabPages.Add(tab);
             }
             this.txtName.Text = screen.ScreenName;

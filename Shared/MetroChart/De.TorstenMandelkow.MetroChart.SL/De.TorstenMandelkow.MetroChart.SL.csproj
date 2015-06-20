@@ -1,0 +1,214 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{46DD5FB9-30E3-488F-8FF5-13F33DC5A488}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>De.TorstenMandelkow.MetroChart</RootNamespace>
+    <AssemblyName>De.TorstenMandelkow.MetroChart</AssemblyName>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+  </PropertyGroup>
+  <!-- This property group is only here to support building this project using the 
+       MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
+       to set the TargetFrameworkVersion to v3.5 -->
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\MainKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System.Windows" />
+    <Reference Include="system" />
+    <Reference Include="System.Core">
+      <HintPath>$(TargetFrameworkDirectory)System.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Browser" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\ChartControls\ChartArea.cs">
+      <Link>ChartControls\ChartArea.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\ChartControls\ChartLegendItem.cs">
+      <Link>ChartControls\ChartLegendItem.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\ChartControls\ChartSeries.cs">
+      <Link>ChartControls\ChartSeries.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\ChartControls\ChartTitle.cs">
+      <Link>ChartControls\ChartTitle.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\ChartControls\Legend.cs">
+      <Link>ChartControls\Legend.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\ChartControls\PiePieceLabel.cs">
+      <Link>ChartControls\PiePieceLabel.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\ChartControls\PlotterArea.cs">
+      <Link>ChartControls\PlotterArea.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\ChartControls\ResourceDictionaryCollection.cs">
+      <Link>ChartControls\ResourceDictionaryCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Controls\AutoSizeTextBlock.cs">
+      <Link>Controls\AutoSizeTextBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Controls\ColumnSeriesPanel.cs">
+      <Link>Controls\ColumnSeriesPanel.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Controls\CustomWrapPanel.cs">
+      <Link>Controls\CustomWrapPanel.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Controls\EvenlyDistributedColumnsGrid.cs">
+      <Link>Controls\EvenlyDistributedColumnsGrid.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Controls\EvenlyDistributedRowGrid.cs">
+      <Link>Controls\EvenlyDistributedRowGrid.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Controls\FadingListView.cs">
+      <Link>Controls\FadingListView.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Controls\MinimalWidthTextBlock.cs">
+      <Link>Controls\MinimalWidthTextBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Controls\RowSeriesPanel.cs">
+      <Link>Controls\RowSeriesPanel.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Controls\StackedColumnsPanel.cs">
+      <Link>Controls\StackedColumnsPanel.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Controls\UniformGridPanel.cs">
+      <Link>Controls\UniformGridPanel.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Converters\BooleanToVisibilityConverter.cs">
+      <Link>Converters\BooleanToVisibilityConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Converters\DoubleToGridLengthPercent.cs">
+      <Link>Converters\DoubleToGridLengthPercent.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\BarChart\BarPiece.cs">
+      <Link>Core\BarChart\BarPiece.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\BarChart\ClusteredBarChart.cs">
+      <Link>Core\BarChart\ClusteredBarChart.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\BarChart\StackedBar100Chart.cs">
+      <Link>Core\BarChart\StackedBar100Chart.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\BarChart\StackedBarChart.cs">
+      <Link>Core\BarChart\StackedBarChart.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\ChartBase.cs">
+      <Link>Core\ChartBase.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\ChartSeriesViewModel.cs">
+      <Link>Core\ChartSeriesViewModel.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\ColumnChart\ClusteredColumnChart.cs">
+      <Link>Core\ColumnChart\ClusteredColumnChart.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\ColumnChart\ColumnPiece.cs">
+      <Link>Core\ColumnChart\ColumnPiece.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\ColumnChart\StackedColumn100Chart.cs">
+      <Link>Core\ColumnChart\StackedColumn100Chart.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\ColumnChart\StackedColumnChart.cs">
+      <Link>Core\ColumnChart\StackedColumnChart.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\DataPoint.cs">
+      <Link>Core\DataPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\DataPointGroup.cs">
+      <Link>Core\DataPointGroup.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\Doughnut\DoughnutChart.cs">
+      <Link>Core\Doughnut\DoughnutChart.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\Extensions.cs">
+      <Link>Core\Extensions.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\GaugeChart\RadialGaugeChart.cs">
+      <Link>Core\GaugeChart\RadialGaugeChart.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\GaugeChart\RadialGaugePiece.cs">
+      <Link>Core\GaugeChart\RadialGaugePiece.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\PieceBase.cs">
+      <Link>Core\PieceBase.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\PieChart\PieChart.cs">
+      <Link>Core\PieChart\PieChart.cs</Link>
+    </Compile>
+    <Compile Include="..\De.TorstenMandelkow.MetroChart\Core\PieChart\PiePiece.cs">
+      <Link>Core\PieChart\PiePiece.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <Import Project="$(SolutionDir)\XAMLReplace.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

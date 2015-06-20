@@ -1,8 +1,8 @@
-﻿using ACHub.Plugins;
-using ACSharedMemory;
-using System;
+﻿using System;
 using System.Collections;
 using System.Windows.Forms;
+using ACHub.Plugins;
+using ACSharedMemory;
 
 namespace ACHub
 {
@@ -43,6 +43,33 @@ namespace ACHub
             ACManager.Start();
 
             this.Resize += MainForm_Resize;
+
+            var contextMenu = new ContextMenu();
+            var mi = new MenuItem("Exit");
+            mi.Click += notifyMenuExit_Click;
+            contextMenu.MenuItems.Add(mi);
+
+            mi = new MenuItem("Show");
+            mi.Click += notifyShow_Click;
+            contextMenu.MenuItems.Add(mi);
+
+            notifyIcon.ContextMenu = contextMenu;
+        }
+
+        void notifyShow_Click(object sender, EventArgs e)
+        {
+            allowVisible = true;
+
+            this.WindowState = FormWindowState.Normal;
+            this.ShowInTaskbar = true;
+            notifyIcon.Visible = false;
+
+            this.Show();
+        }
+
+        void notifyMenuExit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
 
         private void PluginManager_GameStateChanged(bool running, PluginManager manager)
@@ -54,7 +81,7 @@ namespace ACHub
         }
 
         private bool allowVisible;     // ContextMenu's Show command used
-        private bool allowClose;       // ContextMenu's Exit command used
+        //private bool allowClose;       // ContextMenu's Exit command used
 
         protected override void SetVisibleCore(bool value)
         {

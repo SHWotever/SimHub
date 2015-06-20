@@ -5,25 +5,26 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Timers;
 
 namespace LauncherLight.Models
 {
     public static class AvailableRessources
     {
-        public static Dictionary<string, CarDesc> Cars { get; set; }
+        public static Dictionary<string, LLCarDesc> Cars { get; set; }
 
-        public static Dictionary<string, TrackDesc> Tracks { get; set; }
+        public static Dictionary<string, LLTrackDesc> Tracks { get; set; }
     }
 
     [ImplementPropertyChanged]
     public class ServerCar
     {
-        public ServerCar(CarDesc car)
+        public ServerCar(LLCarDesc car)
         {
             this.CarDesc = car;
         }
 
-        public CarDesc CarDesc { get; set; }
+        public LLCarDesc CarDesc { get; set; }
 
         public int TotalEntries { get; set; }
 
@@ -33,7 +34,7 @@ namespace LauncherLight.Models
 
         public bool IsFull { get; set; }
 
-        public static ServerCar FromCar(CarDesc car)
+        public static ServerCar FromCar(LLCarDesc car)
         {
             return new ServerCar(car);
         }
@@ -110,6 +111,34 @@ namespace LauncherLight.Models
     [ImplementPropertyChanged]
     public class ACServer : ACServerJson
     {
+        private Timer t;
+
+        public ACServer()
+        {
+            t = new Timer();
+            t.Interval = 1000;
+            t.Elapsed += t_Elapsed;
+            t.AutoReset = true;
+            //      LastRefresh = DateTime.MinValue;
+            StartRefresh();
+            t.Enabled = true;
+        }
+
+        ~ACServer()
+        {
+            t.Enabled = false;
+        }
+
+        private void StartRefresh()
+        {
+            t.Enabled = true;
+        }
+
+        private void t_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            ComputeTime();
+        }
+
         public bool Unreachable { get; set; }
 
         public bool Lan { get; set; }
@@ -126,8 +155,7 @@ namespace LauncherLight.Models
             ServerCars = new ObservableCollection<ServerCar>();
             foreach (var car in cars)
             {
-                CarDesc currentCar = null;
-                ;
+                LLCarDesc currentCar = null;
 
                 if (AvailableRessources.Cars.TryGetValue(car, out currentCar))
                 {
@@ -135,7 +163,7 @@ namespace LauncherLight.Models
                 }
                 else
                 {
-                    ServerCars.Add(ServerCar.FromCar(new CarDesc() { Model = car, IsMissing = true }));
+                    ServerCars.Add(ServerCar.FromCar(new LLCarDesc() { Model = car, IsMissing = true }));
                     MissingContent = true;
                 }
             }
@@ -145,10 +173,9 @@ namespace LauncherLight.Models
 
         private bool buildTrack(bool force)
         {
-            bool MissingContent = false;
             if (force || TrackDesc == null || TrackDesc.Track != track)
             {
-                TrackDesc currentTrack = null;
+                LLTrackDesc currentTrack = null;
 
                 if (AvailableRessources.Tracks.TryGetValue(track, out currentTrack))
                 {
@@ -157,8 +184,7 @@ namespace LauncherLight.Models
                 }
                 else
                 {
-                    TrackDesc = new TrackDesc { Track = track, TrackInfo = new TrackInfo { name = track }, IsMissing = true };
-                    MissingContent = true;
+                    TrackDesc = new LLTrackDesc { Track = track, TrackInfo = new TrackInfo { name = track }, IsMissing = true };
                 }
             }
             return TrackDesc.IsMissing;
@@ -170,7 +196,7 @@ namespace LauncherLight.Models
 
         //private TrackDesc _track = null;
 
-        public TrackDesc TrackDesc { get; set; }
+        public LLTrackDesc TrackDesc { get; set; }
 
         //public List<CarDesc> CarDescs
         //{
@@ -202,21 +228,6 @@ namespace LauncherLight.Models
                 times.Add(new KeyValuePair<string, long>(sess[i], long.Parse(durations[i])));
             }
 
-            try
-            {
-                this.PracticeTime = TimeSpan.FromMinutes(times.FirstOrDefault(i => i.Key == "1").Value);
-            }
-            catch { this.PracticeTime = TimeSpan.MaxValue; }
-            try
-            {
-                this.QualifyTime = TimeSpan.FromMinutes(times.FirstOrDefault(i => i.Key == "2").Value);
-            }
-            catch { this.QualifyTime = TimeSpan.MaxValue; }
-            try
-            {
-                this.RaceLaps = times.FirstOrDefault(i => i.Key == "3").Value;
-            }
-            catch { }
             this.Booking = sess.Contains("0");
             this.Practice = sess.Contains("1");
             this.Qualify = sess.Contains("2");
@@ -227,7 +238,89 @@ namespace LauncherLight.Models
             this.IsQualify = currentsession.ToString() == "2";
             this.IsRace = currentsession.ToString() == "3";
 
+            try
+            {
+                this.BookingTime = FromMinutes(times.FirstOrDefault(i => i.Key == "0").Value);
+            }
+            catch { this.BookingTime = TimeSpan.MaxValue; }
+
+            try
+            {
+                this.PracticeTime = FromMinutes(times.FirstOrDefault(i => i.Key == "1").Value);
+            }
+            catch { this.PracticeTime = TimeSpan.MaxValue; }
+
+            try
+            {
+                this.QualifyTime = FromMinutes(times.FirstOrDefault(i => i.Key == "2").Value);
+            }
+            catch { this.QualifyTime = TimeSpan.MaxValue; }
+            try
+            {
+                this.RaceLaps = times.FirstOrDefault(i => i.Key == "3").Value;
+            }
+            catch { }
+
+            ComputeTime();
+
             this.IsFull = clients == maxclients;
+            this.StartRefresh();
+        }
+
+        private void ComputeTime()
+        {
+            lock (this)
+            {
+                try
+                {
+                    if (IsBooking)
+                    {
+                        this.LiveBookingTime = TimeSpan.FromSeconds(Math.Max(timeleft - (DateTime.Now - LastRefresh).TotalSeconds, 0));
+                    }
+                    else
+                    {
+                        this.LiveBookingTime = BookingTime;
+                    }
+                }
+                catch { }
+
+                try
+                {
+                    if (IsPractice)
+                    {
+                        this.LivePracticeTime = TimeSpan.FromSeconds((int)Math.Max(timeleft - (DateTime.Now - LastRefresh).TotalSeconds, 0));
+                    }
+                    else
+                    {
+                        this.LivePracticeTime = PracticeTime;
+                    }
+                }
+                catch { }
+                try
+                {
+                    if (IsQualify)
+                    {
+                        this.LiveQualifyTime = TimeSpan.FromSeconds((int)Math.Max(timeleft - (DateTime.Now - LastRefresh).TotalSeconds, 0));
+                    }
+                    else
+                    {
+                        this.LiveQualifyTime = QualifyTime;
+                    }
+                }
+                catch { }
+            }
+        }
+
+        private TimeSpan FromMinutes(long minutes)
+        {
+            if (minutes > TimeSpan.MaxValue.TotalMinutes)
+            {
+                return TimeSpan.MaxValue;
+            }
+            else
+            {
+                return TimeSpan.FromMinutes(minutes);
+            }
         }
 
         public string AdressInfo { get { return string.Format("http://{0}:{1}/INFO", ip, cport); } }
@@ -258,7 +351,17 @@ namespace LauncherLight.Models
 
         public TimeSpan PracticeTime { get; set; }
 
+        public TimeSpan BookingTime { get; set; }
+
+        public TimeSpan LiveQualifyTime { get; set; }
+
+        public TimeSpan LiveBookingTime { get; set; }
+
+        public TimeSpan LivePracticeTime { get; set; }
+
         public bool IsFull { get; set; }
+
+        public DateTime LastRefresh { get; set; }
     }
 
     public class ACServerSample : ACServer
@@ -269,6 +372,16 @@ namespace LauncherLight.Models
             this.clients = 20;
             this.maxclients = 20;
             this.name = "Server Name";
+            this.pass = true;
+            this.pickup = true;
+
+            Booking = true;
+
+            Practice = true;
+
+            Qualify = true;
+
+            Race = true;
         }
     }
 }

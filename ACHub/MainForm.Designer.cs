@@ -38,7 +38,7 @@
             // 
             this.pluginManagerUI1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pluginManagerUI1.Location = new System.Drawing.Point(0, 0);
-            this.pluginManagerUI1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pluginManagerUI1.Margin = new System.Windows.Forms.Padding(4);
             this.pluginManagerUI1.Name = "pluginManagerUI1";
             this.pluginManagerUI1.Size = new System.Drawing.Size(754, 640);
             this.pluginManagerUI1.TabIndex = 0;
