@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace LauncherLight.Models
 {
@@ -29,7 +29,7 @@ namespace LauncherLight.Models
         {
             if (!ModHistory.ContainsKey(model))
             {
-                ModHistory.Add(model, !IsFirstInit ? DateTime.Now.Date : DateTime.MinValue);
+                ModHistory.Add(model, !IsFirstInit ? DateTime.Now : DateTime.MinValue);
                 Properties.Settings.Default.CarFirstSeen = JsonConvert.SerializeObject(ModHistory);
                 Properties.Settings.Default.Save();
             }

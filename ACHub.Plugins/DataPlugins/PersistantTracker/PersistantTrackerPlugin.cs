@@ -7,11 +7,54 @@ using System.Linq;
 
 namespace ACHub.Plugins.DataPlugins.PersistantTracker
 {
+    internal class AveragingValues
+    {
+        public AveragingValues()
+        {
+            AveragingSeconds = 4;
+        }
+
+        public double AveragingSeconds { get; set; }
+
+        private List<KeyValuePair<DateTime, double>> Values = new List<KeyValuePair<DateTime, double>>();
+
+        public void AddValue(double value)
+        {
+            var reftime = DateTime.Now;
+            Values.Add(new KeyValuePair<DateTime, double>(reftime, value));
+
+            while (Values.Count > 0 && (reftime - Values[0].Key).TotalSeconds > AveragingSeconds)
+            {
+                Values.RemoveAt(0);
+            }
+        }
+
+        public double GetAverage()
+        {
+            if (Values.Count == 0)
+            {
+                return 0;
+            }
+            else
+            {
+                return Values.Average(i => i.Value);
+            }
+        }
+
+        public void Clear()
+        {
+            Values.Clear();
+        }
+    }
+
     /// <summary>
     /// Lap timings tracker
     /// </summary>
     public class PersistantTrackerPlugin : IDataPlugin
     {
+        private AveragingValues sessionRelativeData = new AveragingValues();
+        private AveragingValues allTimeRelativeData = new AveragingValues();
+
         private Guid sessionId = new Guid();
 
         private PluginManager pluginManager;
@@ -49,22 +92,27 @@ namespace ACHub.Plugins.DataPlugins.PersistantTracker
 
             pluginManager.AddProperty("AllTimeBestLiveDelta", typeof(PersistantTrackerPlugin), typeof(TimeSpan?));
             pluginManager.AddProperty("AllTimeBestLiveDeltaSeconds", typeof(PersistantTrackerPlugin), typeof(double?));
+            pluginManager.AddProperty("AllTimeBestLiveDeltaProgressSeconds", typeof(PersistantTrackerPlugin), typeof(double?));
             pluginManager.AddProperty("AllTimeBest", typeof(PersistantTrackerPlugin), typeof(TimeSpan?));
             pluginManager.AddProperty("AllTimeBestLastLapDelta", typeof(PersistantTrackerPlugin), typeof(double));
 
             pluginManager.AddProperty("SessionBestLiveDelta", typeof(PersistantTrackerPlugin), typeof(TimeSpan?));
             pluginManager.AddProperty("SessionBestLiveDeltaSeconds", typeof(PersistantTrackerPlugin), typeof(double?));
+            pluginManager.AddProperty("SessionBestLiveDeltaProgressSeconds", typeof(PersistantTrackerPlugin), typeof(double?));
             pluginManager.AddProperty("SessionBest", typeof(PersistantTrackerPlugin), typeof(TimeSpan?));
             pluginManager.AddProperty("SessionBestLastLapDelta", typeof(PersistantTrackerPlugin), typeof(double));
 
             pluginManager.SetPropertyValue("AllTimeBestLiveDelta", typeof(PersistantTrackerPlugin), TimeSpan.FromSeconds(0));
+            pluginManager.SetPropertyValue("AllTimeBestLiveDeltaSeconds", typeof(PersistantTrackerPlugin), null);
+            pluginManager.SetPropertyValue("AllTimeBestLiveDeltaProgressSeconds", typeof(PersistantTrackerPlugin), 0);
             pluginManager.SetPropertyValue("AllTimeBest", typeof(PersistantTrackerPlugin), TimeSpan.FromSeconds(0));
             pluginManager.SetPropertyValue("AllTimeBestLastLapDelta", typeof(PersistantTrackerPlugin), 0);
 
             pluginManager.SetPropertyValue("SessionBestLiveDelta", typeof(PersistantTrackerPlugin), TimeSpan.Zero);
-            pluginManager.SetPropertyValue("SessionBestLiveDeltaSeconds", typeof(PersistantTrackerPlugin), 0);
+            pluginManager.SetPropertyValue("SessionBestLiveDeltaSeconds", typeof(PersistantTrackerPlugin), null);
+            pluginManager.SetPropertyValue("SessionBestLiveDeltaProgressSeconds", typeof(PersistantTrackerPlugin), 0);
             pluginManager.SetPropertyValue("SessionBest", typeof(PersistantTrackerPlugin), TimeSpan.Zero);
-            pluginManager.SetPropertyValue("SessionBestLastLapDelta", typeof(PersistantTrackerPlugin), TimeSpan.Zero);
+            pluginManager.SetPropertyValue("SessionBestLastLapDelta", typeof(PersistantTrackerPlugin), 0);
 
             pluginManager.SetPropertyValue("AllTimeBestLastSector", typeof(PersistantTrackerPlugin), TimeSpan.FromSeconds(0));
             pluginManager.SetPropertyValue("AllTimeBestLastSectorDelta", typeof(PersistantTrackerPlugin), 0);
@@ -168,7 +216,8 @@ namespace ACHub.Plugins.DataPlugins.PersistantTracker
         private void manager_NewLap(int completedLapNumber, bool testLap, PluginManager manager)
         {
             SavePartial();
-
+            sessionRelativeData.Clear();
+            allTimeRelativeData.Clear();
             // Save Lap
             if (!testLap)
             {
@@ -269,7 +318,7 @@ namespace ACHub.Plugins.DataPlugins.PersistantTracker
         /// <param name="data"></param>
         public void DataUpdate(PluginManager pluginManager, ACSharedMemory.GameData data)
         {
-            TimeSpan? AllTimeBestDelta = null;
+            TimeSpan AllTimeBestDelta = TimeSpan.Zero;
             TimeSpan? AllTimeBest = TimeSpan.Zero;
 
             if (data.GameRunning)
@@ -286,11 +335,18 @@ namespace ACHub.Plugins.DataPlugins.PersistantTracker
                 var g = data.NewData.Graphics;
                 if (record.CarPositions.Count == 0 || record.CarPositions.Last().Key.TotalMilliseconds + 50 < ACHelper.ToTimeSpan(g.iCurrentTime).TotalMilliseconds)
                 {
-                    record.CarPositions.Add(new KeyValuePair<TimeSpan, float>(ACHelper.ToTimeSpan(g.iCurrentTime), g.NormalizedCarPosition));
+                    //record.CarPositions.Add(new KeyValuePair<TimeSpan, float>(ACHelper.ToTimeSpan(g.iCurrentTime), g.NormalizedCarPosition));
                     record.CarCoordinates.Add(new KeyValuePair<TimeSpan, float[]>(ACHelper.ToTimeSpan(g.iCurrentTime), g.CarCoordinates));
                 }
 
-                if (best != null)
+                if (best == null)
+                {
+                    pluginManager.SetPropertyValue("AllTimeBestLiveDelta", typeof(PersistantTrackerPlugin), TimeSpan.Zero);
+                    pluginManager.SetPropertyValue("AllTimeBestLiveDeltaSeconds", typeof(PersistantTrackerPlugin), null);
+                    pluginManager.SetPropertyValue("AllTimeBestLiveDeltaProgressSeconds", typeof(PersistantTrackerPlugin), null);
+                    pluginManager.SetPropertyValue("AllTimeBest", typeof(PersistantTrackerPlugin), TimeSpan.Zero);
+                }
+                else
                 {
                     if (best.CarCoordinates == null || best.CarCoordinates.Count == 0)
                     {
@@ -302,13 +358,22 @@ namespace ACHub.Plugins.DataPlugins.PersistantTracker
                         AllTimeBestDelta = ACHelper.GetLapDeltaAlternative(data.NewData.Graphics, best.CarCoordinates);
                         AllTimeBest = best.LapTime;
                     }
+
+                    pluginManager.SetPropertyValue("AllTimeBestLiveDelta", typeof(PersistantTrackerPlugin), AllTimeBestDelta);
+                    pluginManager.SetPropertyValue("AllTimeBestLiveDeltaSeconds", typeof(PersistantTrackerPlugin), (double?)(AllTimeBestDelta.TotalMilliseconds / 1000));
+                    pluginManager.SetPropertyValue("AllTimeBest", typeof(PersistantTrackerPlugin), AllTimeBest);
+
+                    pluginManager.SetPropertyValue("AllTimeLiveDeltaProgressSeconds", typeof(PersistantTrackerPlugin), (double?)Math.Round((double)AllTimeBestDelta.TotalMilliseconds / 1000 - allTimeRelativeData.GetAverage(), 2));
+                    allTimeRelativeData.AddValue(AllTimeBestDelta.TotalMilliseconds / 1000);
                 }
+
                 if (sessionBest == null)
                 {
                     pluginManager.SetPropertyValue("SessionBestLiveDelta", typeof(PersistantTrackerPlugin), TimeSpan.Zero);
-                    pluginManager.SetPropertyValue("SessionBestLiveDeltaSeconds", typeof(PersistantTrackerPlugin), 0);
+                    pluginManager.SetPropertyValue("SessionBestLiveDeltaSeconds", typeof(PersistantTrackerPlugin), null);
                     pluginManager.SetPropertyValue("SessionBest", typeof(PersistantTrackerPlugin), TimeSpan.Zero);
                     pluginManager.SetPropertyValue("SessionBestLastLapDelta", typeof(PersistantTrackerPlugin), TimeSpan.Zero);
+                    pluginManager.SetPropertyValue("SessionBestLiveDeltaProgressSeconds", typeof(PersistantTrackerPlugin), null);
                 }
                 else
                 {
@@ -317,18 +382,16 @@ namespace ACHub.Plugins.DataPlugins.PersistantTracker
                     pluginManager.SetPropertyValue("SessionBestLiveDelta", typeof(PersistantTrackerPlugin), sessionbestdelta);
                     pluginManager.SetPropertyValue("SessionBestLiveDeltaSeconds", typeof(PersistantTrackerPlugin), (double?)(sessionbestdelta.TotalMilliseconds / 1000));
                     pluginManager.SetPropertyValue("SessionBest", typeof(PersistantTrackerPlugin), sessionBest.LapTime);
-                    //pluginManager.SetPropertyValue("SessionBestLastLapDelta", typeof(PersistantTrackerPlugin), TimeSpan.Zero);
+                    pluginManager.SetPropertyValue("SessionBestLiveDeltaProgressSeconds", typeof(PersistantTrackerPlugin), (double?)Math.Round((double)sessionbestdelta.TotalMilliseconds / 1000 - sessionRelativeData.GetAverage(), 2));
+                    sessionRelativeData.AddValue((double)(sessionbestdelta.TotalMilliseconds / 1000));
                 }
             }
-
-            pluginManager.SetPropertyValue("AllTimeBestLiveDelta", typeof(PersistantTrackerPlugin), AllTimeBestDelta);
-            pluginManager.SetPropertyValue("AllTimeBestLiveDeltaSeconds", typeof(PersistantTrackerPlugin), !AllTimeBestDelta.HasValue ? null : (double?)(AllTimeBestDelta.Value.TotalMilliseconds / 1000));
-            pluginManager.SetPropertyValue("AllTimeBest", typeof(PersistantTrackerPlugin), AllTimeBest);
 
             if (newRecordEvent)
             {
                 pluginManager.TriggerEvent("NewAllTimeBest", typeof(PersistantTrackerPlugin));
             }
+
             if (newBestEvent)
             {
                 pluginManager.TriggerEvent("NewRecord", typeof(PersistantTrackerPlugin));

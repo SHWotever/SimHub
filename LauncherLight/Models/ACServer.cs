@@ -157,7 +157,7 @@ namespace LauncherLight.Models
             {
                 LLCarDesc currentCar = null;
 
-                if (AvailableRessources.Cars.TryGetValue(car, out currentCar))
+                if (AvailableRessources.Cars.TryGetValue(car.Trim().ToLower(), out currentCar))
                 {
                     ServerCars.Add(ServerCar.FromCar(currentCar));
                 }
@@ -177,7 +177,7 @@ namespace LauncherLight.Models
             {
                 LLTrackDesc currentTrack = null;
 
-                if (AvailableRessources.Tracks.TryGetValue(track, out currentTrack))
+                if (AvailableRessources.Tracks.TryGetValue(track.Trim().ToLower(), out currentTrack))
                 {
                     if (currentTrack != TrackDesc)
                         TrackDesc = currentTrack;

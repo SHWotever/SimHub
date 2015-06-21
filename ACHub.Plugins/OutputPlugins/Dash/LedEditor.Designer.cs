@@ -72,7 +72,7 @@
             "Rpms",
             "FuelLaps",
             "FuelPercent",
-            "AllTimeBestDelta","SessionBestDelta"});
+            "AllTimeBestDelta","SessionBestDelta","AllTimeBestDeltaProgress","SessionBestDeltaProgress"});
             this.DataSource.Name = "DataSource";
             this.DataSource.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             // 
@@ -104,7 +104,7 @@
             this.OnStart.Name = "OnStart";
             this.OnStart.Minimum = -200;
             this.OnStart.Maximum = 200;
-            this.OnStart.DecimalPlaces = 1;
+            this.OnStart.DecimalPlaces = 2;
             // 
             // OnEnd
             // 
@@ -112,7 +112,7 @@
             this.OnEnd.Name = "OnEnd";
             this.OnEnd.Minimum = -200;
             this.OnEnd.Maximum = 200;
-            this.OnEnd.DecimalPlaces = 1;
+            this.OnEnd.DecimalPlaces = 2;
             // 
             // Blink
             // 

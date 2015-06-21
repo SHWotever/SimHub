@@ -242,6 +242,8 @@ namespace ACHub.Plugins.OutputPlugins.Dash
                         var fuelPercent = Convert.ToDouble(pluginManager.GetPropertyValue("DataCorePlugin.Computed.Fuel_Percent") ?? "100");
                         var allTimeBestDelta = Convert.ToDouble(pluginManager.GetPropertyValue("PersistantTrackerPlugin.SessionBestLiveDeltaSeconds") ?? "0");
                         var sessionBestDelta = Convert.ToDouble(pluginManager.GetPropertyValue("PersistantTrackerPlugin.SessionBestLiveDeltaSeconds") ?? "0");
+                        var allTimeBestDeltaProgress = Convert.ToDouble(pluginManager.GetPropertyValue("PersistantTrackerPlugin.AllTimeBestLiveDeltaProgressSeconds") ?? "0");
+                        var sessionBestDeltaProgress = Convert.ToDouble(pluginManager.GetPropertyValue("PersistantTrackerPlugin.SessionBestLiveDeltaProgressSeconds") ?? "0");
 
                         int ledidx = 0;
 
@@ -276,6 +278,16 @@ namespace ACHub.Plugins.OutputPlugins.Dash
                                 else if (led.DataSource == "SessionBestDelta")
                                 {
                                     currentValue = sessionBestDelta;
+                                    blink = false;
+                                }
+                                else if (led.DataSource == "AllTimeBestDeltaProgress")
+                                {
+                                    currentValue = sessionBestDeltaProgress;
+                                    blink = false;
+                                }
+                                else if (led.DataSource == "SessionBestDeltaProgress")
+                                {
+                                    currentValue = sessionBestDeltaProgress;
                                     blink = false;
                                 }
 

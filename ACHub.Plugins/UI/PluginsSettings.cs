@@ -27,7 +27,8 @@ namespace ACHub.Plugins.UI
         {
             this.verticalTabControl1.ItemSize = itemSize;
             var tab = new TabPage();
-            tab.Text = string.Format("{0}\r\n{1}", name, version);
+            //tab.Text = string.Format("{0}\r\n{1}", name, version);
+            tab.Text = string.Format("{0}", name);
             control.Dock = DockStyle.Fill;
             tab.Controls.Add(control);
             this.verticalTabControl1.TabPages.Add(tab);

@@ -1,4 +1,12 @@
-﻿using System;
+﻿using ACSharedMemory.Models.Car;
+using ACSharedMemory.Models.Track;
+using IniParser;
+using IniParser.Model;
+using LauncherLight.Models;
+using LauncherLight.UserControls;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -7,14 +15,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
-using ACSharedMemory.Models.Car;
-using ACSharedMemory.Models.Track;
-using IniParser;
-using IniParser.Model;
-using LauncherLight.Models;
-using LauncherLight.UserControls;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
 
 namespace LauncherLight
 {
@@ -116,8 +116,8 @@ namespace LauncherLight
             cars = Helpers.GetCars(GamePath);
             tracks = Helpers.GetTracks(GamePath);
 
-            AvailableRessources.Tracks = tracks.ToDictionary(i => i.TrackCode);
-            AvailableRessources.Cars = cars.ToDictionary(i => i.Model);
+            AvailableRessources.Tracks = tracks.ToDictionary(i => i.TrackCode.ToLower());
+            AvailableRessources.Cars = cars.ToDictionary(i => i.Model.ToLower());
 
             cars = cars.OrderBy(i => i.CarInfo.brand).ThenBy(i => i.CarInfo.name).ToList();
             tracks = tracks.OrderBy(i => i.TrackInfo.name).ToList();
@@ -227,15 +227,19 @@ namespace LauncherLight
         private async void btnStart_Click(object sender, RoutedEventArgs e)
         {
             btnStart.IsEnabled = false;
+
             foreach (var process in Process.GetProcessesByName("acs"))
             {
                 process.Kill();
             }
+
             if (Properties.Settings.Default.UseRename)
+            {
                 foreach (var process in Process.GetProcessesByName("AssettoCorsa"))
                 {
                     process.Kill();
                 }
+            }
 
             try
             {
@@ -299,12 +303,24 @@ namespace LauncherLight
         {
             Properties.Settings.Default.LastPreset = lstPreset.SelectedItem.ToString();
             Properties.Settings.Default.Save();
+
+            if (System.IO.File.Exists(ExeFile_AssettoCorsaBackupFile))
+            {
+                try
+                {
+                    Rename_RestoreFiles();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("An error occured while restoring original exe files\r\n" + ex.ToString());
+                }
+            }
+
 #if DEBUG
             if (Properties.Settings.Default.UseRename)
 #endif
             {
-                System.IO.File.Move(System.IO.Path.Combine(GamePath, "AssettoCorsa.exe"), System.IO.Path.Combine(GamePath, "AssettoCorsa.exe.original"));
-                System.IO.File.Move(System.IO.Path.Combine(GamePath, "acs.exe"), System.IO.Path.Combine(GamePath, "AssettoCorsa.exe"));
+                Rename_MoveFiles();
 
                 await Task.Delay(TimeSpan.FromSeconds(1));
 
@@ -319,8 +335,7 @@ namespace LauncherLight
                     await Task.Delay(TimeSpan.FromSeconds(1));
                 }
 
-                System.IO.File.Move(System.IO.Path.Combine(GamePath, "AssettoCorsa.exe"), System.IO.Path.Combine(GamePath, "acs.exe"));
-                System.IO.File.Move(System.IO.Path.Combine(GamePath, "AssettoCorsa.exe.original"), System.IO.Path.Combine(GamePath, "AssettoCorsa.exe"));
+                Rename_RestoreFiles();
             }
 #if DEBUG
             else
@@ -333,6 +348,33 @@ namespace LauncherLight
             if (Properties.Settings.Default.UseRename)
             {
             }
+        }
+
+        public string ExeFile_AssettoCorsa
+        {
+            get { return System.IO.Path.Combine(GamePath, "AssettoCorsa.exe"); }
+        }
+
+        public string ExeFile_AssettoCorsaBackupFile
+        {
+            get { return System.IO.Path.Combine(GamePath, "AssettoCorsa.exe.original"); }
+        }
+
+        public string ExeFile_ACS
+        {
+            get { return System.IO.Path.Combine(GamePath, "acs.exe"); }
+        }
+
+        private void Rename_MoveFiles()
+        {
+            System.IO.File.Move(ExeFile_AssettoCorsa, ExeFile_AssettoCorsaBackupFile);
+            System.IO.File.Move(ExeFile_ACS, ExeFile_AssettoCorsa);
+        }
+
+        private void Rename_RestoreFiles()
+        {
+            System.IO.File.Move(ExeFile_AssettoCorsa, ExeFile_ACS);
+            System.IO.File.Move(ExeFile_AssettoCorsaBackupFile, ExeFile_AssettoCorsa);
         }
 
         private Process p;

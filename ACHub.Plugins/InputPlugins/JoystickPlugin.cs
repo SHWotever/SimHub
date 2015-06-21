@@ -94,20 +94,26 @@ namespace ACHub.Plugins.InputPlugins
 
             foreach (var i in im.GetShortInputs())
             {
-                pluginManager.TriggerInput(i, typeof(JoystickPlugin), PressType.ShortPress);
-                settingsControl.Refresh(i + " short pressed");
+                if (pluginManager != null)
+                    pluginManager.TriggerInput(i, typeof(JoystickPlugin), PressType.ShortPress);
+                if (settingsControl != null)
+                    settingsControl.Refresh(i + " short pressed");
             }
 
             foreach (var i in im.GetNewInputs())
             {
-                pluginManager.TriggerInputPress(i, typeof(JoystickPlugin));
-                settingsControl.Refresh(i + " pressed");
+                if (pluginManager != null)
+                    pluginManager.TriggerInputPress(i, typeof(JoystickPlugin));
+                if (settingsControl != null)
+                    settingsControl.Refresh(i + " pressed");
             }
 
             foreach (var i in im.GetReleasedInputs())
             {
-                pluginManager.TriggerInputRelease(i, typeof(JoystickPlugin));
-                settingsControl.Refresh(i + " released");
+                if (pluginManager != null)
+                    pluginManager.TriggerInputRelease(i, typeof(JoystickPlugin));
+                if (settingsControl != null)
+                    settingsControl.Refresh(i + " released");
             }
             //if (settingsControl != null)
             //{
