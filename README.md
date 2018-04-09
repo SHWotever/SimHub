@@ -4,4 +4,4 @@ Welcome to the Simhub github, you can find all the documentation in the [Wiki](h
 
 Do not hesitate to reports bugs or features requests [here](https://github.com/zegreatclan/AssettoCorsaTools/issues)
 
-Downloads : [RaceDepartment](http://www.racedepartment.com/downloads/simhub-diy-sim-racing-dash.10252/) or [Mediafire](http://www.mediafire.com/folder/k485g76wi7w27/SimHub)
+Downloads : [RaceDepartment](http://www.racedepartment.com/downloads/simhub-diy-sim-racing-dash.10252/) or [Mirror](http://www.simhubdash.com/downloads/HubPackage.6.03.8.zip)
