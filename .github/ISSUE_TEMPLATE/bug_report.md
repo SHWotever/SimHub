@@ -13,6 +13,9 @@ A clear and concise description of what the bug is.
 **Simhub version**
 Make sure to run the latest version
 
+**Third party plugins**
+Make sure to disable first any third party plugins (It's a critical step before reporting any freeze/performance/crash issues)
+
 **To Reproduce**
 Steps to reproduce the behavior:
 1. Go to '...'
@@ -28,6 +31,7 @@ If applicable, add screenshots to help explain your problem.
 
 **Log files**
 Join log files available in C:\Program Files (x86)\SimHub\Logs
+Note : Bug reports not joining proper log files won't be processed (Never join logs screeshots/photos/extracts, exclusively join logs files).
 
 **Additional context**
 Add any other context about the problem here.
