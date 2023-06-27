@@ -31,7 +31,7 @@ If applicable, add screenshots to help explain your problem.
 
 **Log files**
 Join log files available in C:\Program Files (x86)\SimHub\Logs
-Note : Bug reports not joining proper log files won't be processed (Never join logs screeshots/photos/extracts, exclusively join logs files).
+Note : Bug reports not joining proper log files won't be processed (Never join logs screenshots/photos/extracts, please exclusively join complete logs files).
 
 **Additional context**
 Add any other context about the problem here.
