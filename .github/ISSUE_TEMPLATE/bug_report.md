@@ -6,7 +6,6 @@ labels: triage
 assignees: ''
 
 ---
-
 **Describe the bug**
 A clear and concise description of what the bug is.
 
@@ -32,6 +31,8 @@ If applicable, add screenshots to help explain your problem.
 **Log files**
 Join log files available in C:\Program Files (x86)\SimHub\Logs
 Note : Bug reports not joining proper log files won't be processed (Never join logs screenshots/photos/extracts, please exclusively join complete logs files).
+
+How to attach files : https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/attaching-files
 
 **Additional context**
 Add any other context about the problem here.
