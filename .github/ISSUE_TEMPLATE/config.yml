@@ -2,7 +2,7 @@ blank_issues_enabled: false
 contact_links:
   - name: Performances/Lags issues
     url: https://github.com/SHWotever/SimHub/wiki/DashStudio-performance
-    about: Anything related to dash studio perforamnce
+    about: Anything related to dash studio perforances
   - name: Licence issues
     url: https://www.simhubdash.com/simhub-contact/
     about: Anything related to licence (lost, not received ...)
