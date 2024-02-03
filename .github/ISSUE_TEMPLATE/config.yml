@@ -1,5 +1,7 @@
 blank_issues_enabled: false
-contact_links:
+contact_links: 
+  - name: USB issues (screens, usb, sound cards, arduino disconnects)
+    url: https://github.com/SHWotever/SimHub/wiki/USB-Issues-Troubleshooting
   - name: Performances/Lags issues
     url: https://github.com/SHWotever/SimHub/wiki/DashStudio-performance
     about: Anything related to dash studio perforances
