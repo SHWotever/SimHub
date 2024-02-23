@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links: 
+  - name: Antivirus false positives
+    url: https://github.com/SHWotever/SimHub/wiki/Antivirus-false-positives
+    about: What to do if your antivirus falsly claims SimHub is malicious
   - name: USB issues (screens, usb, sound cards, arduino disconnects)
     url: https://github.com/SHWotever/SimHub/wiki/USB-Issues-Troubleshooting
     about: Anything related to USB issues
