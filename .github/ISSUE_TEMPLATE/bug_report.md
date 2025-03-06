@@ -13,7 +13,7 @@ A clear and concise description of what the bug is.
 Make sure to run the latest version
 
 **Third party plugins**
-Make sure to disable first any third party plugins (It's a critical step before reporting any freeze/performance/crash issues)
+Make sure to disable first any third party plugins (It's a critical step before reporting any freeze/performance/crash issues, see https://github.com/SHWotever/SimHub/wiki/SimHub-Troubleshootings#disabling-any-third-party-plugin)
 
 **To Reproduce**
 Steps to reproduce the behavior:
