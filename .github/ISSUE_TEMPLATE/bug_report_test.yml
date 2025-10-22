@@ -17,7 +17,8 @@ body:
     id: simhub_version
     attributes:
       label: SimHub version
-      description: Make sure to run the latest version before reporting a bug.
+      description:  🔗 **[Click here to check the latest SimHub release](https://github.com/SHWotever/SimHub/releases/latest)**  
+        Make sure you're running the newest version before reporting a bug.
       placeholder: e.g., 9.3.2
     validations:
       required: true
