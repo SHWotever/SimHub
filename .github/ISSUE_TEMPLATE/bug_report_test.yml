@@ -1,17 +1,17 @@
-name: "[TEST] Bug report form (hidden)"
+name: "[TEST] Bug report form"
 description: Internal testing version of the new SimHub bug report form
 title: "[Bug] "
 labels: [bug]
-# 👇 this line hides it from the default issue chooser
+
 body:
-- type: textarea
-  id: bug_description
-  attributes:
-    label: Describe the bug
-    description: A clear and concise description of what the bug is.
-    placeholder: e.g., SimHub crashes when opening Dash Studio
-  validations:
-    required: true
+  - type: textarea
+    id: bug_description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
+      placeholder: e.g., SimHub crashes when opening Dash Studio
+    validations:
+      required: true
 
   - type: input
     id: simhub_version
@@ -25,9 +25,10 @@ body:
   - type: checkboxes
     id: plugin_check
     attributes:
-      label: Third party plugins
-      description: Before reporting any freeze/performance/crash issues, please disable all third-party plugins.  
-        [See the troubleshooting guide.](https://github.com/SHWotever/SimHub/wiki/SimHub-Troubleshootings#disabling-any-third-party-plugin)
+      label: Third-party plugins
+      description: |
+        Before reporting any freeze, performance, or crash issues, please disable all third-party plugins.  
+        [See the troubleshooting guide](https://github.com/SHWotever/SimHub/wiki/SimHub-Troubleshootings#disabling-any-third-party-plugin)
       options:
         - label: I have disabled all third-party plugins.
           required: true
@@ -36,6 +37,7 @@ body:
     id: reproduction_steps
     attributes:
       label: Steps to reproduce
+      description: Please describe step-by-step how to reproduce the behavior.
       placeholder: |
         1. Go to '...'
         2. Click on '...'
@@ -44,24 +46,42 @@ body:
     validations:
       required: true
 
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen instead?
+      placeholder: A clear and concise description of what you expected to happen.
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain your problem. You can drag and drop images here.
+
   - type: checkboxes
     id: logs
     attributes:
       label: Log files
       description: |
-        Attach complete log files from:
-        `C:\Program Files (x86)\SimHub\Logs`  
-        Include:
-        - simhub.txt (current/last execution)
-        - simhub.1.txt, simhub.2.txt, etc.
+        Please attach complete log files from  
+        `C:\Program Files (x86)\SimHub\Logs`
 
-        **Note:** Reports without full logs will not be processed.
+        Include:
+        - `simhub.txt` (current/last execution)
+        - `simhub.1.txt` (previous)
+        - `simhub.2.txt`, etc.
+
+        **Note:** Bug reports without full log files will not be processed.  
+        Do **not** attach screenshots/photos/extracts — only complete log files.  
+
+        [How to attach files](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/attaching-files)
       options:
-        - label: I have attached complete log files.
+        - label: I have attached the complete SimHub log files.
           required: true
 
   - type: textarea
     id: additional_context
     attributes:
       label: Additional context
-      description: Add any other relevant information.
+      description: Add any other context about the problem here.
