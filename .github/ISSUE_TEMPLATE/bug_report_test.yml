@@ -1,0 +1,65 @@
+name: "[TEST] Bug report form (hidden)"
+description: Internal testing version of the new SimHub bug report form
+title: "[Bug] "
+labels: [bug]
+# 👇 this line hides it from the default issue chooser
+visibility: hidden
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Describe the bug
+        A clear and concise description of what the bug is.
+
+  - type: input
+    id: simhub_version
+    attributes:
+      label: SimHub version
+      description: Make sure to run the latest version before reporting a bug.
+      placeholder: e.g., 9.3.2
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: plugin_check
+    attributes:
+      label: Third party plugins
+      description: Before reporting any freeze/performance/crash issues, please disable all third-party plugins.  
+        [See the troubleshooting guide.](https://github.com/SHWotever/SimHub/wiki/SimHub-Troubleshootings#disabling-any-third-party-plugin)
+      options:
+        - label: I have disabled all third-party plugins.
+          required: true
+
+  - type: textarea
+    id: reproduction_steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll down to '...'
+        4. See error
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: logs
+    attributes:
+      label: Log files
+      description: |
+        Attach complete log files from:
+        `C:\Program Files (x86)\SimHub\Logs`  
+        Include:
+        - simhub.txt (current/last execution)
+        - simhub.1.txt, simhub.2.txt, etc.
+
+        **Note:** Reports without full logs will not be processed.
+      options:
+        - label: I have attached complete log files.
+          required: true
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional context
+      description: Add any other relevant information.
