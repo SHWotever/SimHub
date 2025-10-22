@@ -1,5 +1,5 @@
-name: "[TEST] Bug report form"
-description: Internal testing version of the new SimHub bug report form
+name: Bug report
+description: Report a problem with SimHub
 title: "[Bug] "
 labels: [bug]
 
@@ -59,26 +59,26 @@ body:
       label: Screenshots
       description: If applicable, add screenshots to help explain your problem. You can drag and drop images here.
 
-  - type: checkboxes
+  - type: textarea
     id: logs
     attributes:
-      label: Log files
+      label: 📁 Log files
       description: |
-        Please attach complete log files from  
-        `C:\Program Files (x86)\SimHub\Logs`
+        Attach complete log files below.  
+        - From `C:\Program Files (x86)\SimHub\Logs`  
+        - Include:
+          - `simhub.txt` (current run)
+          - `simhub.1.txt`, `simhub.2.txt`, etc.
+        - You can **drag and drop** the files directly into this box.  
 
-        Include:
-        - `simhub.txt` (current/last execution)
-        - `simhub.1.txt` (previous)
-        - `simhub.2.txt`, etc.
-
-        **Note:** Bug reports without full log files will not be processed.  
-        Do **not** attach screenshots/photos/extracts — only complete log files.  
+        ⚠️ Bug reports without full logs will not be processed.  
+        Do **not** attach screenshots or excerpts — only full `.txt` log files.  
 
         [How to attach files](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/attaching-files)
-      options:
-        - label: I have attached the complete SimHub log files.
-          required: true
+      placeholder: |
+        ⬇️ Drag and drop your `.txt` log files here, or paste them if needed.
+    validations:
+      required: true
 
   - type: textarea
     id: additional_context
