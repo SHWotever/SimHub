@@ -3,7 +3,6 @@ description: Internal testing version of the new SimHub bug report form
 title: "[Bug] "
 labels: [bug]
 # 👇 this line hides it from the default issue chooser
-visibility: hidden
 body:
   - type: markdown
     attributes:
