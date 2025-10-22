@@ -4,11 +4,14 @@ title: "[Bug] "
 labels: [bug]
 # 👇 this line hides it from the default issue chooser
 body:
-  - type: markdown
-    attributes:
-      value: |
-        ## Describe the bug
-        A clear and concise description of what the bug is.
+- type: textarea
+  id: bug_description
+  attributes:
+    label: Describe the bug
+    description: A clear and concise description of what the bug is.
+    placeholder: e.g., SimHub crashes when opening Dash Studio
+  validations:
+    required: true
 
   - type: input
     id: simhub_version
